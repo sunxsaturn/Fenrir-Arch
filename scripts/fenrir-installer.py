@@ -61,7 +61,7 @@ class FenrirInstaller(Gtk.Application):
         advanced_box.append(advanced_note)
         reapack_row, self.reapack = self.option(
             "Install ReaPack for REAPER",
-            "Downloads the pinned upstream Linux x86_64 extension, verifies SHA-256, and backs up any existing plugin.",
+            "Installs the signed ReaPack package from official Arch Extra; no AUR helper or custom binary download is used.",
             True,
         )
         advanced_box.append(reapack_row)
