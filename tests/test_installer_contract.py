@@ -38,7 +38,7 @@ class InstallerIntegrationTests(unittest.TestCase):
         self.assertIn('DOTS_VERSION="$(cat "$DOTS_DIR/VERSION" 2>/dev/null || true)"', installer)
         self.assertIn('[[ "$DOTS_VERSION" == "0.5.0" ]]', installer)
         self.assertIn('DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-17ae919d0737d7d8d5b6065c46b8a1846380c68f}"', installer)
-        self.assertIn('CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-cd4dc6be4644042b121c515f540c563cef1b1114}"', installer)
+        self.assertIn('CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-cbc388fd777a10e661f7198e80bb4ad666cd260f}"', installer)
         self.assertIn('git -C "$DOTS_DIR" checkout --detach "$DOTS_COMMIT"', installer)
         self.assertIn('[[ "$DOTS_HEAD" == "$DOTS_COMMIT" ]]', installer)
         self.assertIn('install_fenrir_doctor "$AI"', installer)
@@ -96,7 +96,7 @@ class InstallerIntegrationTests(unittest.TestCase):
     def test_catalog_pin_and_runtime_source_manifest_contract(self):
         installer = (ROOT / "install.sh").read_text(encoding="utf-8")
         setup = (ROOT / "scripts" / "install-catalog.sh").read_text(encoding="utf-8")
-        expected_commit = "cd4dc6be4644042b121c515f540c563cef1b1114"
+        expected_commit = "cbc388fd777a10e661f7198e80bb4ad666cd260f"
         self.assertIn(expected_commit, installer)
         self.assertIn(expected_commit, setup)
         self.assertIn('git -C "$CATALOG_SOURCE" checkout --detach "$CATALOG_COMMIT"', setup)
