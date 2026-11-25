@@ -15,6 +15,31 @@ class InstallerIntegrationTests(unittest.TestCase):
         self.assertNotIn("install-reapack.sh", installer)
 
 
+    def test_sun_ai_is_a_complete_versioned_companion_repo_component(self):
+        installer = (ROOT / "install.sh").read_text(encoding="utf-8")
+        deploy = (ROOT / "scripts" / "deploy.sh").read_text(encoding="utf-8")
+        required = (
+            "apps/sun-ai/README.md",
+            "apps/sun-ai/server.py",
+            "apps/sun-ai/index.html",
+            "apps/sun-ai/assets/app.js",
+            "apps/sun-ai/assets/style.css",
+            "bin/sun-ai",
+            "systemd/user/sun-ai.service",
+            "applications/sun-ai.desktop",
+            "config/icons/Fenrir-Obsidian/scalable/apps/sun-ai.svg",
+            "tests/test_sun_ai.py",
+        )
+        self.assertIn('DOTS_VERSION="$(cat "$DOTS_DIR/VERSION" 2>/dev/null || true)"', installer)
+        self.assertIn('[[ "$DOTS_VERSION" == "0.4.0" ]]', installer)
+        for path in required:
+            self.assertIn(path, installer)
+        self.assertIn('"$DOTS_ROOT/apps/sun-ai/."', deploy)
+        self.assertIn('"$DOTS_ROOT/systemd/user/sun-ai.service"', deploy)
+        self.assertIn('"$HOME/.local/bin/sun-ai"', deploy)
+        self.assertIn('"$HOME/.local/share/sun-ai/assets/app.js"', deploy)
+        self.assertIn('"$HOME/.config/systemd/user/sun-ai.service"', deploy)
+
     def test_deployer_installs_the_apps_used_by_the_launchers(self):
         deploy = (ROOT / "scripts" / "deploy.sh").read_text(encoding="utf-8")
         dots_guard = (ROOT / "install.sh").read_text(encoding="utf-8")
