@@ -36,8 +36,8 @@ class InstallerIntegrationTests(unittest.TestCase):
             "tests/test_fenrir_doctor.py",
         )
         self.assertIn('DOTS_VERSION="$(cat "$DOTS_DIR/VERSION" 2>/dev/null || true)"', installer)
-        self.assertIn('[[ "$DOTS_VERSION" == "0.7.2" ]]', installer)
-        self.assertIn('DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-68fc072ef95c9364d42a7ab2190fb1cb9c178214}"', installer)
+        self.assertIn('[[ "$DOTS_VERSION" == "0.7.3" ]]', installer)
+        self.assertIn('DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-ed0630e9c9ee1fda61cd80644fca34ea3e3b01e2}"', installer)
         self.assertIn('CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-9bf9b2846d36b3ea69ca00b0befaaa2fc094a58a}"', installer)
         self.assertIn('git -C "$DOTS_DIR" checkout --detach "$DOTS_COMMIT"', installer)
         self.assertIn('[[ "$DOTS_HEAD" == "$DOTS_COMMIT" ]]', installer)
@@ -71,13 +71,13 @@ class InstallerIntegrationTests(unittest.TestCase):
             self.skipTest("CI supplies the pinned Fenrir-Dots checkout for integration validation.")
 
         dots = Path(checkout)
-        expected_commit = "68fc072ef95c9364d42a7ab2190fb1cb9c178214"
+        expected_commit = "ed0630e9c9ee1fda61cd80644fca34ea3e3b01e2"
         actual_commit = subprocess.run(
             ["git", "-C", str(dots), "rev-parse", "HEAD"],
             check=True, capture_output=True, text=True,
         ).stdout.strip()
         self.assertEqual(actual_commit, expected_commit)
-        self.assertEqual((dots / "VERSION").read_text(encoding="utf-8").strip(), "0.7.2")
+        self.assertEqual((dots / "VERSION").read_text(encoding="utf-8").strip(), "0.7.3")
 
         required = (
             "config/hypr/hyprland.lua",
