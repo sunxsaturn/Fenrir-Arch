@@ -48,7 +48,9 @@ if [[ -d "$CATALOG_SOURCE/.git" ]]; then
 elif [[ -e "$CATALOG_SOURCE" ]]; then
   die "$CATALOG_SOURCE exists but is not a Git checkout. Move it aside; nothing there was overwritten."
 else
-  git clone "$CATALOG_REPO" "$CATALOG_SOURCE"
+  if ! git clone "$CATALOG_REPO" "$CATALOG_SOURCE"; then
+    die "Fenrir Wallpaper Catalog is a private GitHub repository. Configure GitHub authentication (SSH key or credential helper) for this user, then rerun the installer. No access token is stored by Fenrir."
+  fi
   git -C "$CATALOG_SOURCE" checkout --detach "$CATALOG_COMMIT"
 fi
 
