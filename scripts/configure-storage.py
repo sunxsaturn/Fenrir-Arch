@@ -26,6 +26,41 @@ def is_protected_mountpoint(mountpoint):
     )
 
 
+def decode_fstab_field(value: str) -> str:
+    """Decode octal escapes used by fstab for spaces, tabs and backslashes."""
+    return re.sub(
+        r"\\([0-7]{3})",
+        lambda match: chr(int(match.group(1), 8)),
+        value,
+    )
+
+
+def protected_fstab_sources(contents: str) -> tuple[set[str], set[str], set[str]]:
+    """Find protected data volumes even when they are currently unmounted."""
+    uuids: set[str] = set()
+    partuuids: set[str] = set()
+    devices: set[str] = set()
+    for raw_line in contents.splitlines():
+        line = raw_line.split("#", 1)[0].strip()
+        if not line:
+            continue
+        fields = line.split()
+        if len(fields) < 2 or not is_protected_mountpoint(decode_fstab_field(fields[1])):
+            continue
+        source = decode_fstab_field(fields[0])
+        if source.startswith("UUID="):
+            uuids.add(source[5:])
+        elif source.startswith("PARTUUID="):
+            partuuids.add(source[9:])
+        elif source.startswith("/dev/disk/by-uuid/"):
+            uuids.add(source.rsplit("/", 1)[-1])
+        elif source.startswith("/dev/disk/by-partuuid/"):
+            partuuids.add(source.rsplit("/", 1)[-1])
+        elif source.startswith("/dev/"):
+            devices.add(os.path.realpath(source))
+    return uuids, partuuids, devices
+
+
 
 def run(*args: str) -> str:
     return subprocess.check_output(args, text=True, stderr=subprocess.DEVNULL).strip()
@@ -69,7 +104,7 @@ def main() -> int:
         for node in walk_nodes(root_tree):
             if node.get("type") == "disk":
                 root_disks.add(node.get("name", ""))
-        tree = json.loads(run("lsblk", "--json", "-o", "NAME,TYPE,FSTYPE,UUID,LABEL,MOUNTPOINTS,RM,RO"))
+        tree = json.loads(run("lsblk", "--json", "-o", "NAME,TYPE,FSTYPE,UUID,PARTUUID,LABEL,MOUNTPOINTS,RM,RO"))
     except (subprocess.CalledProcessError, json.JSONDecodeError) as exc:
         print(f"Could not inspect block devices safely: {exc}", file=sys.stderr)
         return 1
@@ -77,6 +112,7 @@ def main() -> int:
     fstab = Path("/etc/fstab")
     original = fstab.read_text(encoding="utf-8")
     existing_uuids = set(re.findall(r"(?m)^\s*UUID=([^\s#]+)", original))
+    protected_uuids, protected_partuuids, protected_devices = protected_fstab_sources(original)
     existing_targets = set()
     for line in original.splitlines():
         line = line.split("#", 1)[0].strip()
@@ -90,6 +126,13 @@ def main() -> int:
             continue
         fstype = (node.get("fstype") or "").lower()
         uuid = node.get("uuid") or ""
+        partuuid = node.get("partuuid") or ""
+        if (
+            uuid in protected_uuids
+            or partuuid in protected_partuuids
+            or os.path.realpath(device) in protected_devices
+        ):
+            continue
         if fstype not in SUPPORTED or not uuid or uuid == root_uuid:
             continue
         if disk and Path(disk).name in root_disks:
