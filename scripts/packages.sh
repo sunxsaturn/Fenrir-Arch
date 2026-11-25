@@ -5,6 +5,7 @@ source "$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)/lib.sh"
 # Full Fenrir workstation: Arch packages only. Flatpak applications are installed
 # separately from Flathub; Firefox Nightly is installed from Mozilla's own archive.
 BASE_PACKAGES=(
+    dex wf-recorder
   hyprland hyprpaper hyprlock xdg-desktop-portal-hyprland xdg-desktop-portal-gtk
   waybar fuzzel kitty mako grim slurp wl-clipboard cliphist
   networkmanager network-manager-applet bluez bluez-utils blueman
