@@ -2,29 +2,33 @@ name: Release Fenrir Arch
 
 on:
   push:
-    tags:
-      - "v*.*.*"
+    branches: [main]
+    paths: [VERSION]
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: release-${{ github.ref }}
+  group: fenrir-arch-release
   cancel-in-progress: false
 
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out tagged source
+      - name: Check out main source
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Verify tag matches project version
+      - name: Prepare release metadata
+        id: meta
         run: |
           version="$(tr -d '\n' < VERSION)"
-          test "v$version" = "$GITHUB_REF_NAME"
+          test -n "$version"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "tag=v$version" >> "$GITHUB_OUTPUT"
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -39,15 +43,18 @@ jobs:
 
       - name: Build source archive and checksum
         run: |
-          version="${GITHUB_REF_NAME#v}"
+          version="$(tr -d '\n' < VERSION)"
           mkdir -p release
-          git archive --format=tar.gz --prefix="fenrir-arch-${version}/" "$GITHUB_REF_NAME" > "release/fenrir-arch-${version}.tar.gz"
+          git archive --format=tar.gz --prefix="fenrir-arch-${version}/" "$GITHUB_SHA" > "release/fenrir-arch-${version}.tar.gz"
           sha256sum release/* > release/SHA256SUMS
 
-      - name: Publish GitHub Release
+      - name: Publish GitHub Release and version tag
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ steps.meta.outputs.tag }}
+          target_commitish: ${{ github.sha }}
           generate_release_notes: true
+          fail_on_unmatched_files: true
           files: |
             release/*
         env:
