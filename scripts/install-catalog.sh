@@ -3,7 +3,7 @@ set -Eeuo pipefail
 source "$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)/lib.sh"
 
 CATALOG_REPO="${FENRIR_CATALOG_REPO:-https://github.com/sunxsaturn/Fenrir-Wallpaper-Catalog.git}"
-CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-458fb37e4811ec05d9d2827bf9559654665b4797}"
+CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-60ef5db2025566b6648a9b3d283ab8d1e08988ac}"
 CATALOG_SOURCE="${FENRIR_CATALOG_SOURCE_DIR:-$HOME/.local/share/fenrir/catalog-source}"
 CATALOG_HOME="${FENRIR_CATALOG_HOME:-$HOME/.local/share/fenrir/catalog}"
 CATALOG_DB="$CATALOG_HOME/catalog.sqlite3"
@@ -57,14 +57,20 @@ fi
 actual="$(git -C "$CATALOG_SOURCE" rev-parse HEAD)"
 [[ "$actual" == "$CATALOG_COMMIT" ]] || die "Catalog checkout mismatch: expected $CATALOG_COMMIT, found $actual."
 version="$(python3 -c 'import sys,tomllib; print(tomllib.load(open(sys.argv[1], "rb"))["project"]["version"])' "$CATALOG_SOURCE/pyproject.toml")"
-[[ "$version" == "0.23.0" ]] || die "Fenrir Wallpaper Catalog 0.23.0 is required; found $version."
+[[ "$version" == "0.24.0" ]] || die "Fenrir Wallpaper Catalog 0.24.0 is required; found $version."
 
 required_files=(
   pyproject.toml
+  src/fenrir_catalog/__init__.py
   src/fenrir_catalog/cli.py
   src/fenrir_catalog/desktop_sync.py
   src/fenrir_catalog/consumer.py
   src/fenrir_catalog/library.py
+  src/fenrir_catalog/picker.py
+  src/fenrir_catalog/picker_assets/index.html
+  src/fenrir_catalog/picker_assets/app.js
+  src/fenrir_catalog/picker_assets/style.css
+  tests/test_picker.py
   src/fenrir_catalog/schemas/wallpaper-library-manifest-v1.schema.json
   tests/test_desktop_sync.py
   src/fenrir_catalog/campaign.py
