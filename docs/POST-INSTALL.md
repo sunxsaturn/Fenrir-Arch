@@ -66,7 +66,7 @@ Login to each game service yourself and configure game directories/proton versio
 
 ## Audio production
 
-PipeWire/JACK, EasyEffects, QPWgraph, Guitarix, Calf LV2, REAPER, the pinned ReaPack v1.2.6 extension and realtime privileges are installed. ReaPack is downloaded from its upstream Linux x86_64 release and SHA-256 verified; the installer backs up an existing `reaper_reapack-x86_64.so` before replacing it. The plugin is stored at `~/.config/REAPER/UserPlugins/reaper_reapack-x86_64.so`. The current account is added to the `realtime` group if the package provides it; group membership takes effect at the next login. Confirm that PipeWire/JACK routing works before a recording session. Avoid applying extra latency/kernel tuning without measuring it on the actual interface.
+PipeWire/JACK, EasyEffects, QPWgraph, Guitarix, Calf LV2, REAPER, ReaPack is available as an optional package from the official Arch Extra repository and can be selected in the Advanced customization section of the setup wizard. No AUR helper or custom plugin binary is required. The current account is added to the `realtime` group if the package provides it; group membership takes effect at the next login. Confirm that PipeWire/JACK routing works before a recording session. Avoid applying extra latency/kernel tuning without measuring it on the actual interface.
 
 ## Sun AI and GPU
 
