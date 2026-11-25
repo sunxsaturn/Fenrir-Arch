@@ -134,7 +134,27 @@ else
   log "Cloning Fenrir-Dots ($DOTS_REF)"
   git clone --depth=1 --branch "$DOTS_REF" "$DOTS_REPO" "$DOTS_DIR"
 fi
-[[ -f "$DOTS_DIR/config/hypr/hyprland.lua" && -d "$DOTS_DIR/apps/sun-ai" && -f "$DOTS_DIR/apps/fenrir-settings/app.py" && -f "$DOTS_DIR/apps/fenrir-welcome/app.py" && -f "$DOTS_DIR/apps/fenrir-settings/monitor.py" ]] || die "Fenrir-Dots checkout is incomplete or incompatible (desktop apps/settings payload missing)."
+DOTS_VERSION="$(cat "$DOTS_DIR/VERSION" 2>/dev/null || true)"
+[[ "$DOTS_VERSION" == "0.4.0" ]] || die "Fenrir-Dots 0.4.0 is required; found '${DOTS_VERSION:-missing}'. Update the companion source checkout."
+DOTS_REQUIRED_FILES=(
+  config/hypr/hyprland.lua
+  apps/fenrir-settings/app.py
+  apps/fenrir-welcome/app.py
+  apps/fenrir-settings/monitor.py
+  apps/sun-ai/README.md
+  apps/sun-ai/server.py
+  apps/sun-ai/index.html
+  apps/sun-ai/assets/app.js
+  apps/sun-ai/assets/style.css
+  bin/sun-ai
+  systemd/user/sun-ai.service
+  applications/sun-ai.desktop
+  config/icons/Fenrir-Obsidian/scalable/apps/sun-ai.svg
+  tests/test_sun_ai.py
+)
+for source_file in "${DOTS_REQUIRED_FILES[@]}"; do
+  [[ -f "$DOTS_DIR/$source_file" ]] || die "Fenrir-Dots source is incomplete: missing tracked project file $source_file"
+done
 DOTS_ROOT="$(cd -- "$DOTS_DIR" && pwd -P)"
 export ROOT DOTS_ROOT
 source "$ROOT/scripts/deploy.sh"
