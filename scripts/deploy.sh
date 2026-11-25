@@ -144,10 +144,14 @@ configure_system_services() {
 
 validate_install() {
   local ai="$1"
-  local required=(hyprland hyprpaper hyprlock waybar fuzzel kitty pipewire pipewire-pulse pipewire-jack steam gamemode lib32-gamemode mangohud lib32-mangohud gamescope lib32-mesa lib32-vulkan-radeon lib32-vulkan-icd-loader easyeffects qpwgraph guitarix calf reaper reapack realtime-privileges discord prismlauncher jre21-openjdk)
+  local required=(hyprland hyprpaper hyprlock waybar fuzzel kitty pipewire pipewire-pulse pipewire-jack steam gamemode lib32-gamemode mangohud lib32-mangohud gamescope lib32-mesa lib32-vulkan-radeon lib32-vulkan-icd-loader easyeffects qpwgraph guitarix calf reaper realtime-privileges discord prismlauncher jre21-openjdk)
   local p
   for p in "${required[@]}"; do pacman -Q "$p" >/dev/null 2>&1 || die "Validation failed: package $p is not installed."; done
   [[ -x "$HOME/.local/bin/fenrir-wallpaper" ]] || die "Fenrir wallpaper command missing."
+  [[ -f "$HOME/.local/share/fenrir/apps/fenrir-settings/app.py" ]] || die "Fenrir Settings app source was not deployed."
+  [[ -f "$HOME/.local/share/fenrir/apps/fenrir-settings/core.py" ]] || die "Fenrir Settings core was not deployed."
+  [[ -f "$HOME/.local/share/fenrir/apps/fenrir-welcome/app.py" ]] || die "Fenrir Welcome app source was not deployed."
+  [[ -f "$HOME/.local/share/fenrir/apps/fenrir-settings/monitor.py" ]] || die "Fenrir monitor helper was not deployed."
   [[ -f "$CONFIG_HOME/hypr/hyprland.lua" ]] || die "Hyprland Lua configuration missing."
   [[ -x "$HOME/.local/bin/firefox-nightly" ]] || die "Mozilla Firefox Nightly launcher missing."
   local flatpak_apps
