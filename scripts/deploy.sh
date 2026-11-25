@@ -42,6 +42,17 @@ backup_and_deploy() {
     sed -i '/sun-ai open/d' "$CONFIG_HOME/hypr/hyprland.lua"
   fi
 
+  # Deploy the application source trees used by the small command launchers.
+  # Without these payloads fenrir-settings/fenrir-welcome/fenrir-monitor would
+  # exist on PATH but fail at startup.
+  local app
+  for app in fenrir-settings fenrir-welcome; do
+    [[ -d "$DOTS_ROOT/apps/$app" ]] || die "Required Fenrir app source is missing: $DOTS_ROOT/apps/$app"
+    backup_path "$HOME/.local/share/fenrir/apps/$app" ".local/share/fenrir/apps/$app"
+    mkdir -p "$HOME/.local/share/fenrir/apps/$app"
+    cp -a "$DOTS_ROOT/apps/$app/." "$HOME/.local/share/fenrir/apps/$app/"
+  done
+
   backup_path "$HOME/.config/systemd/user/fenrir-wallpaper.service" ".config/systemd/user/fenrir-wallpaper.service"
   backup_path "$HOME/.config/systemd/user/fenrir-stay-awake.service" ".config/systemd/user/fenrir-stay-awake.service"
   mkdir -p "$HOME/.config/systemd/user" "$HOME/.local/share/applications" "$HOME/.config/autostart"
