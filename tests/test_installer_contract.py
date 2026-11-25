@@ -34,7 +34,7 @@ class InstallerIntegrationTests(unittest.TestCase):
         self.assertNotIn("mkfs.", installer)
         self.assertNotIn("parted ", installer)
         import re
-        destructive_commands = re.compile(r"(?m)^\\s*(?:sudo\\s+)?(?:mkfs(?:\\.[\\w]+)?|parted|fdisk|sfdisk|sgdisk|reboot|shutdown)\\b")
+        destructive_commands = re.compile(r"(?m)^\s*(?:sudo\s+)?(?:mkfs(?:\.[\w]+)?|parted|fdisk|sfdisk|sgdisk|reboot|shutdown)\b")
         self.assertIsNone(destructive_commands.search(installer))
 
 
