@@ -36,11 +36,18 @@ class InstallerIntegrationTests(unittest.TestCase):
             "tests/test_fenrir_doctor.py",
         )
         self.assertIn('DOTS_VERSION="$(cat "$DOTS_DIR/VERSION" 2>/dev/null || true)"', installer)
-        self.assertIn('[[ "$DOTS_VERSION" == "0.5.0" ]]', installer)
-        self.assertIn('DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-f1bdec6873770a6c2359f56bafbdf44625eb5068}"', installer)
-        self.assertIn('CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-cbc388fd777a10e661f7198e80bb4ad666cd260f}"', installer)
+        self.assertIn('[[ "$DOTS_VERSION" == "0.6.1" ]]', installer)
+        self.assertIn('DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-b16d82454945f5a33d72415b6c06a132a5e70f20}"', installer)
+        self.assertIn('CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-5f9408a90f99e6fed729d97e2e9fcdc34ce3cdbd}"', installer)
         self.assertIn('git -C "$DOTS_DIR" checkout --detach "$DOTS_COMMIT"', installer)
         self.assertIn('[[ "$DOTS_HEAD" == "$DOTS_COMMIT" ]]', installer)
+        self.assertIn("write_installed_versions", installer)
+        self.assertIn("installed-versions.json", installer)
+        self.assertIn('chmod 0600 "$temporary"', installer)
+        self.assertIn('mv -f -- "$temporary" "$manifest"', installer)
+        self.assertIn('"Fenrir-Arch": "%s"', installer)
+        self.assertIn('"Fenrir-Dots": "%s"', installer)
+        self.assertIn('"Fenrir-Wallpaper-Catalog": "%s"', installer)
         self.assertIn('install_fenrir_doctor "$AI"', installer)
         self.assertIn('bash "$ROOT/scripts/install-catalog.sh"', installer)
         self.assertIn("AI=1", installer)
@@ -64,13 +71,13 @@ class InstallerIntegrationTests(unittest.TestCase):
             self.skipTest("CI supplies the pinned Fenrir-Dots checkout for integration validation.")
 
         dots = Path(checkout)
-        expected_commit = "f1bdec6873770a6c2359f56bafbdf44625eb5068"
+        expected_commit = "b16d82454945f5a33d72415b6c06a132a5e70f20"
         actual_commit = subprocess.run(
             ["git", "-C", str(dots), "rev-parse", "HEAD"],
             check=True, capture_output=True, text=True,
         ).stdout.strip()
         self.assertEqual(actual_commit, expected_commit)
-        self.assertEqual((dots / "VERSION").read_text(encoding="utf-8").strip(), "0.5.0")
+        self.assertEqual((dots / "VERSION").read_text(encoding="utf-8").strip(), "0.6.1")
 
         required = (
             "config/hypr/hyprland.lua",
@@ -96,12 +103,12 @@ class InstallerIntegrationTests(unittest.TestCase):
     def test_catalog_pin_and_runtime_source_manifest_contract(self):
         installer = (ROOT / "install.sh").read_text(encoding="utf-8")
         setup = (ROOT / "scripts" / "install-catalog.sh").read_text(encoding="utf-8")
-        expected_commit = "cbc388fd777a10e661f7198e80bb4ad666cd260f"
+        expected_commit = "5f9408a90f99e6fed729d97e2e9fcdc34ce3cdbd"
         self.assertIn(expected_commit, installer)
         self.assertIn(expected_commit, setup)
         self.assertIn('git -C "$CATALOG_SOURCE" checkout --detach "$CATALOG_COMMIT"', setup)
         self.assertIn('[[ "$actual" == "$CATALOG_COMMIT" ]]', setup)
-        self.assertIn('[[ "$version" == "0.19.0" ]]', setup)
+        self.assertIn('[[ "$version" == "0.20.0" ]]', setup)
         required = (
             "pyproject.toml",
             "src/fenrir_catalog/cli.py",
@@ -110,6 +117,15 @@ class InstallerIntegrationTests(unittest.TestCase):
             "src/fenrir_catalog/library.py",
             "src/fenrir_catalog/schemas/wallpaper-library-manifest-v1.schema.json",
             "tests/test_desktop_sync.py",
+            "src/fenrir_catalog/campaign.py",
+            "src/fenrir_catalog/campaign_profiles.py",
+            "src/fenrir_catalog/adapters/commons.py",
+            "src/fenrir_catalog/palette_policy.py",
+            "src/fenrir_catalog/palette_index.py",
+            "src/fenrir_catalog/migrations/0014_discovery_campaigns.sql",
+            "tests/test_campaign.py",
+            "tests/test_palette_policy.py",
+            "tests/test_palette_index.py",
         )
         for relative in required:
             with self.subTest(path=relative):

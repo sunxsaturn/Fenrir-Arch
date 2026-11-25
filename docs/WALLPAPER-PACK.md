@@ -61,7 +61,7 @@ Allowed targets are exactly 5000, 10000 and 20000. The command rejects `/mnt/sto
 
 ## Sources and image quality
 
-Priority subjects remain Nordic/Viking mythology, dark and medieval fantasy, warriors/battles/armor/fortresses, dragons and mythological creatures, cinematic game environments/concept art, and dramatic mountains/forests/oceans/landscapes. Preferred palette: deep black/obsidian, arctic blue, violet/purple, emerald/deep green and dramatic red accents.
+Priority subjects remain Nordic/Viking mythology, dark and medieval fantasy, warriors/battles/armor/fortresses, dragons and mythological creatures, cinematic game environments/concept art, and dramatic mountains/forests/oceans/landscapes. The enforced `fenrir-wallpaper-palette-v1` policy excludes dominant yellow, orange and brown. Red, purple, blue, white and black are preferred; green and neutral grey are allowed. The Catalog checks decoded image pixels at acceptance, local counting and desktop synchronization.
 
 A high-resolution image is not automatically authorized for acquisition or redistribution. Use the Catalog's documented source registry, provider terms, rights evidence, duplicate review, human acceptance and acquisition authorization. Unknown, conflicting, non-commercial, no-derivatives or undocumented rights remain excluded or held for human review. The project will not scrape providers or manufacture rights evidence to hit a numerical target.
 
