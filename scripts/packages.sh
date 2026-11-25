@@ -42,10 +42,11 @@ print_plan() {
   if (( reapack )); then log "REAPER extension: official Arch Extra reapack package (no AUR)."; fi
   log "Applications: Firefox Nightly (Mozilla archive), Discord, Prism Launcher, Spotify, Heroic, RPCS3 and Whatsie"
   log "Flathub application IDs: ${FLATPAK_APPS[*]}"
-  (( ai == 0 )) || log "AI: ollama-vulkan + Sun AI; model downloads remain manual"
+  (( ai == 0 )) || log "Fenrir Doctor: ollama-vulkan + local diagnostics, updates, recovery and wallpaper intelligence; model downloads remain manual"
   log "System setup: multilib, US International dead-key layout, persistent Ethernet WoL, UUID-based fixed data-disk mounts"
+  log "Wallpaper Catalog: pinned source, isolated Python environment, local SQLite database and private quarantine"
   log "Wallpaper engine: 15-minute rotation, 2560x1440 landscape minimum, 3840x2160 preferred, wallpaper-derived colors"
-  log "Wallpaper pack: installer accepts only a validated, rights-cleared manifest with at least 5000 items; no pack is currently bundled"
+  log "Wallpaper intelligence: local rights-approved catalog sync supports 5,000, 10,000 or 20,000 image targets; no image collection is fabricated or automatically acquired"
   log "No AUR helper, no partitioning, no formatting, no game/firmware downloads, no automatic reboot"
 }
 
