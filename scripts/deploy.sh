@@ -160,7 +160,7 @@ validate_install() {
     grep -Fxq "$p" <<<"$flatpak_apps" || die "Validation failed: Flatpak $p is not installed."
   done
   if (( reapack )); then
-    [[ -s "${XDG_CONFIG_HOME:-$HOME/.config}/REAPER/UserPlugins/reaper_reapack-x86_64.so" ]] || die "Verified ReaPack extension is missing."
+    pacman -Q reapack >/dev/null 2>&1 || die "Official Arch ReaPack package is missing."
   fi
   if (( ai )); then
     pacman -Q ollama-vulkan >/dev/null 2>&1 || die "Ollama Vulkan package is missing."
