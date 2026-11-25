@@ -131,7 +131,7 @@ else
   log "Cloning Fenrir-Dots ($DOTS_REF)"
   git clone --depth=1 --branch "$DOTS_REF" "$DOTS_REPO" "$DOTS_DIR"
 fi
-[[ -f "$DOTS_DIR/config/hypr/hyprland.lua" && -d "$DOTS_DIR/apps/sun-ai" ]] || die "Fenrir-Dots checkout is incomplete or incompatible."
+[[ -f "$DOTS_DIR/config/hypr/hyprland.lua" && -d "$DOTS_DIR/apps/sun-ai" && -f "$DOTS_DIR/apps/fenrir-settings/app.py" && -f "$DOTS_DIR/apps/fenrir-welcome/app.py" && -f "$DOTS_DIR/apps/fenrir-settings/monitor.py" ]] || die "Fenrir-Dots checkout is incomplete or incompatible (desktop apps/settings payload missing)."
 DOTS_ROOT="$(cd -- "$DOTS_DIR" && pwd -P)"
 export ROOT DOTS_ROOT
 source "$ROOT/scripts/deploy.sh"
@@ -139,6 +139,7 @@ source "$ROOT/scripts/deploy.sh"
 install_flatpak_apps
 "$ROOT/scripts/install-firefox-nightly.sh"
 backup_and_deploy "$AI"
+bash "$ROOT/scripts/install-reapack.sh"
 install_sun_ai "$AI"
 install_user_units
 configure_system_services "$AI" "$WOL"
