@@ -20,6 +20,7 @@ Options: `--dry-run`, `--cli`, `--no-ai`, `--no-reapack`, `--no-storage`, `--no-
 
 - **Fenrir-Arch**: installer, packages, system services, disk/keyboard/WoL integration and validated wallpaper-pack installer.
 - **Fenrir-Dots**: Hyprland Lua config, Waybar, Fuzzel, Kitty, Mako, GTK, icons, Fimbulwinter Glass, wallpaper rotation/theme services, GTK4 Fenrir Control Center and Sun AI.
+  - Sun AI is first-party, versioned source in [`Fenrir-Dots/apps/sun-ai/`](https://github.com/sunxsaturn/Fenrir-Dots/tree/main/apps/sun-ai), including its server, web assets, CLI, user unit, desktop launcher, icon, docs and tests. Fenrir-Arch validates this complete source bundle before deploying it.
 - **Fenrir-Wallpaper-Catalog**: separate catalog and rights-aware acquisition project.
 
 ## Requested applications
