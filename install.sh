@@ -119,7 +119,7 @@ require_cmd flatpak
 # The visual layer is maintained independently, like established Hyprland dotfiles projects.
 DOTS_DIR="${FENRIR_DOTS_DIR:-$HOME/.local/share/fenrir/dots}"
 DOTS_REPO="${FENRIR_DOTS_REPO:-https://github.com/sunxsaturn/Fenrir-Dots.git}"
-DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-1fa6883e85829d268659dee6a248a842c1eae210}"
+DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-0ceb5173047be6163b8b66b65979e4acda6b0ad5}"
 CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-cd4dc6be4644042b121c515f540c563cef1b1114}"
 [[ "$DOTS_COMMIT" =~ ^[0-9a-f]{40}$ ]] || die "FENRIR_DOTS_COMMIT must be a full 40-character Git commit SHA."
 mkdir -p "$(dirname -- "$DOTS_DIR")"
