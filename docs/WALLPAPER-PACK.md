@@ -1,51 +1,76 @@
-# Fenrir wallpaper pack contract
+# Fenrir Wallpaper Catalog and Desktop Sync
 
-## Visual selection criteria
+Fenrir uses the rights-aware **Fenrir Wallpaper Catalog** as the source of truth for discovered, acquired, reviewed and accepted assets. Fenrir Doctor provides a local desktop integration that can grow the wallpaper folder to 5,000, 10,000 or 20,000 images.
 
-Every accepted wallpaper must be a valid, decodable landscape image of at least **2560×1440**. Prefer **3840×2160 or higher**. Priority subjects are Nordic/Viking mythology, dark and medieval fantasy, warriors/battles/armor/fortresses, dragons and mythological creatures, cinematic game environments/concept art, and dramatic mountains/forests/oceans/landscapes. Preferred palette: deep black/obsidian, arctic blue, violet/purple, emerald/deep green and dramatic red accents.
+## Collection targets
 
-The desktop target is at least **5,000 distinct validated wallpapers**. The downloader rejects duplicate IDs, filenames and SHA-256 hashes. The runtime index checks file type, decoded bytes, EXIF orientation and minimum dimensions. Rotation is deliberately paused until at least 5,000 qualifying files are present.
+The available targets are total qualifying local images, not a promise that the Catalog already contains that number:
 
-## Rights and source constraints
+- 5,000 images — default target.
+- 10,000 images.
+- 20,000 images.
 
-A high-resolution image is not automatically authorized for automated download or personal use. The Fenrir Wallpaper Catalog source policy currently allows metadata discovery through documented endpoints but prohibits scraping and automated mass downloads unless the current provider terms explicitly allow them and each asset has its own explicit acquisition authorization. Every image separately requires rights evidence, a human rights decision, acquisition authorization, SHA-256 validation, exact/perceptual duplicate review and explicit human acceptance. Rights acceptance does not grant redistribution permission.
+Existing qualifying files in `~/Pictures/Wallpapers` count toward the target. Rotation can use the qualifying local images already present; reaching 5,000 is a collection goal, not a requirement to enable rotation. The runtime validates landscape image files at least 2560×1440; 3840×2160 or higher is preferred.
 
-The supported license identifiers are CC0-1.0, CC-BY-3.0, CC-BY-4.0, CC-BY-SA-3.0 and CC-BY-SA-4.0, subject to verification of the actual source terms and attribution/ShareAlike duties. Unknown, non-commercial, no-derivatives or undocumented rights are excluded or held for human review. Providers and artists must be credited.
+## Rights and acquisition workflow
 
-The current Fenrir Wallpaper Catalog release does not publish a production desktop pack or direct wallpaper consumer. Consequently, **no 5,000-image pack is included in this desktop source archive**. It would be misleading to claim the 5,000-image requirement is already met. The installer keeps the wallpaper/theme service functional, checks the 5,000 target, and downloads only a separately prepared manifest that passes this contract.
+The Catalog separates each stage. Discovery stores metadata only. A source must be enabled under current provider terms; each asset needs its own explicit acquisition authorization before transfer into private quarantine. Validation and SHA-256 evidence, exact/perceptual duplicate review, a human rights decision and explicit human acceptance are separate records.
 
-## Installer manifest
+The desktop sync command is intentionally stricter than simple acceptance. It copies only catalog assets that:
 
-The production pack is one JSON file, `manifest.json`, following `manifest.schema.json`. The top-level object must include:
+1. Have an explicit accepted-library decision.
+2. Have `rights_status = human_approved`.
+3. Have `license_decision = approved` and a license identifier.
+4. Are locally stored in the private quarantine, not a provider URL.
+5. Are valid landscape JPEG, PNG or WebP files at least 2560×1440.
+6. Pass the Catalog consumer's no-follow path, SHA-256 and exact byte-count checks.
 
-- `schema`: `org.fenrir.wallpaper-pack`, `version`: `1`.
-- `criteria`: `minimum_width` at least 2560, `minimum_height` at least 1440, preferred dimensions at least 3840×2160, `orientation` set to `landscape`, and the full preferred palette list: `obsidian`, `arctic-blue`, `violet`, `emerald`, `deep-green`, `dramatic-red`.
-- `minimum_transfer_interval_seconds`: provider-approved minimum time between image requests (0.25–60 seconds, default 1.0). The downloader takes the greater of this and its local delay setting.
-- `allowed_hosts`: exact HTTPS hostnames used by image URLs and redirects.
-- `items`: at least 5,000 unique records.
+Human acceptance is not a grant of redistribution rights. The sync operation is local personal-library copying only: it does not upload or publish images, create public URLs, change rights or acceptance decisions, or authorize sharing. Follow each image's actual license and attribution requirements before redistributing it.
 
-Each image record requires ID, simple filename, HTTPS source image URL, SHA-256, actual width/height, creator/uploader, source URL, license identifier and URL, provider terms URL, non-empty references to the human rights decision, provider-terms evidence, acquisition authorization, acceptance decision and duplicate review, and explicit booleans for automated download permission, acquisition authorization, human acceptance, duplicate clearance and personal-use permission. Tags must classify the item within Fenrir's approved theme scope.
+## Using Fenrir Doctor
 
-The manifest's evidence-reference strings make an audit trail traceable but do not themselves prove legal rights. Those references must resolve to genuine Catalog records and current provider terms before a release maintainer creates the manifest. The script validates the supplied assertions and image bytes; it cannot independently authenticate a creator's rights claim or prove that an evidence ID refers to a genuine record. Treat the manifest as a pack-maintainer attestation, not cryptographic proof.
+Open **Fenrir Doctor** from the application launcher or press `Super+A`. Select **Wallpapers** to see:
 
-## Download behavior
+- Accepted records in the Catalog.
+- Current local image count.
+- Selected total-image target and remaining count.
+- The latest synchronization status and log.
 
-The installer uses this order:
+Choose 5,000, 10,000 or 20,000 and select **Sync accepted wallpapers**. The operation runs locally and can be repeated. It uses deterministic content-addressed filenames, does not overwrite existing user files, and maintains `~/Pictures/Wallpapers/fenrir-catalog-attribution.json` with creator, source, license and acceptance references.
 
-1. `FENRIR_WALLPAPER_MANIFEST_URL` if set, otherwise a local `wallpapers/manifest.json` when present.
-2. Strict schema/policy validation, requiring 5,000 records by default.
-3. HTTPS-only transfer; exact hostname allowlist; redirects constrained to allowlisted hosts; public DNS addresses only; sequential transfer with a one-second default pause.
-4. Maximum 100 MiB per image; per-file SHA-256 verification; Pillow decode and EXIF-aware dimension validation; no overwrite of an existing file whose hash differs.
-5. Attribution sidecar output at `~/Pictures/Wallpapers/fenrir-attribution.json`.
+## Command-line use
 
-To supply a reviewed pack before install, set the manifest location in the shell that launches Fenrir:
+The Catalog is installed in an isolated virtual environment. Use the wrapper installed by Fenrir:
 
 ```bash
-FENRIR_WALLPAPER_MANIFEST_URL='https://your-approved-host.example/path/manifest.json' bash fenrir-desktop-0.3.0.run
+fenrir-catalog catalog library facets \
+  --database "$HOME/.local/share/fenrir/catalog/catalog.sqlite3"
 ```
 
-The HTTPS host must be reachable and the manifest must conform to the schema. Only use source endpoints and transfer pacing explicitly permitted by the current source terms. The installer does not discover 5,000 images, scrape providers, generate rights decisions, accept assets or infer permission from a license label.
+To synchronize directly:
 
-## Runtime behavior
+```bash
+fenrir-catalog catalog library sync \
+  --database "$HOME/.local/share/fenrir/catalog/catalog.sqlite3" \
+  --quarantine-root "$HOME/.local/share/fenrir/catalog/quarantine" \
+  --destination "$HOME/Pictures/Wallpapers" \
+  --target-count 20000
+```
 
-`fenrir-wallpaper` indexes supported JPG/JPEG/PNG/WebP files. It rejects anything below 2560×1440 landscape and remains paused until it finds at least 5,000 qualifying images; after that it rotates randomly every 15 minutes. The dominant accent extracted from each wallpaper is applied to Waybar, Kitty, Fuzzel, Mako, GTK palette files and the live Hyprland border. The obsidian base and 0.60 surface opacity remain stable to protect contrast.
+Allowed targets are exactly 5000, 10000 and 20000. The command rejects `/mnt/storage` destinations and symlink wallpaper folders. It retains attribution metadata locally and does not delete existing images.
+
+## Sources and image quality
+
+Priority subjects remain Nordic/Viking mythology, dark and medieval fantasy, warriors/battles/armor/fortresses, dragons and mythological creatures, cinematic game environments/concept art, and dramatic mountains/forests/oceans/landscapes. Preferred palette: deep black/obsidian, arctic blue, violet/purple, emerald/deep green and dramatic red accents.
+
+A high-resolution image is not automatically authorized for acquisition or redistribution. Use the Catalog's documented source registry, provider terms, rights evidence, duplicate review, human acceptance and acquisition authorization. Unknown, conflicting, non-commercial, no-derivatives or undocumented rights remain excluded or held for human review. The project will not scrape providers or manufacture rights evidence to hit a numerical target.
+
+## Attribution and verification
+
+Every copied Catalog asset is named deterministically from its asset identifier and SHA-256. The local attribution sidecar retains:
+
+- Creator, source URL and license identifier/URL.
+- Actual dimensions and SHA-256.
+- Catalog asset identifier and acceptance decision reference.
+
+The Catalog's local database and quarantine remain under `~/.local/share/fenrir/catalog`; they are not stored in GitHub. Image files and the attribution sidecar live under `~/Pictures/Wallpapers`. Neither the source repository nor a GitHub release contains user-owned image files, credentials or catalog databases.

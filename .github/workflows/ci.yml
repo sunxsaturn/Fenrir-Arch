@@ -11,7 +11,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: sunxsaturn/Fenrir-Dots
-          ref: a12e3278e336fd709bd8a4fdd779a3ee4bcb9187
+          ref: f1bdec6873770a6c2359f56bafbdf44625eb5068
           path: companion/Fenrir-Dots
       - uses: actions/setup-python@v5
         with:

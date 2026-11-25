@@ -33,14 +33,9 @@ backup_and_deploy() {
   local file
   for file in "$DOTS_ROOT"/bin/*; do
     [[ -f "$file" ]] || continue
-    if [[ "$ai" == "0" && "$(basename "$file")" == "sun-ai" ]]; then continue; fi
     backup_path "$LOCAL_BIN/$(basename "$file")" ".local/bin/$(basename "$file")"
     install -m 0755 "$file" "$LOCAL_BIN/$(basename "$file")"
   done
-  if [[ "$ai" == "0" ]]; then
-    # Do not leave a dead Super+A keybind when the optional Sun AI module is omitted.
-    sed -i '/sun-ai open/d' "$CONFIG_HOME/hypr/hyprland.lua"
-  fi
 
   # Deploy the application source trees used by the small command launchers.
   # Without these payloads fenrir-settings/fenrir-welcome/fenrir-monitor would
@@ -66,10 +61,8 @@ backup_and_deploy() {
 
   backup_path "$HOME/.local/share/applications/fenrir-wallpaper-next.desktop" ".local/share/applications/fenrir-wallpaper-next.desktop"
   install -m 0644 "$DOTS_ROOT/applications/fenrir-wallpaper-next.desktop" "$HOME/.local/share/applications/fenrir-wallpaper-next.desktop"
-  if [[ "$ai" != "0" ]]; then
-    backup_path "$HOME/.local/share/applications/sun-ai.desktop" ".local/share/applications/sun-ai.desktop"
-    install -m 0644 "$DOTS_ROOT/applications/sun-ai.desktop" "$HOME/.local/share/applications/sun-ai.desktop"
-  fi
+  backup_path "$HOME/.local/share/applications/fenrir-doctor.desktop" ".local/share/applications/fenrir-doctor.desktop"
+  install -m 0644 "$DOTS_ROOT/applications/fenrir-doctor.desktop" "$HOME/.local/share/applications/fenrir-doctor.desktop"
   mkdir -p "$HOME/.config/fenrir"
   backup_path "$HOME/.config/fenrir/settings.toml" ".config/fenrir/settings.toml"
   backup_path "$HOME/.config/fenrir/palette.json" ".config/fenrir/palette.json"
@@ -80,23 +73,37 @@ backup_and_deploy() {
   log "User configuration deployed. Backup location: $BACKUP_ROOT"
 }
 
-install_sun_ai() {
+install_fenrir_doctor() {
   local ai="$1"
-  (( ai == 0 )) && { log "Sun AI deployment skipped (--no-ai)."; return 0; }
-  local destination="$HOME/.local/share/sun-ai"
-  backup_path "$destination" ".local/share/sun-ai"
-  mkdir -p "$destination/assets" "$HOME/.local/state/sun-ai" "$HOME/.config/sun-ai"
-  chmod 0700 "$HOME/.local/state/sun-ai" "$HOME/.config/sun-ai"
-  cp -a "$DOTS_ROOT/apps/sun-ai/." "$destination/"
+  (( ai == 0 )) && { log "Fenrir Doctor deployment skipped."; return 0; }
+  local destination="$HOME/.local/share/fenrir-doctor"
+  backup_path "$destination" ".local/share/fenrir-doctor"
+  mkdir -p "$destination/assets" "$HOME/.local/state/fenrir-doctor" "$HOME/.config/fenrir-doctor"
+  chmod 0700 "$HOME/.local/state/fenrir-doctor" "$HOME/.config/fenrir-doctor"
+  cp -a "$DOTS_ROOT/apps/fenrir-doctor/." "$destination/"
+
+  # Preserve and migrate legacy Sun AI data; remove obsolete app entry points.
+  systemctl --user disable --now sun-ai.service >/dev/null 2>&1 || true
   backup_path "$HOME/.config/systemd/user/sun-ai.service" ".config/systemd/user/sun-ai.service"
-  install -m 0644 "$DOTS_ROOT/systemd/user/sun-ai.service" "$HOME/.config/systemd/user/sun-ai.service"
-  log "Sun AI local application installed under $destination"
+  rm -f -- "$HOME/.config/systemd/user/sun-ai.service"
+  backup_path "$HOME/.local/share/sun-ai" ".local/share/sun-ai"
+  rm -rf -- "$HOME/.local/share/sun-ai"
+  backup_path "$LOCAL_BIN/sun-ai" ".local/bin/sun-ai"
+  rm -f -- "$LOCAL_BIN/sun-ai"
+  backup_path "$HOME/.local/share/applications/sun-ai.desktop" ".local/share/applications/sun-ai.desktop"
+  rm -f -- "$HOME/.local/share/applications/sun-ai.desktop"
+  backup_path "$HOME/.local/share/icons/Fenrir-Obsidian/scalable/apps/sun-ai.svg" ".local/share/icons/Fenrir-Obsidian/scalable/apps/sun-ai.svg"
+  rm -f -- "$HOME/.local/share/icons/Fenrir-Obsidian/scalable/apps/sun-ai.svg"
+
+  backup_path "$HOME/.config/systemd/user/fenrir-doctor.service" ".config/systemd/user/fenrir-doctor.service"
+  install -m 0644 "$DOTS_ROOT/systemd/user/fenrir-doctor.service" "$HOME/.config/systemd/user/fenrir-doctor.service"
+  log "Fenrir Doctor installed under $destination; legacy chat history and settings are retained for first-run migration."
 }
 
 install_user_units() {
   systemctl --user daemon-reload
   systemctl --user enable fenrir-wallpaper.service fenrir-stay-awake.service
-  # Keep-awake starts with graphical-session.target; Sun AI remains on-demand.
+  # Keep-awake starts with graphical-session.target; Fenrir Doctor and Ollama remain on-demand.
   systemctl --user enable --now pipewire.socket pipewire-pulse.socket wireplumber.service 2>/dev/null || true
 }
 
@@ -164,15 +171,20 @@ validate_install() {
   fi
   if (( ai )); then
     pacman -Q ollama-vulkan >/dev/null 2>&1 || die "Ollama Vulkan package is missing."
-    [[ -x "$HOME/.local/bin/sun-ai" ]] || die "Sun AI CLI launcher is missing."
-    [[ -f "$HOME/.local/share/sun-ai/server.py" ]] || die "Sun AI server source is missing."
-    [[ -f "$HOME/.local/share/sun-ai/index.html" ]] || die "Sun AI dashboard HTML is missing."
-    [[ -f "$HOME/.local/share/sun-ai/assets/app.js" ]] || die "Sun AI dashboard JavaScript is missing."
-    [[ -f "$HOME/.local/share/sun-ai/assets/style.css" ]] || die "Sun AI dashboard stylesheet is missing."
-    [[ -f "$HOME/.config/systemd/user/sun-ai.service" ]] || die "Sun AI user service is missing."
-    [[ -f "$HOME/.local/share/applications/sun-ai.desktop" ]] || die "Sun AI desktop launcher is missing."
-    [[ -f "$HOME/.local/share/icons/Fenrir-Obsidian/scalable/apps/sun-ai.svg" ]] || die "Sun AI icon is missing."
+    [[ -x "$HOME/.local/bin/fenrir-doctor" ]] || die "Fenrir Doctor CLI launcher is missing."
+    [[ -x "$HOME/.local/bin/fenrir-upgrade" ]] || die "Fenrir upgrade helper is missing."
+    [[ -f "$HOME/.local/share/fenrir-doctor/server.py" ]] || die "Fenrir Doctor server source is missing."
+    [[ -f "$HOME/.local/share/fenrir-doctor/index.html" ]] || die "Fenrir Doctor dashboard HTML is missing."
+    [[ -f "$HOME/.local/share/fenrir-doctor/assets/app.js" ]] || die "Fenrir Doctor dashboard JavaScript is missing."
+    [[ -f "$HOME/.local/share/fenrir-doctor/assets/style.css" ]] || die "Fenrir Doctor dashboard stylesheet is missing."
+    [[ -f "$HOME/.config/systemd/user/fenrir-doctor.service" ]] || die "Fenrir Doctor user service is missing."
+    [[ -f "$HOME/.local/share/applications/fenrir-doctor.desktop" ]] || die "Fenrir Doctor desktop launcher is missing."
+    [[ -f "$HOME/.local/share/icons/Fenrir-Obsidian/scalable/apps/fenrir-doctor.svg" ]] || die "Fenrir Doctor icon is missing."
   fi
+  [[ -x "$HOME/.local/bin/fenrir-catalog" ]] || die "Fenrir Wallpaper Catalog launcher is missing."
+  [[ -x "$HOME/.local/share/fenrir/catalog-venv/bin/fenrir-catalog" ]] || die "Fenrir Wallpaper Catalog virtual environment is missing."
+  [[ -f "$HOME/.local/share/fenrir/catalog/catalog.sqlite3" ]] || die "Fenrir Wallpaper Catalog database was not initialized."
+  [[ -d "$HOME/.local/share/fenrir/catalog/quarantine" ]] || die "Fenrir Wallpaper Catalog quarantine directory is missing."
   log "Software installation validation passed."
   if command -v fenrir-wallpaper >/dev/null 2>&1; then
     fenrir-wallpaper status || true

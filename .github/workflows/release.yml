@@ -1,0 +1,61 @@
+name: Release Fenrir Arch
+
+on:
+  push:
+    branches: [main]
+    paths: [VERSION, .github/workflows/release.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fenrir-arch-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out main source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Prepare release metadata
+        id: meta
+        run: |
+          version="$(tr -d '\n' < VERSION)"
+          test -n "$version"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "tag=v$version" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Validate release source
+        run: |
+          bash -n install.sh scripts/*.sh scripts/fenrir-enable-wol
+          python -m compileall -q scripts tests
+          python -m unittest discover -s tests -v
+
+      - name: Build source archive and checksum
+        run: |
+          version="$(tr -d '\n' < VERSION)"
+          mkdir -p release
+          git archive --format=tar.gz --prefix="fenrir-arch-${version}/" "$GITHUB_SHA" > "release/fenrir-arch-${version}.tar.gz"
+          sha256sum release/* > release/SHA256SUMS
+
+      - name: Publish GitHub Release and version tag
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.meta.outputs.tag }}
+          target_commitish: ${{ github.sha }}
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+          files: |
+            release/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

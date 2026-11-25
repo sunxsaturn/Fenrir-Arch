@@ -2,7 +2,7 @@
 
 ## First login
 
-- The GTK4 Fenrir Setup window launches from `./install.sh` (using Cage on a text-only TTY, or your existing graphical session when available). Sun AI and Ollama Vulkan are always installed as required Fenrir components. The wizard lets you opt out only of UUID-based fixed data-disk mounts and Ethernet Wake-on-LAN; the core desktop, gaming and audio suite is always included. You can use `./install.sh --cli` for a terminal-only installation.
+- The GTK4 Fenrir Setup window launches from `./install.sh` (using Cage on a text-only TTY, or your existing graphical session when available). Fenrir Doctor, Ollama Vulkan and the local Fenrir Wallpaper Catalog are always installed as required Fenrir components. The wizard lets you opt out only of UUID-based fixed data-disk mounts and Ethernet Wake-on-LAN; the core desktop, gaming and audio suite is always included. You can use `./install.sh --cli` for a terminal-only installation.
 - Fenrir First Login Guide opens once after your first Hyprland login. It explains the desktop and keybindings. Reopen **Fenrir Control Center** from the app launcher whenever you need the guide or configuration options.
 - Fenrir Control Center provides GUI options for display mode, scaling, wallpaper folder/interval, surface opacity, blur, wallpaper-derived colors and keep-awake behavior. It creates backups of the settings it changes.
 - Log into the Hyprland session from SDDM.
@@ -15,7 +15,7 @@
 
 ## Wallpaper and dynamic theme
 
-Fenrir rotates a valid landscape wallpaper every 15 minutes. The minimum is 2560×1440; 3840×2160 or higher is preferred. Each change extracts a dominant accent and updates Waybar, Kitty, Fuzzel, Mako, GTK palette files and the active Hyprland border. Surfaces retain a fixed obsidian base and Fimbulwinter Glass 0.60 opacity.
+Fenrir rotates among qualifying local landscape wallpapers every 15 minutes, even while the collection is below target. Images must be at least 2560×1440; 3840×2160 or higher is preferred. Each change extracts a dominant accent and updates Waybar, Kitty, Fuzzel, Mako, GTK palette files and the active Hyprland border. Surfaces retain a fixed obsidian base and Fimbulwinter Glass 0.60 opacity.
 
 ```bash
 fenrir-wallpaper status
@@ -23,7 +23,7 @@ fenrir-wallpaper next
 systemctl --user status fenrir-wallpaper.service
 ```
 
-The wallpaper folder defaults to `~/Pictures/Wallpapers`; it can be changed in `~/.config/fenrir/settings.toml`. See `docs/WALLPAPER-PACK.md` for the 5,000-image pack contract and why an approved pack must be supplied before the installer can download it.
+The wallpaper folder defaults to `~/Pictures/Wallpapers`; it can be changed in Fenrir Settings. Open Fenrir Doctor → Wallpapers to see local image count, accepted catalog records and choose a 5,000, 10,000 or 20,000 image target. Sync copies only locally quarantined images with SHA-256 verification, an approved license decision, human rights approval and explicit human acceptance. It preserves creator/source/license attribution and never uploads or publishes images. See `docs/WALLPAPER-PACK.md` for the local sync contract.
 
 ## Keyboard shortcuts
 
@@ -35,7 +35,7 @@ The wallpaper folder defaults to `~/Pictures/Wallpapers`; it can be changed in `
 | `Super + Space` | Fuzzel application launcher |
 | `Super + E` | Thunar file manager |
 | `Super + B` | Firefox Nightly |
-| `Super + A` | Sun AI |
+| `Super + A` | Fenrir Doctor |
 | `Super + W` | Next wallpaper |
 | `Super + L` | Lock screen manually |
 | `Super + Q` | Close active window |
@@ -68,18 +68,18 @@ Login to each game service yourself and configure game directories/proton versio
 
 PipeWire/JACK, EasyEffects, QPWgraph, Guitarix, Calf LV2, REAPER, ReaPack is available as an optional package from the official Arch Extra repository and can be selected in the Advanced customization section of the setup wizard. No AUR helper or custom plugin binary is required. The current account is added to the `realtime` group if the package provides it; group membership takes effect at the next login. Confirm that PipeWire/JACK routing works before a recording session. Avoid applying extra latency/kernel tuning without measuring it on the actual interface.
 
-## Sun AI and GPU
+## Fenrir Doctor and GPU
 
 ```bash
 ollama --version
-sun-ai status
-sun-ai start
+fenrir-doctor status
+fenrir-doctor start
 ollama pull qwen3:8b
 ollama run qwen3:8b
-sun-ai stop
+fenrir-doctor stop
 ```
 
-No model is downloaded automatically. `sun-ai start` uses the Hyprland Polkit agent to start the Ollama system service on demand; stop it before gaming or recording when you want the GPU/CPU free. The local UI binds only to `127.0.0.1:8765`.
+No model is downloaded automatically. `fenrir-doctor start` uses the Hyprland Polkit agent to start the Ollama system service on demand; stop it before gaming or recording when you want the GPU/CPU free. The local UI binds only to `127.0.0.1:8765`.
 
 ## Data volumes
 

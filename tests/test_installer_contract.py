@@ -17,74 +17,106 @@ class InstallerIntegrationTests(unittest.TestCase):
         self.assertNotIn("install-reapack.sh", installer)
 
 
-    def test_sun_ai_is_a_complete_versioned_companion_repo_component(self):
+    def test_fenrir_doctor_is_a_complete_versioned_companion_repo_component(self):
         installer = (ROOT / "install.sh").read_text(encoding="utf-8")
         deploy = (ROOT / "scripts" / "deploy.sh").read_text(encoding="utf-8")
+        catalog = (ROOT / "scripts" / "install-catalog.sh").read_text(encoding="utf-8")
         wizard = (ROOT / "scripts" / "fenrir-installer.py").read_text(encoding="utf-8")
         required = (
-            "apps/sun-ai/README.md",
-            "apps/sun-ai/server.py",
-            "apps/sun-ai/index.html",
-            "apps/sun-ai/assets/app.js",
-            "apps/sun-ai/assets/style.css",
-            "bin/sun-ai",
-            "systemd/user/sun-ai.service",
-            "applications/sun-ai.desktop",
-            "config/icons/Fenrir-Obsidian/scalable/apps/sun-ai.svg",
-            "tests/test_sun_ai.py",
+            "apps/fenrir-doctor/README.md",
+            "apps/fenrir-doctor/server.py",
+            "apps/fenrir-doctor/index.html",
+            "apps/fenrir-doctor/assets/app.js",
+            "apps/fenrir-doctor/assets/style.css",
+            "bin/fenrir-doctor",
+            "bin/fenrir-upgrade",
+            "systemd/user/fenrir-doctor.service",
+            "applications/fenrir-doctor.desktop",
+            "config/icons/Fenrir-Obsidian/scalable/apps/fenrir-doctor.svg",
+            "tests/test_fenrir_doctor.py",
         )
         self.assertIn('DOTS_VERSION="$(cat "$DOTS_DIR/VERSION" 2>/dev/null || true)"', installer)
-        self.assertIn('[[ "$DOTS_VERSION" == "0.4.0" ]]', installer)
-        self.assertIn('DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-a12e3278e336fd709bd8a4fdd779a3ee4bcb9187}"', installer)
+        self.assertIn('[[ "$DOTS_VERSION" == "0.5.0" ]]', installer)
+        self.assertIn('DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-f1bdec6873770a6c2359f56bafbdf44625eb5068}"', installer)
+        self.assertIn('CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-cbc388fd777a10e661f7198e80bb4ad666cd260f}"', installer)
         self.assertIn('git -C "$DOTS_DIR" checkout --detach "$DOTS_COMMIT"', installer)
         self.assertIn('[[ "$DOTS_HEAD" == "$DOTS_COMMIT" ]]', installer)
-        self.assertIn('install_sun_ai "$AI"', installer)
+        self.assertIn('install_fenrir_doctor "$AI"', installer)
+        self.assertIn('bash "$ROOT/scripts/install-catalog.sh"', installer)
         self.assertIn("AI=1", installer)
         self.assertNotIn("--no-ai", installer)
         self.assertNotIn("--no-ai", wizard)
         self.assertNotIn("self.ai", wizard)
         for path in required:
             self.assertIn(path, installer)
-        self.assertIn('"$DOTS_ROOT/apps/sun-ai/."', deploy)
-        self.assertIn('"$DOTS_ROOT/systemd/user/sun-ai.service"', deploy)
-        self.assertIn('"$HOME/.local/bin/sun-ai"', deploy)
-        self.assertIn('"$HOME/.local/share/sun-ai/assets/app.js"', deploy)
-        self.assertIn('"$HOME/.config/systemd/user/sun-ai.service"', deploy)
+        self.assertIn('"$DOTS_ROOT/apps/fenrir-doctor/."', deploy)
+        self.assertIn('"$DOTS_ROOT/systemd/user/fenrir-doctor.service"', deploy)
+        self.assertIn('"$HOME/.local/bin/fenrir-doctor"', deploy)
+        self.assertIn('"$HOME/.local/share/fenrir-doctor/assets/app.js"', deploy)
+        self.assertIn('"$HOME/.config/systemd/user/fenrir-doctor.service"', deploy)
+        self.assertIn("src/fenrir_catalog/desktop_sync.py", catalog)
+        self.assertIn('"$VENV/bin/fenrir-catalog" init --database "$CATALOG_DB"', catalog)
+        self.assertIn('pip install --disable-pip-version-check', catalog)
 
-    def test_ci_companion_checkout_matches_the_pinned_source_manifest(self):
+    def test_ci_companion_checkout_matches_the_pinned_dots_source_manifest(self):
         checkout = os.environ.get("FENRIR_DOTS_CHECKOUT")
         if not checkout:
             self.skipTest("CI supplies the pinned Fenrir-Dots checkout for integration validation.")
 
         dots = Path(checkout)
-        expected_commit = "a12e3278e336fd709bd8a4fdd779a3ee4bcb9187"
+        expected_commit = "f1bdec6873770a6c2359f56bafbdf44625eb5068"
         actual_commit = subprocess.run(
             ["git", "-C", str(dots), "rev-parse", "HEAD"],
             check=True, capture_output=True, text=True,
         ).stdout.strip()
         self.assertEqual(actual_commit, expected_commit)
-        self.assertEqual((dots / "VERSION").read_text(encoding="utf-8").strip(), "0.4.0")
+        self.assertEqual((dots / "VERSION").read_text(encoding="utf-8").strip(), "0.5.0")
 
         required = (
             "config/hypr/hyprland.lua",
             "apps/fenrir-settings/app.py",
             "apps/fenrir-welcome/app.py",
             "apps/fenrir-settings/monitor.py",
-            "apps/sun-ai/README.md",
-            "apps/sun-ai/server.py",
-            "apps/sun-ai/index.html",
-            "apps/sun-ai/assets/app.js",
-            "apps/sun-ai/assets/style.css",
-            "bin/sun-ai",
-            "systemd/user/sun-ai.service",
-            "applications/sun-ai.desktop",
-            "config/icons/Fenrir-Obsidian/scalable/apps/sun-ai.svg",
-            "tests/test_sun_ai.py",
+            "apps/fenrir-doctor/README.md",
+            "apps/fenrir-doctor/server.py",
+            "apps/fenrir-doctor/index.html",
+            "apps/fenrir-doctor/assets/app.js",
+            "apps/fenrir-doctor/assets/style.css",
+            "bin/fenrir-doctor",
+            "bin/fenrir-upgrade",
+            "systemd/user/fenrir-doctor.service",
+            "applications/fenrir-doctor.desktop",
+            "config/icons/Fenrir-Obsidian/scalable/apps/fenrir-doctor.svg",
+            "tests/test_fenrir_doctor.py",
         )
         for relative in required:
             with self.subTest(path=relative):
                 self.assertTrue((dots / relative).is_file(), f"Missing companion source: {relative}")
 
+    def test_catalog_pin_and_runtime_source_manifest_contract(self):
+        installer = (ROOT / "install.sh").read_text(encoding="utf-8")
+        setup = (ROOT / "scripts" / "install-catalog.sh").read_text(encoding="utf-8")
+        expected_commit = "cbc388fd777a10e661f7198e80bb4ad666cd260f"
+        self.assertIn(expected_commit, installer)
+        self.assertIn(expected_commit, setup)
+        self.assertIn('git -C "$CATALOG_SOURCE" checkout --detach "$CATALOG_COMMIT"', setup)
+        self.assertIn('[[ "$actual" == "$CATALOG_COMMIT" ]]', setup)
+        self.assertIn('[[ "$version" == "0.19.0" ]]', setup)
+        required = (
+            "pyproject.toml",
+            "src/fenrir_catalog/cli.py",
+            "src/fenrir_catalog/desktop_sync.py",
+            "src/fenrir_catalog/consumer.py",
+            "src/fenrir_catalog/library.py",
+            "src/fenrir_catalog/schemas/wallpaper-library-manifest-v1.schema.json",
+            "tests/test_desktop_sync.py",
+        )
+        for relative in required:
+            with self.subTest(path=relative):
+                self.assertIn(relative, setup)
+        self.assertIn('"$VENV/bin/fenrir-catalog" init --database "$CATALOG_DB"', setup)
+        self.assertIn('chmod 0700 "$CATALOG_HOME" "$QUARANTINE_ROOT"', setup)
+        self.assertIn('exec "$HOME/.local/share/fenrir/catalog-venv/bin/fenrir-catalog" "$@"', setup)
     def test_deployer_installs_the_apps_used_by_the_launchers(self):
         deploy = (ROOT / "scripts" / "deploy.sh").read_text(encoding="utf-8")
         dots_guard = (ROOT / "install.sh").read_text(encoding="utf-8")
