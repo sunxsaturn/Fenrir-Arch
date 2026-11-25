@@ -3,7 +3,7 @@ set -Eeuo pipefail
 source "$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)/lib.sh"
 
 CATALOG_REPO="${FENRIR_CATALOG_REPO:-https://github.com/sunxsaturn/Fenrir-Wallpaper-Catalog.git}"
-CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-9c1f465c695ac314784f648992d17179fcf364eb}"
+CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-60ef5db2025566b6648a9b3d283ab8d1e08988ac}"
 CATALOG_SOURCE="${FENRIR_CATALOG_SOURCE_DIR:-$HOME/.local/share/fenrir/catalog-source}"
 CATALOG_HOME="${FENRIR_CATALOG_HOME:-$HOME/.local/share/fenrir/catalog}"
 CATALOG_DB="$CATALOG_HOME/catalog.sqlite3"
@@ -61,6 +61,7 @@ version="$(python3 -c 'import sys,tomllib; print(tomllib.load(open(sys.argv[1], 
 
 required_files=(
   pyproject.toml
+  src/fenrir_catalog/__init__.py
   src/fenrir_catalog/cli.py
   src/fenrir_catalog/desktop_sync.py
   src/fenrir_catalog/consumer.py
