@@ -55,7 +55,7 @@ class InstallerIntegrationTests(unittest.TestCase):
         self.assertIn('"$HOME/.local/share/fenrir-doctor/assets/app.js"', deploy)
         self.assertIn('"$HOME/.config/systemd/user/fenrir-doctor.service"', deploy)
         self.assertIn("src/fenrir_catalog/desktop_sync.py", catalog)
-        self.assertIn("fenrir-catalog init --database", catalog)
+        self.assertIn('"$VENV/bin/fenrir-catalog" init --database "$CATALOG_DB"', catalog)
         self.assertIn('pip install --disable-pip-version-check', catalog)
 
     def test_ci_companion_checkout_matches_the_pinned_dots_source_manifest(self):
@@ -114,7 +114,7 @@ class InstallerIntegrationTests(unittest.TestCase):
         for relative in required:
             with self.subTest(path=relative):
                 self.assertIn(relative, setup)
-        self.assertIn('fenrir-catalog init --database "$CATALOG_DB"', setup)
+        self.assertIn('"$VENV/bin/fenrir-catalog" init --database "$CATALOG_DB"', setup)
         self.assertIn('chmod 0700 "$CATALOG_HOME" "$QUARANTINE_ROOT"', setup)
         self.assertIn('exec "$HOME/.local/share/fenrir/catalog-venv/bin/fenrir-catalog" "$@"', setup)
     def test_deployer_installs_the_apps_used_by_the_launchers(self):
