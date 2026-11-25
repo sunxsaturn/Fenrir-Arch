@@ -18,7 +18,7 @@ Options: `--dry-run`, `--cli`, `--no-reapack`, `--no-storage`, `--no-wol`, `--ye
 
 ## Repositories
 
-- **Fenrir-Arch**: installer, packages, system services, disk/keyboard/WoL integration and validated wallpaper-pack installer.
+- **Fenrir-Arch**: installer, packages, system services, disk/keyboard/WoL integration and pinned Catalog deployment.
 - **Fenrir-Dots**: Hyprland Lua config, Waybar, Fuzzel, Kitty, Mako, GTK, icons, Fimbulwinter Glass, wallpaper rotation/theme services, GTK4 Fenrir Control Center and Fenrir Doctor.
   - Fenrir Doctor is first-party, versioned source in [`Fenrir-Dots/apps/fenrir-doctor/`](https://github.com/sunxsaturn/Fenrir-Dots/tree/main/apps/fenrir-doctor), including diagnostics, release tracking, recovery, wallpaper intelligence, local assistant, CLI, user unit, desktop launcher, icon, docs and tests. Fenrir-Arch validates this complete source bundle before deploying it.
 - **Fenrir-Wallpaper-Catalog**: separate catalog and rights-aware acquisition project.
@@ -31,7 +31,7 @@ Spotify/RPCS3 Flatpak builds and Whatsie are third-party packages; verify their 
 
 ## Wallpapers
 
-Fenrir-Dots rotates wallpapers every 15 minutes and derives the system accent palette from the current wallpaper. It requires at least 5,000 valid landscape files at minimum 2560×1440 (3840×2160 preferred), with the selected source themes and colors documented in `Fenrir-Arch/docs/WALLPAPER-PACK.md`.
+Fenrir-Dots rotates wallpapers every 15 minutes and derives the system accent palette from the current wallpaper. The collection target is at least 5,000 valid landscape files at minimum 2560×1440 (3840×2160 preferred); rotation works with the qualifying images already present, even below the target, with the selected source themes and colors documented in `Fenrir-Arch/docs/WALLPAPER-PACK.md`.
 
 No 5,000-image corpus is falsely claimed to be bundled. The integrated Fenrir Wallpaper Catalog requires per-asset rights evidence, explicit acquisition authorization, duplicate review, human rights approval and human acceptance. Fenrir Doctor can locally synchronize approved, SHA-256-verified quarantine files into the desktop wallpaper folder at 5,000, 10,000 or 20,000 total-image targets. It does not scrape, publish or mass-download unlicensed artwork.
 
