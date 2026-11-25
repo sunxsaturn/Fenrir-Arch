@@ -124,7 +124,11 @@ DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-a12e3278e336fd709bd8a4fdd779a3ee4bcb9187}"
 mkdir -p "$(dirname -- "$DOTS_DIR")"
 if [[ -d "$DOTS_DIR/.git" ]]; then
   log "Fetching the pinned Fenrir-Dots source at $DOTS_COMMIT"
-  git -C "$DOTS_DIR" fetch --prune origin
+  if [[ "$(git -C "$DOTS_DIR" rev-parse --is-shallow-repository)" == "true" ]]; then
+    git -C "$DOTS_DIR" fetch --unshallow origin
+  else
+    git -C "$DOTS_DIR" fetch --prune origin
+  fi
   git -C "$DOTS_DIR" checkout --detach "$DOTS_COMMIT"
 elif [[ -e "$DOTS_DIR" ]]; then
   die "$DOTS_DIR already exists but is not a Git checkout. Move it aside and rerun; nothing there was overwritten."
