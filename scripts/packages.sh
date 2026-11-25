@@ -11,7 +11,7 @@ BASE_PACKAGES=(
   networkmanager network-manager-applet bluez bluez-utils blueman
   pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack wireplumber pavucontrol
   easyeffects qpwgraph guitarix calf
-  reaper reapack realtime-privileges
+  reaper realtime-privileges
   polkit hyprpolkitagent sddm qt6-wayland qt5-wayland qt6-svg
   xdg-utils xdg-user-dirs gvfs thunar tumbler file-roller
   brightnessctl playerctl libnotify
@@ -38,7 +38,7 @@ print_plan() {
   log "Target: Arch Linux x86_64 / Hyprland 0.57+ / AMD Mesa-RADV"
   log "Desktop, network, Bluetooth, portals and file manager: full base profile"
   log "Gaming: ${GAMING_PACKAGES[*]}"
-  log "Audio/production: easyeffects qpwgraph guitarix calf reaper reapack realtime-privileges"
+  log "Audio/production: easyeffects qpwgraph guitarix calf reaper + pinned ReaPack extension realtime-privileges"
   log "Applications: Firefox Nightly (Mozilla archive), Discord, Prism Launcher, Spotify, Heroic, RPCS3 and Whatsie"
   log "Flathub application IDs: ${FLATPAK_APPS[*]}"
   (( ai == 0 )) || log "AI: ollama-vulkan + Sun AI; model downloads remain manual"
