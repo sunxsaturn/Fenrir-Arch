@@ -10,7 +10,6 @@ Fenrir Arch — one-command full workstation installer
 Usage: ./install.sh [options]
   --dry-run       Print the complete plan; do not change the system
   --cli           Use terminal installer instead of the GTK guided installer
-  --no-ai         Skip Ollama and Sun AI
   --no-reapack    Skip the optional ReaPack extension for REAPER
   --no-storage    Do not add eligible fixed data filesystems to /etc/fstab
   --no-wol        Do not enable Wake-on-LAN
@@ -27,7 +26,6 @@ while (($#)); do
   case "$1" in
     --dry-run) DRY_RUN=1 ;;
     --cli) GUI_MODE=0 ;;
-    --no-ai) AI=0 ;;
     --no-reapack) REAPACK=0 ;;
     --no-storage) STORAGE=0 ;;
     --no-wol) WOL=0 ;;
@@ -121,19 +119,26 @@ require_cmd flatpak
 # The visual layer is maintained independently, like established Hyprland dotfiles projects.
 DOTS_DIR="${FENRIR_DOTS_DIR:-$HOME/.local/share/fenrir/dots}"
 DOTS_REPO="${FENRIR_DOTS_REPO:-https://github.com/sunxsaturn/Fenrir-Dots.git}"
-DOTS_REF="${FENRIR_DOTS_REF:-main}"
+DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-a12e3278e336fd709bd8a4fdd779a3ee4bcb9187}"
+[[ "$DOTS_COMMIT" =~ ^[0-9a-f]{40}$ ]] || die "FENRIR_DOTS_COMMIT must be a full 40-character Git commit SHA."
 mkdir -p "$(dirname -- "$DOTS_DIR")"
 if [[ -d "$DOTS_DIR/.git" ]]; then
-  log "Updating existing Fenrir-Dots checkout at $DOTS_DIR"
-  git -C "$DOTS_DIR" fetch --prune origin "$DOTS_REF"
-  git -C "$DOTS_DIR" checkout -q "$DOTS_REF"
-  git -C "$DOTS_DIR" pull --ff-only origin "$DOTS_REF"
+  log "Fetching the pinned Fenrir-Dots source at $DOTS_COMMIT"
+  if [[ "$(git -C "$DOTS_DIR" rev-parse --is-shallow-repository)" == "true" ]]; then
+    git -C "$DOTS_DIR" fetch --unshallow origin
+  else
+    git -C "$DOTS_DIR" fetch --prune origin
+  fi
+  git -C "$DOTS_DIR" checkout --detach "$DOTS_COMMIT"
 elif [[ -e "$DOTS_DIR" ]]; then
   die "$DOTS_DIR already exists but is not a Git checkout. Move it aside and rerun; nothing there was overwritten."
 else
-  log "Cloning Fenrir-Dots ($DOTS_REF)"
-  git clone --depth=1 --branch "$DOTS_REF" "$DOTS_REPO" "$DOTS_DIR"
+  log "Cloning Fenrir-Dots and selecting the pinned source commit"
+  git clone "$DOTS_REPO" "$DOTS_DIR"
+  git -C "$DOTS_DIR" checkout --detach "$DOTS_COMMIT"
 fi
+DOTS_HEAD="$(git -C "$DOTS_DIR" rev-parse HEAD)"
+[[ "$DOTS_HEAD" == "$DOTS_COMMIT" ]] || die "Fenrir-Dots checkout mismatch: expected $DOTS_COMMIT, found $DOTS_HEAD."
 DOTS_VERSION="$(cat "$DOTS_DIR/VERSION" 2>/dev/null || true)"
 [[ "$DOTS_VERSION" == "0.4.0" ]] || die "Fenrir-Dots 0.4.0 is required; found '${DOTS_VERSION:-missing}'. Update the companion source checkout."
 DOTS_REQUIRED_FILES=(

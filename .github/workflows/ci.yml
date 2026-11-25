@@ -7,6 +7,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Checkout pinned Fenrir-Dots companion source
+        uses: actions/checkout@v4
+        with:
+          repository: sunxsaturn/Fenrir-Dots
+          ref: a12e3278e336fd709bd8a4fdd779a3ee4bcb9187
+          path: companion/Fenrir-Dots
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
@@ -15,4 +21,6 @@ jobs:
       - name: Compile Python sources
         run: python -m compileall -q scripts tests
       - name: Run tests
+        env:
+          FENRIR_DOTS_CHECKOUT: companion/Fenrir-Dots
         run: python -m unittest discover -s tests -v

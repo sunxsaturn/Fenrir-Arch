@@ -42,10 +42,9 @@ class FenrirInstaller(Gtk.Application):
         feature_box.append(Gtk.Label(label="Hyprland · Waybar · Fenrir Dots · Firefox Nightly · Steam · GameMode · MangoHud · Gamescope · Heroic · RPCS3 · Prism Launcher · Discord · Spotify · Whatsie · PipeWire · EasyEffects · QPWgraph · Guitarix · Calf · REAPER · Sun AI", wrap=True, xalign=0))
         features.set_child(feature_box); root.append(features)
 
-        ai_row, self.ai = self.option("Install Sun AI and Ollama Vulkan", "No language model is downloaded automatically.", True)
         storage_row, self.storage = self.option("Mount eligible fixed data disks at boot", "Uses filesystem UUIDs and nofail; excludes root, boot and removable devices. No formatting.", True)
         wol_row, self.wol = self.option("Enable Ethernet Wake-on-LAN", "Applies magic-packet mode where the network adapter advertises support; firmware settings may also be required.", True)
-        for widget in (ai_row, storage_row, wol_row): root.append(widget)
+        for widget in (storage_row, wol_row): root.append(widget)
 
         advanced = Gtk.Expander(label="Advanced customization")
         advanced.set_expanded(False)
@@ -107,7 +106,6 @@ class FenrirInstaller(Gtk.Application):
         if self.process:
             return
         args = ["bash", str(self.installer), "--cli", "--yes"]
-        if not self.ai.get_active(): args.append("--no-ai")
         if not self.reapack.get_active(): args.append("--no-reapack")
         if not self.storage.get_active(): args.append("--no-storage")
         if not self.wol.get_active(): args.append("--no-wol")
