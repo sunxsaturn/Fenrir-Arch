@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+found=0
+for path in /sys/class/net/*; do
+  [[ -e "$path/device" ]] || continue
+  iface="${path##*/}"
+  [[ "$iface" != lo ]] || continue
+  [[ -r "$path/type" && "$(<"$path/type")" == 1 ]] || continue
+  capability="$(/usr/bin/ethtool "$iface" 2>/dev/null | awk -F': ' '/Supports Wake-on:/ {print $2; exit}')"
+  [[ "$capability" == *g* ]] || continue
+  if /usr/bin/ethtool -s "$iface" wol g; then
+    current="$(/usr/bin/ethtool "$iface" 2>/dev/null | awk -F': ' '/Wake-on:/ {print $2; exit}')"
+    if [[ "$current" == g ]]; then
+      echo "Fenrir WoL: enabled magic-packet wake on $iface"
+      found=1
+    else
+      echo "Fenrir WoL: driver did not retain magic-packet mode on $iface" >&2
+    fi
+  else
+    echo "Fenrir WoL: unable to enable magic-packet mode on $iface" >&2
+  fi
+done
+if (( found == 0 )); then
+  echo "Fenrir WoL: no physical Ethernet interface reported magic-packet support." >&2
+  exit 0
+fi

@@ -1,60 +1,39 @@
-# Fenrir Arch
+# Fenrir Arch + Fenrir Dots
 
-The Arch Linux installer and system integration layer for **Fenrir Desktop**. This repository is intentionally separate from the desktop dotfiles, following the installer + dotfiles architecture used by established Hyprland setups.
+Fenrir is an original Arch Linux + Hyprland desktop environment, shipped in two repositories using the installer/dotfiles model.
 
 ## One-command installation
 
-Start from a minimal Arch Linux x86_64 installation with systemd, networking and a regular sudo-enabled user. Do not preinstall KDE, GNOME or another Hyprland dotfiles distribution.
+Start from a minimal Arch Linux x86_64 installation with systemd, network access, Git and a regular sudo-enabled account. Do not preinstall KDE, GNOME or a competing Hyprland dotfiles distribution.
 
 ```bash
 git clone --depth=1 https://github.com/sunxsaturn/Fenrir-Arch.git ~/Fenrir && cd ~/Fenrir && ./install.sh
 ```
 
-The installer automatically clones or fast-forward-updates [Fenrir-Dots](https://github.com/sunxsaturn/Fenrir-Dots) into `~/.local/share/fenrir/dots`, then deploys the desktop configuration and applications. It performs a full `pacman -Syu`, enables the standard multilib repository for Steam, installs the complete gaming/audio/software profile, configures US International dead keys, persistent Ethernet Wake-on-LAN where supported, and eligible fixed data-disk mounts by UUID.
+The default command opens the GTK4 guided installer; on a clean text-only TTY it bootstraps Cage and presents the same wizard full-screen. In an existing Wayland/X11 session it opens normally; use `./install.sh --cli` for a terminal-only install. The first login guide and Fenrir Control Center provide tutorials, keybindings and display/appearance/wallpaper/power customization. The installer clones/updates [Fenrir-Dots](https://github.com/sunxsaturn/Fenrir-Dots) automatically, then installs packages and configures the complete desktop. It performs one synchronized `pacman -Syu`, enables official multilib for Steam, installs the gaming and audio suites, obtains Mozilla Firefox Nightly with SHA-512 verification, deploys the dotfiles, sets US International with dead keys, enables Ethernet Wake-on-LAN where supported, and adds eligible fixed data filesystems to `/etc/fstab` by UUID.
 
-Review the confirmation prompt and pacman transaction. REAPER has its own EULA. No automatic reboot, partitioning, formatting, bootloader installation, firmware change or file operation on data volumes is performed.
+Review the initial prompt and every package transaction. REAPER has its own EULA. It does not partition/format drives, edit data-volume contents, install a bootloader, modify firmware, or reboot.
 
-### Options
+Options: `--dry-run`, `--no-ai`, `--no-storage`, `--no-wol`, `--yes`, `--help`. See `docs/POST-INSTALL.md`.
 
-```text
---dry-run       Print the plan without changing the system
---no-ai         Skip Ollama Vulkan and Sun AI
---no-storage    Do not append eligible fixed data volumes to /etc/fstab
---no-wol        Do not enable persistent Ethernet Wake-on-LAN
---yes           Skip Fenrir's confirmation prompt (pacman remains interactive)
---help          Show help
-```
+## Repositories
 
-To select a different dotfiles checkout location or branch, set `FENRIR_DOTS_DIR` or `FENRIR_DOTS_REF`. To select a fork, set `FENRIR_DOTS_REPO`.
+- **Fenrir-Arch**: installer, packages, system services, disk/keyboard/WoL integration and validated wallpaper-pack installer.
+- **Fenrir-Dots**: Hyprland Lua config, Waybar, Fuzzel, Kitty, Mako, GTK, icons, Fimbulwinter Glass, wallpaper rotation/theme services, GTK4 Fenrir Control Center and Sun AI.
+- **Fenrir-Wallpaper-Catalog**: separate catalog and rights-aware acquisition project.
 
-## Included software
+## Requested applications
 
-- Hyprland, Waybar, Fuzzel, Kitty, Mako, XDG portals and Thunar
-- Mozilla Firefox Nightly from Mozilla's official archive, with SHA-512 verification
-- Steam, GameMode, MangoHud, Gamescope, 32-bit Mesa and RADV Vulkan libraries
-- Heroic, RPCS3, Prism Launcher
-- Discord, Spotify and Whatsie
-- PipeWire, EasyEffects, QPWgraph, Guitarix, Calf LV2, REAPER and ReaPack
-- Sun AI local dashboard and Ollama Vulkan (no model is downloaded automatically)
+Firefox Nightly; Spotify; Discord; Whatsie; QPWgraph; Guitarix; REAPER + ReaPack; Steam; RPCS3; Heroic Games Launcher; Prism Launcher; Sun AI + Ollama Vulkan; EasyEffects; Calf LV2 plugins. AUR is not required by the current profile.
 
-Spotify/RPCS3 Flathub builds and Whatsie are third-party packages; review their permissions and trust model before using them.
+Spotify/RPCS3 Flatpak builds and Whatsie are third-party packages; verify their trust and permissions. Ollama does not download a model automatically. Fenrir also disables automatic screen blanking and idle locking by default; the screen lock remains available manually with Super+L.
 
 ## Wallpapers
 
-The companion dotfiles implement a 15-minute random rotation and wallpaper-derived color accents. The service enforces 5,000 valid landscape images (minimum 2560×1440; 3840×2160 preferred) before rotation starts. This repository does not pretend to contain that corpus. The Fenrir Wallpaper Catalog requires traceable rights evidence, individual acquisition authorization, duplicate review and explicit human acceptance. The installer only downloads a supplied manifest after strict schema, rights-attestation, host and image-integrity checks. No scraping or unauthorized bulk acquisition is performed. See [docs/WALLPAPER-PACK.md](docs/WALLPAPER-PACK.md).
+Fenrir-Dots rotates wallpapers every 15 minutes and derives the system accent palette from the current wallpaper. It requires at least 5,000 valid landscape files at minimum 2560×1440 (3840×2160 preferred), with the selected source themes and colors documented in `Fenrir-Arch/docs/WALLPAPER-PACK.md`.
 
-## Tests
+No 5,000-image corpus is falsely claimed to be bundled. The separate wallpaper catalog requires per-asset rights evidence, explicit acquisition authorization, duplicate review and human acceptance. Fenrir-Arch only downloads a supplied validated pack manifest; it does not scrape or mass-download unlicensed artwork.
 
-```bash
-python3 -m unittest discover -s tests -v
-bash -n install.sh scripts/*.sh scripts/fenrir-enable-wol
-python3 -m compileall -q scripts tests
-```
+## License
 
-## Repository boundaries
-
-- **Fenrir-Arch**: system installer, packages, system services, hardware/system integration and wallpaper-pack acquisition contract.
-- **Fenrir-Dots**: Hyprland and application dotfiles, original visual theme, icons, wallpaper/theme runtime, user services and Sun AI.
-- **Fenrir-Wallpaper-Catalog**: separate rights-aware wallpaper discovery, acquisition and catalog project.
-
-The project software license has not yet been selected; no license grant is implied by publication.
+No software license has been selected yet. Publication does not imply permission to redistribute or relicense third-party content.

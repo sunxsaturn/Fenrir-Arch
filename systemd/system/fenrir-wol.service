@@ -1,0 +1,12 @@
+[Unit]
+Description=Enable Wake-on-LAN magic-packet mode for supported Ethernet NICs
+Wants=systemd-udev-settle.service
+After=systemd-udev-settle.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/libexec/fenrir-enable-wol
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
