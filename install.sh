@@ -46,6 +46,20 @@ require_cmd findmnt
 
 # The default path is a GTK4 guided installer. Bootstrap only the GUI toolkit,
 # then let the user choose optional integration features before the full install.
+if (( GUI_MODE && ! DRY_RUN && ! ASSUME_YES )); then
+    if [[ ! -t 0 ]]; then
+        echo "Fenrir GUI bootstrap needs a terminal for consent; rerun with --cli or explicitly pass --yes." >&2
+        exit 2
+    fi
+    echo "The graphical installer must first install GTK4 and Python GObject so the wizard can start."
+    echo "No disks, partitions, user configuration, or desktop files are changed by this bootstrap."
+    read -r -p "Install the installer interface prerequisites and continue? [y/N] " answer
+    case "${answer,,}" in
+        y|yes) ;;
+        *) echo "Fenrir installer cancelled before making changes."; exit 0 ;;
+    esac
+fi
+
 if (( GUI_MODE && ! DRY_RUN )); then
   if [[ -n "${WAYLAND_DISPLAY:-}${DISPLAY:-}" ]]; then
     sudo -v
