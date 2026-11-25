@@ -78,7 +78,7 @@ fi
 
 source "$ROOT/scripts/packages.sh"
 print_plan "$AI" "$REAPACK"
-(( REAPACK == 0 )) || log "ReaPack: pinned official REAPER extension v1.2.6, SHA-256 verified; no AUR package."
+(( REAPACK == 0 )) || log "ReaPack: installing the signed official Arch Extra package; no AUR helper or third-party binary download."
 (( STORAGE == 0 )) || log "Storage setup will append UUID-based fstab entries for eligible fixed data filesystems; root/boot/removable/unsupported volumes are excluded."
 (( WOL == 0 )) || log "Wake-on-LAN will be enabled for physical Ethernet devices that advertise magic-packet support. BIOS/UEFI support is still required."
 
