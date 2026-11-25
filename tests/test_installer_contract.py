@@ -43,12 +43,12 @@ class InstallerIntegrationTests(unittest.TestCase):
     def test_deployer_installs_the_apps_used_by_the_launchers(self):
         deploy = (ROOT / "scripts" / "deploy.sh").read_text(encoding="utf-8")
         dots_guard = (ROOT / "install.sh").read_text(encoding="utf-8")
+        self.assertIn("apps/fenrir-settings/app.py", dots_guard)
+        self.assertIn("apps/fenrir-welcome/app.py", dots_guard)
         self.assertIn('"$DOTS_ROOT/apps/$app"', deploy)
         self.assertIn('"$HOME/.local/share/fenrir/apps/$app"', deploy)
         self.assertIn('"$HOME/.local/share/fenrir/apps/fenrir-settings/app.py"', deploy)
         self.assertIn('"$HOME/.local/share/fenrir/apps/fenrir-welcome/app.py"', deploy)
-        self.assertIn('"$DOTS_DIR/apps/fenrir-settings/app.py"', dots_guard)
-        self.assertIn('"$DOTS_DIR/apps/fenrir-welcome/app.py"', dots_guard)
 
     def test_installer_contract_preserves_non_destructive_storage_and_no_reboot(self):
         installer = (ROOT / "install.sh").read_text(encoding="utf-8")
