@@ -11,6 +11,7 @@ Usage: ./install.sh [options]
   --dry-run       Print the complete plan; do not change the system
   --cli           Use terminal installer instead of the GTK guided installer
   --no-ai         Skip Ollama and Sun AI
+  --no-reapack    Skip the optional ReaPack extension for REAPER
   --no-storage    Do not add eligible fixed data filesystems to /etc/fstab
   --no-wol        Do not enable Wake-on-LAN
   --yes           Skip Fenrir's confirmation prompt (package prompts remain)
@@ -21,12 +22,13 @@ Hyprland desktop, gaming suite, audio tools, Firefox Nightly and applications.
 USAGE
 }
 
-DRY_RUN=0 AI=1 STORAGE=1 WOL=1 ASSUME_YES=0 GUI_MODE=1
+DRY_RUN=0 AI=1 REAPACK=1 STORAGE=1 WOL=1 ASSUME_YES=0 GUI_MODE=1
 while (($#)); do
   case "$1" in
     --dry-run) DRY_RUN=1 ;;
     --cli) GUI_MODE=0 ;;
     --no-ai) AI=0 ;;
+    --no-reapack) REAPACK=0 ;;
     --no-storage) STORAGE=0 ;;
     --no-wol) WOL=0 ;;
     --yes) ASSUME_YES=1 ;;
@@ -76,6 +78,7 @@ fi
 
 source "$ROOT/scripts/packages.sh"
 print_plan "$AI"
+(( REAPACK == 0 )) || log "ReaPack: pinned official REAPER extension v1.2.6, SHA-256 verified; no AUR package."
 (( STORAGE == 0 )) || log "Storage setup will append UUID-based fstab entries for eligible fixed data filesystems; root/boot/removable/unsupported volumes are excluded."
 (( WOL == 0 )) || log "Wake-on-LAN will be enabled for physical Ethernet devices that advertise magic-packet support. BIOS/UEFI support is still required."
 
@@ -139,7 +142,11 @@ source "$ROOT/scripts/deploy.sh"
 install_flatpak_apps
 "$ROOT/scripts/install-firefox-nightly.sh"
 backup_and_deploy "$AI"
-bash "$ROOT/scripts/install-reapack.sh"
+if (( REAPACK )); then
+  bash "$ROOT/scripts/install-reapack.sh"
+else
+  log "ReaPack extension skipped (--no-reapack)."
+fi
 install_sun_ai "$AI"
 install_user_units
 configure_system_services "$AI" "$WOL"
@@ -158,7 +165,7 @@ else
   log "No approved 5000+ wallpaper manifest is bundled or configured. No images were scraped or bulk-downloaded."
 fi
 
-validate_install "$AI"
+validate_install "$AI" "$REAPACK"
 printf '\nFenrir workstation installation finished.\n'
 printf 'Log out and choose Hyprland in SDDM. Verify WoL firmware options.\n'
 printf 'Run fenrir-wallpaper status to inspect the 5000-image requirement.\n'
