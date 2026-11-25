@@ -77,7 +77,7 @@ if (( GUI_MODE && ! DRY_RUN )); then
 fi
 
 source "$ROOT/scripts/packages.sh"
-print_plan "$AI"
+print_plan "$AI" "$REAPACK"
 (( REAPACK == 0 )) || log "ReaPack: pinned official REAPER extension v1.2.6, SHA-256 verified; no AUR package."
 (( STORAGE == 0 )) || log "Storage setup will append UUID-based fstab entries for eligible fixed data filesystems; root/boot/removable/unsupported volumes are excluded."
 (( WOL == 0 )) || log "Wake-on-LAN will be enabled for physical Ethernet devices that advertise magic-packet support. BIOS/UEFI support is still required."
@@ -112,7 +112,7 @@ if ! awk '/^[[:space:]]*\[multilib\][[:space:]]*$/{sections++;inside=1;next} /^[
   log "Enabled multilib. Original pacman.conf saved at $backup"
 fi
 
-install_packages "$AI"
+install_packages "$AI" "$REAPACK"
 require_cmd python3
 require_cmd curl
 require_cmd ethtool
@@ -142,11 +142,6 @@ source "$ROOT/scripts/deploy.sh"
 install_flatpak_apps
 "$ROOT/scripts/install-firefox-nightly.sh"
 backup_and_deploy "$AI"
-if (( REAPACK )); then
-  bash "$ROOT/scripts/install-reapack.sh"
-else
-  log "ReaPack extension skipped (--no-reapack)."
-fi
 install_sun_ai "$AI"
 install_user_units
 configure_system_services "$AI" "$WOL"
