@@ -34,11 +34,12 @@ FLATPAK_APPS=(
 )
 
 print_plan() {
-  local ai="$1"
+  local ai="$1" reapack="${2:-1}"
   log "Target: Arch Linux x86_64 / Hyprland 0.57+ / AMD Mesa-RADV"
   log "Desktop, network, Bluetooth, portals and file manager: full base profile"
   log "Gaming: ${GAMING_PACKAGES[*]}"
-  log "Audio/production: easyeffects qpwgraph guitarix calf reaper + pinned ReaPack extension realtime-privileges"
+  log "Audio/production: easyeffects qpwgraph guitarix calf reaper realtime-privileges"
+  if (( reapack )); then log "REAPER extension: official Arch Extra reapack package (no AUR)."; fi
   log "Applications: Firefox Nightly (Mozilla archive), Discord, Prism Launcher, Spotify, Heroic, RPCS3 and Whatsie"
   log "Flathub application IDs: ${FLATPAK_APPS[*]}"
   (( ai == 0 )) || log "AI: ollama-vulkan + Sun AI; model downloads remain manual"
@@ -49,9 +50,10 @@ print_plan() {
 }
 
 install_packages() {
-  local ai="$1"
+  local ai="$1" reapack="${2:-1}"
   local -a packages=("${BASE_PACKAGES[@]}" "${GAMING_PACKAGES[@]}")
   (( ai == 0 )) || packages+=("${AI_PACKAGES[@]}")
+  (( reapack == 0 )) || packages+=(reapack)
   log "Installing with pacman -Syu --needed. Review pacman's transaction and REAPER's EULA prompt."
   sudo pacman -Syu --needed "${packages[@]}"
 }
