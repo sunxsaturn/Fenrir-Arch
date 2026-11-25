@@ -38,7 +38,7 @@ class InstallerIntegrationTests(unittest.TestCase):
         self.assertIn('DOTS_VERSION="$(cat "$DOTS_DIR/VERSION" 2>/dev/null || true)"', installer)
         self.assertIn('[[ "$DOTS_VERSION" == "0.8.0" ]]', installer)
         self.assertIn('DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-940e7ae8091af7dac269cb55b76dbf2e6e9f8b83}"', installer)
-        self.assertIn('CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-217948bc633ac79ef8749e5a49e9b7d2f482153e}"', installer)
+        self.assertIn('CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-458fb37e4811ec05d9d2827bf9559654665b4797}"', installer)
         self.assertIn('git -C "$DOTS_DIR" checkout --detach "$DOTS_COMMIT"', installer)
         self.assertIn('[[ "$DOTS_HEAD" == "$DOTS_COMMIT" ]]', installer)
         self.assertIn("write_installed_versions", installer)
@@ -103,12 +103,12 @@ class InstallerIntegrationTests(unittest.TestCase):
     def test_catalog_pin_and_runtime_source_manifest_contract(self):
         installer = (ROOT / "install.sh").read_text(encoding="utf-8")
         setup = (ROOT / "scripts" / "install-catalog.sh").read_text(encoding="utf-8")
-        expected_commit = "217948bc633ac79ef8749e5a49e9b7d2f482153e"
+        expected_commit = "458fb37e4811ec05d9d2827bf9559654665b4797"
         self.assertIn(expected_commit, installer)
         self.assertIn(expected_commit, setup)
         self.assertIn('git -C "$CATALOG_SOURCE" checkout --detach "$CATALOG_COMMIT"', setup)
         self.assertIn('[[ "$actual" == "$CATALOG_COMMIT" ]]', setup)
-        self.assertIn('[[ "$version" == "0.22.0" ]]', setup)
+        self.assertIn('[[ "$version" == "0.23.0" ]]', setup)
         required = (
             "pyproject.toml",
             "src/fenrir_catalog/cli.py",
@@ -122,7 +122,10 @@ class InstallerIntegrationTests(unittest.TestCase):
             "src/fenrir_catalog/adapters/commons.py",
             "src/fenrir_catalog/palette_policy.py",
             "src/fenrir_catalog/palette_index.py",
+            "src/fenrir_catalog/collection_portability.py",
+            "src/fenrir_catalog/quality_dashboard.py",
             "src/fenrir_catalog/migrations/0014_discovery_campaigns.sql",
+            "tests/test_workbench.py",
             "tests/test_campaign.py",
             "tests/test_palette_policy.py",
             "tests/test_palette_index.py",
