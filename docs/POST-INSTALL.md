@@ -15,7 +15,7 @@
 
 ## Wallpaper and dynamic theme
 
-Fenrir rotates a valid landscape wallpaper every 15 minutes. The minimum is 2560×1440; 3840×2160 or higher is preferred. Each change extracts a dominant accent and updates Waybar, Kitty, Fuzzel, Mako, GTK palette files and the active Hyprland border. Surfaces retain a fixed obsidian base and Fimbulwinter Glass 0.60 opacity.
+Fenrir rotates among qualifying local landscape wallpapers every 15 minutes, even while the collection is below target. Images must be at least 2560×1440; 3840×2160 or higher is preferred. Each change extracts a dominant accent and updates Waybar, Kitty, Fuzzel, Mako, GTK palette files and the active Hyprland border. Surfaces retain a fixed obsidian base and Fimbulwinter Glass 0.60 opacity.
 
 ```bash
 fenrir-wallpaper status
