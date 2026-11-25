@@ -164,7 +164,14 @@ validate_install() {
   fi
   if (( ai )); then
     pacman -Q ollama-vulkan >/dev/null 2>&1 || die "Ollama Vulkan package is missing."
-    [[ -f "$HOME/.local/share/sun-ai/server.py" ]] || die "Sun AI server missing."
+    [[ -x "$HOME/.local/bin/sun-ai" ]] || die "Sun AI CLI launcher is missing."
+    [[ -f "$HOME/.local/share/sun-ai/server.py" ]] || die "Sun AI server source is missing."
+    [[ -f "$HOME/.local/share/sun-ai/index.html" ]] || die "Sun AI dashboard HTML is missing."
+    [[ -f "$HOME/.local/share/sun-ai/assets/app.js" ]] || die "Sun AI dashboard JavaScript is missing."
+    [[ -f "$HOME/.local/share/sun-ai/assets/style.css" ]] || die "Sun AI dashboard stylesheet is missing."
+    [[ -f "$HOME/.config/systemd/user/sun-ai.service" ]] || die "Sun AI user service is missing."
+    [[ -f "$HOME/.local/share/applications/sun-ai.desktop" ]] || die "Sun AI desktop launcher is missing."
+    [[ -f "$HOME/.local/share/icons/Fenrir-Obsidian/scalable/apps/sun-ai.svg" ]] || die "Sun AI icon is missing."
   fi
   log "Software installation validation passed."
   if command -v fenrir-wallpaper >/dev/null 2>&1; then
