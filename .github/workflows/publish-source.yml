@@ -2,7 +2,7 @@ name: Expand Fenrir source archive
 on:
   push:
     branches: [main]
-    paths: ["fenrir-arch-source-0.3.0.tar.gz"]
+    paths: ["fenrir-arch-source-0.3.0.tar.xz"]
 permissions:
   contents: write
 jobs:
@@ -16,14 +16,14 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          archive="fenrir-arch-source-0.3.0.tar.gz"
+          archive="fenrir-arch-source-0.3.0.tar.xz"
           if [[ ! -f "$archive" ]]; then exit 0; fi
           tmp="$(mktemp -d)"
           trap 'rm -rf "$tmp"' EXIT
-          tar -xzf "$archive" -C "$tmp" --no-same-owner
+          tar -xJf "$archive" -C "$tmp" --no-same-owner
           test -f "$tmp/install.sh"; test -d "$tmp/scripts"
           cp -a "$tmp/." .
-          rm -f "$archive"
+          rm -f "$archive" fenrir-arch-source-0.3.0.tar.gz
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
