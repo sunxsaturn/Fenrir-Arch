@@ -182,6 +182,31 @@ log "Wallpaper intelligence is available in Fenrir Doctor. Review and accept cat
 log "No wallpapers are downloaded automatically; the desktop rotation service uses qualifying local images."
 
 validate_install "$AI" "$REAPACK"
+
+write_installed_versions() {
+  local arch_version dots_version catalog_version manifest_dir manifest temporary
+  arch_version="$(tr -d '\\n' < "$ROOT/VERSION")"
+  dots_version="$DOTS_VERSION"
+  catalog_version="$(python3 -c 'import sys,tomllib; print(tomllib.load(open(sys.argv[1], "rb"))["project"]["version"])' "$HOME/.local/share/fenrir/catalog-source/pyproject.toml")"
+
+  for version in "$arch_version" "$dots_version" "$catalog_version"; do
+    [[ "$version" =~ ^[0-9]+\\.[0-9]+\\.[0-9]+$ ]] || die "Refusing to write invalid installed component version: $version"
+  done
+
+  manifest_dir="$HOME/.local/share/fenrir"
+  [[ ! -L "$HOME/.local" && ! -L "$HOME/.local/share" && ! -L "$manifest_dir" ]] || die "Refusing a symlinked Fenrir version-manifest directory."
+  mkdir -p "$manifest_dir"
+  manifest="$manifest_dir/installed-versions.json"
+  backup_path "$manifest" ".local/share/fenrir/installed-versions.json"
+  temporary="$(mktemp "$manifest_dir/.installed-versions.XXXXXX")"
+  chmod 0600 "$temporary"
+  printf '{\n  "Fenrir-Arch": "%s",\n  "Fenrir-Dots": "%s",\n  "Fenrir-Wallpaper-Catalog": "%s"\n}\n' \\
+    "$arch_version" "$dots_version" "$catalog_version" > "$temporary"
+  mv -f -- "$temporary" "$manifest"
+  log "Recorded installed component versions at $manifest"
+}
+write_installed_versions
+
 printf '\nFenrir workstation installation finished.\n'
 printf 'Log out and choose Hyprland in SDDM. Verify WoL firmware options.\n'
 printf 'Run fenrir-wallpaper status to inspect the 5000-image requirement.\n'
