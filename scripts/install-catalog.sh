@@ -12,7 +12,25 @@ VENV="$HOME/.local/share/fenrir/catalog-venv"
 WRAPPER="$HOME/.local/bin/fenrir-catalog"
 
 [[ "$CATALOG_COMMIT" =~ ^[0-9a-f]{40}$ ]] || die "FENRIR_CATALOG_COMMIT must be a full 40-character Git commit SHA."
+
+assert_safe_local_path() {
+  local path="$1" current="$1"
+  case "$path" in
+    /mnt/storage|/mnt/storage/*) die "Catalog data paths inside /mnt/storage are protected and cannot be used." ;;
+  esac
+  while [[ "$current" != "/" ]]; do
+    [[ ! -L "$current" ]] || die "Refusing Catalog path containing a symbolic link: $current"
+    current="$(dirname -- "$current")"
+  done
+}
+
+for path in "$CATALOG_SOURCE" "$CATALOG_HOME" "$QUARANTINE_ROOT" "$VENV" "$WRAPPER"; do
+  assert_safe_local_path "$path"
+done
 mkdir -p "$(dirname -- "$CATALOG_SOURCE")" "$CATALOG_HOME" "$QUARANTINE_ROOT" "$HOME/.local/bin"
+for path in "$CATALOG_SOURCE" "$CATALOG_HOME" "$QUARANTINE_ROOT" "$VENV" "$WRAPPER"; do
+  assert_safe_local_path "$path"
+done
 chmod 0700 "$CATALOG_HOME" "$QUARANTINE_ROOT"
 
 if [[ -d "$CATALOG_SOURCE/.git" ]]; then
