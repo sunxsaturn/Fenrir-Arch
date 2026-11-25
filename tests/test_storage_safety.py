@@ -13,6 +13,7 @@ SPEC.loader.exec_module(STORAGE)
 class ProtectedStorageTests(unittest.TestCase):
     def test_protected_mount_itself_is_excluded(self):
         self.assertTrue(STORAGE.is_protected_mountpoint("/mnt/storage"))
+        self.assertTrue(STORAGE.is_protected_mountpoint("/mnt/storage/"))
 
     def test_descendants_of_protected_mount_are_excluded(self):
         self.assertTrue(STORAGE.is_protected_mountpoint("/mnt/storage/archive"))
@@ -20,6 +21,7 @@ class ProtectedStorageTests(unittest.TestCase):
 
     def test_similar_prefix_is_not_excluded(self):
         self.assertFalse(STORAGE.is_protected_mountpoint("/mnt/storage2"))
+        self.assertFalse(STORAGE.is_protected_mountpoint("/mnt/storage-backup"))
         self.assertFalse(STORAGE.is_protected_mountpoint("/mnt/fenrir/data"))
 
     def test_empty_mountpoint_is_not_treated_as_protected(self):
