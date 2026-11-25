@@ -143,7 +143,7 @@ configure_system_services() {
 }
 
 validate_install() {
-  local ai="$1"
+  local ai="$1" reapack="${2:-1}"
   local required=(hyprland hyprpaper hyprlock waybar fuzzel kitty pipewire pipewire-pulse pipewire-jack steam gamemode lib32-gamemode mangohud lib32-mangohud gamescope lib32-mesa lib32-vulkan-radeon lib32-vulkan-icd-loader easyeffects qpwgraph guitarix calf reaper realtime-privileges discord prismlauncher jre21-openjdk)
   local p
   for p in "${required[@]}"; do pacman -Q "$p" >/dev/null 2>&1 || die "Validation failed: package $p is not installed."; done
@@ -159,6 +159,9 @@ validate_install() {
   for p in com.spotify.Client com.heroicgameslauncher.hgl net.rpcs3.RPCS3 com.ktechpit.whatsie; do
     grep -Fxq "$p" <<<"$flatpak_apps" || die "Validation failed: Flatpak $p is not installed."
   done
+  if (( reapack )); then
+    [[ -s "${XDG_CONFIG_HOME:-$HOME/.config}/REAPER/UserPlugins/reaper_reapack-x86_64.so" ]] || die "Verified ReaPack extension is missing."
+  fi
   if (( ai )); then
     pacman -Q ollama-vulkan >/dev/null 2>&1 || die "Ollama Vulkan package is missing."
     [[ -f "$HOME/.local/share/sun-ai/server.py" ]] || die "Sun AI server missing."
