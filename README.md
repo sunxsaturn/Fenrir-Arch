@@ -21,7 +21,7 @@ Options: `--dry-run`, `--cli`, `--no-reapack`, `--no-storage`, `--no-wol`, `--ye
 - **Fenrir-Arch**: installer, packages, system services, disk/keyboard/WoL integration and pinned Catalog deployment.
 - **Fenrir-Dots**: Hyprland Lua config, Waybar, Fuzzel, Kitty, Mako, GTK, icons, Fimbulwinter Glass, wallpaper rotation/theme services, GTK4 Fenrir Control Center and Fenrir Doctor.
   - Fenrir Doctor is first-party, versioned source in [`Fenrir-Dots/apps/fenrir-doctor/`](https://github.com/sunxsaturn/Fenrir-Dots/tree/main/apps/fenrir-doctor), including diagnostics, release tracking, recovery, wallpaper intelligence, opt-in automatic metadata discovery, local assistant, CLI, user unit, desktop launcher, icon, docs and tests. Fenrir-Arch validates this complete source bundle before deploying it.
-- **Fenrir-Wallpaper-Catalog**: separate catalog and rights-aware acquisition project.
+- **Fenrir-Wallpaper-Catalog 0.22.0**: pinned rights-aware discovery, acquisition, human review and visual collection workbench. The local picker supports batch curation of up to 100 accepted wallpapers, side-by-side duplicate comparison, license/evidence inspection and append-only curator decisions.
 
 ## Requested applications
 
