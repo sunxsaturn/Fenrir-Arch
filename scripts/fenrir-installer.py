@@ -21,7 +21,7 @@ class FenrirInstaller(Gtk.Application):
     def do_activate(self):
         self.window = Gtk.ApplicationWindow(application=self)
         self.window.set_title("Fenrir Setup")
-        self.window.set_default_size(760, 680)
+        self.window.set_default_size(800, 760)
         self.window.connect("close-request", self.on_close)
         root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=15)
         root.set_margin_top(24); root.set_margin_bottom(22); root.set_margin_start(26); root.set_margin_end(26)
@@ -46,6 +46,27 @@ class FenrirInstaller(Gtk.Application):
         storage_row, self.storage = self.option("Mount eligible fixed data disks at boot", "Uses filesystem UUIDs and nofail; excludes root, boot and removable devices. No formatting.", True)
         wol_row, self.wol = self.option("Enable Ethernet Wake-on-LAN", "Applies magic-packet mode where the network adapter advertises support; firmware settings may also be required.", True)
         for widget in (ai_row, storage_row, wol_row): root.append(widget)
+
+        advanced = Gtk.Expander(label="Advanced customization")
+        advanced.set_expanded(False)
+        advanced_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+        advanced_box.set_margin_top(10); advanced_box.set_margin_bottom(10)
+        advanced_box.set_margin_start(14); advanced_box.set_margin_end(14)
+        advanced_note = Gtk.Label(
+            label="Optional components are verified separately. The default profile uses official Arch packages and Flathub; it does not use an AUR helper or download AI models.",
+            wrap=True,
+            xalign=0,
+        )
+        advanced_note.add_css_class("dim-label")
+        advanced_box.append(advanced_note)
+        reapack_row, self.reapack = self.option(
+            "Install ReaPack for REAPER",
+            "Installs the signed ReaPack package from official Arch Extra; no AUR helper or custom binary download is used.",
+            True,
+        )
+        advanced_box.append(reapack_row)
+        advanced.set_child(advanced_box)
+        root.append(advanced)
 
         root.append(Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL))
         status = Gtk.Label(label="The installer will keep the screen awake and disable automatic idle locking. Monitor target: 2560×1440 @ 155 Hz (only if supported by the connected display).")
@@ -87,6 +108,7 @@ class FenrirInstaller(Gtk.Application):
             return
         args = ["bash", str(self.installer), "--cli", "--yes"]
         if not self.ai.get_active(): args.append("--no-ai")
+        if not self.reapack.get_active(): args.append("--no-reapack")
         if not self.storage.get_active(): args.append("--no-storage")
         if not self.wol.get_active(): args.append("--no-wol")
         self.log_path.parent.mkdir(parents=True, exist_ok=True)

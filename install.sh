@@ -11,6 +11,7 @@ Usage: ./install.sh [options]
   --dry-run       Print the complete plan; do not change the system
   --cli           Use terminal installer instead of the GTK guided installer
   --no-ai         Skip Ollama and Sun AI
+  --no-reapack    Skip the optional ReaPack extension for REAPER
   --no-storage    Do not add eligible fixed data filesystems to /etc/fstab
   --no-wol        Do not enable Wake-on-LAN
   --yes           Skip Fenrir's confirmation prompt (package prompts remain)
@@ -21,12 +22,13 @@ Hyprland desktop, gaming suite, audio tools, Firefox Nightly and applications.
 USAGE
 }
 
-DRY_RUN=0 AI=1 STORAGE=1 WOL=1 ASSUME_YES=0 GUI_MODE=1
+DRY_RUN=0 AI=1 REAPACK=1 STORAGE=1 WOL=1 ASSUME_YES=0 GUI_MODE=1
 while (($#)); do
   case "$1" in
     --dry-run) DRY_RUN=1 ;;
     --cli) GUI_MODE=0 ;;
     --no-ai) AI=0 ;;
+    --no-reapack) REAPACK=0 ;;
     --no-storage) STORAGE=0 ;;
     --no-wol) WOL=0 ;;
     --yes) ASSUME_YES=1 ;;
@@ -46,6 +48,20 @@ require_cmd findmnt
 
 # The default path is a GTK4 guided installer. Bootstrap only the GUI toolkit,
 # then let the user choose optional integration features before the full install.
+if (( GUI_MODE && ! DRY_RUN && ! ASSUME_YES )); then
+    if [[ ! -t 0 ]]; then
+        echo "Fenrir GUI bootstrap needs a terminal for consent; rerun with --cli or explicitly pass --yes." >&2
+        exit 2
+    fi
+    echo "The graphical installer must first install GTK4 and Python GObject so the wizard can start."
+    echo "No disks, partitions, user configuration, or desktop files are changed by this bootstrap."
+    read -r -p "Install the installer interface prerequisites and continue? [y/N] " answer
+    case "${answer,,}" in
+        y|yes) ;;
+        *) echo "Fenrir installer cancelled before making changes."; exit 0 ;;
+    esac
+fi
+
 if (( GUI_MODE && ! DRY_RUN )); then
   if [[ -n "${WAYLAND_DISPLAY:-}${DISPLAY:-}" ]]; then
     sudo -v
@@ -61,7 +77,8 @@ if (( GUI_MODE && ! DRY_RUN )); then
 fi
 
 source "$ROOT/scripts/packages.sh"
-print_plan "$AI"
+print_plan "$AI" "$REAPACK"
+(( REAPACK == 0 )) || log "ReaPack: installing the signed official Arch Extra package; no AUR helper or third-party binary download."
 (( STORAGE == 0 )) || log "Storage setup will append UUID-based fstab entries for eligible fixed data filesystems; root/boot/removable/unsupported volumes are excluded."
 (( WOL == 0 )) || log "Wake-on-LAN will be enabled for physical Ethernet devices that advertise magic-packet support. BIOS/UEFI support is still required."
 
@@ -95,7 +112,7 @@ if ! awk '/^[[:space:]]*\[multilib\][[:space:]]*$/{sections++;inside=1;next} /^[
   log "Enabled multilib. Original pacman.conf saved at $backup"
 fi
 
-install_packages "$AI"
+install_packages "$AI" "$REAPACK"
 require_cmd python3
 require_cmd curl
 require_cmd ethtool
@@ -117,7 +134,7 @@ else
   log "Cloning Fenrir-Dots ($DOTS_REF)"
   git clone --depth=1 --branch "$DOTS_REF" "$DOTS_REPO" "$DOTS_DIR"
 fi
-[[ -f "$DOTS_DIR/config/hypr/hyprland.lua" && -d "$DOTS_DIR/apps/sun-ai" ]] || die "Fenrir-Dots checkout is incomplete or incompatible."
+[[ -f "$DOTS_DIR/config/hypr/hyprland.lua" && -d "$DOTS_DIR/apps/sun-ai" && -f "$DOTS_DIR/apps/fenrir-settings/app.py" && -f "$DOTS_DIR/apps/fenrir-welcome/app.py" && -f "$DOTS_DIR/apps/fenrir-settings/monitor.py" ]] || die "Fenrir-Dots checkout is incomplete or incompatible (desktop apps/settings payload missing)."
 DOTS_ROOT="$(cd -- "$DOTS_DIR" && pwd -P)"
 export ROOT DOTS_ROOT
 source "$ROOT/scripts/deploy.sh"
@@ -143,7 +160,7 @@ else
   log "No approved 5000+ wallpaper manifest is bundled or configured. No images were scraped or bulk-downloaded."
 fi
 
-validate_install "$AI"
+validate_install "$AI" "$REAPACK"
 printf '\nFenrir workstation installation finished.\n'
 printf 'Log out and choose Hyprland in SDDM. Verify WoL firmware options.\n'
 printf 'Run fenrir-wallpaper status to inspect the 5000-image requirement.\n'

@@ -42,6 +42,17 @@ backup_and_deploy() {
     sed -i '/sun-ai open/d' "$CONFIG_HOME/hypr/hyprland.lua"
   fi
 
+  # Deploy the application source trees used by the small command launchers.
+  # Without these payloads fenrir-settings/fenrir-welcome/fenrir-monitor would
+  # exist on PATH but fail at startup.
+  local app
+  for app in fenrir-settings fenrir-welcome; do
+    [[ -d "$DOTS_ROOT/apps/$app" ]] || die "Required Fenrir app source is missing: $DOTS_ROOT/apps/$app"
+    backup_path "$HOME/.local/share/fenrir/apps/$app" ".local/share/fenrir/apps/$app"
+    mkdir -p "$HOME/.local/share/fenrir/apps/$app"
+    cp -a "$DOTS_ROOT/apps/$app/." "$HOME/.local/share/fenrir/apps/$app/"
+  done
+
   backup_path "$HOME/.config/systemd/user/fenrir-wallpaper.service" ".config/systemd/user/fenrir-wallpaper.service"
   backup_path "$HOME/.config/systemd/user/fenrir-stay-awake.service" ".config/systemd/user/fenrir-stay-awake.service"
   mkdir -p "$HOME/.config/systemd/user" "$HOME/.local/share/applications" "$HOME/.config/autostart"
@@ -132,11 +143,15 @@ configure_system_services() {
 }
 
 validate_install() {
-  local ai="$1"
-  local required=(hyprland hyprpaper hyprlock waybar fuzzel kitty pipewire pipewire-pulse pipewire-jack steam gamemode lib32-gamemode mangohud lib32-mangohud gamescope lib32-mesa lib32-vulkan-radeon lib32-vulkan-icd-loader easyeffects qpwgraph guitarix calf reaper reapack realtime-privileges discord prismlauncher jre21-openjdk)
+  local ai="$1" reapack="${2:-1}"
+  local required=(hyprland hyprpaper hyprlock waybar fuzzel kitty pipewire pipewire-pulse pipewire-jack steam gamemode lib32-gamemode mangohud lib32-mangohud gamescope lib32-mesa lib32-vulkan-radeon lib32-vulkan-icd-loader easyeffects qpwgraph guitarix calf reaper realtime-privileges discord prismlauncher jre21-openjdk)
   local p
   for p in "${required[@]}"; do pacman -Q "$p" >/dev/null 2>&1 || die "Validation failed: package $p is not installed."; done
   [[ -x "$HOME/.local/bin/fenrir-wallpaper" ]] || die "Fenrir wallpaper command missing."
+  [[ -f "$HOME/.local/share/fenrir/apps/fenrir-settings/app.py" ]] || die "Fenrir Settings app source was not deployed."
+  [[ -f "$HOME/.local/share/fenrir/apps/fenrir-settings/core.py" ]] || die "Fenrir Settings core was not deployed."
+  [[ -f "$HOME/.local/share/fenrir/apps/fenrir-welcome/app.py" ]] || die "Fenrir Welcome app source was not deployed."
+  [[ -f "$HOME/.local/share/fenrir/apps/fenrir-settings/monitor.py" ]] || die "Fenrir monitor helper was not deployed."
   [[ -f "$CONFIG_HOME/hypr/hyprland.lua" ]] || die "Hyprland Lua configuration missing."
   [[ -x "$HOME/.local/bin/firefox-nightly" ]] || die "Mozilla Firefox Nightly launcher missing."
   local flatpak_apps
@@ -144,6 +159,9 @@ validate_install() {
   for p in com.spotify.Client com.heroicgameslauncher.hgl net.rpcs3.RPCS3 com.ktechpit.whatsie; do
     grep -Fxq "$p" <<<"$flatpak_apps" || die "Validation failed: Flatpak $p is not installed."
   done
+  if (( reapack )); then
+    pacman -Q reapack >/dev/null 2>&1 || die "Official Arch ReaPack package is missing."
+  fi
   if (( ai )); then
     pacman -Q ollama-vulkan >/dev/null 2>&1 || die "Ollama Vulkan package is missing."
     [[ -f "$HOME/.local/share/sun-ai/server.py" ]] || die "Sun AI server missing."

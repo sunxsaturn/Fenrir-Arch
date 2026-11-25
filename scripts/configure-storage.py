@@ -12,6 +12,19 @@ from pathlib import Path
 
 SUPPORTED = {"ext4", "btrfs", "xfs", "f2fs", "ntfs", "ntfs3", "exfat", "vfat"}
 SYSTEM_MOUNTS = {"/", "/boot", "/efi", "/boot/efi", "/usr", "/var"}
+PROTECTED_MOUNT_PREFIXES = ("/mnt/storage",)
+
+
+def is_protected_mountpoint(mountpoint):
+    """Return true for the protected data mount and anything below it."""
+    if not mountpoint:
+        return False
+    normalized = os.path.normpath(str(mountpoint))
+    return any(
+        normalized == prefix or normalized.startswith(prefix.rstrip("/") + "/")
+        for prefix in PROTECTED_MOUNT_PREFIXES
+    )
+
 
 
 def run(*args: str) -> str:
@@ -84,6 +97,8 @@ def main() -> int:
         if uuid in existing_uuids:
             continue
         mounts = node.get("mountpoints") or []
+        if any(is_protected_mountpoint(item) for item in mounts):
+            continue
         mounts = [p for p in mounts if p]
         if any(mount in existing_targets for mount in mounts):
             continue
