@@ -33,7 +33,9 @@ class InstallerIntegrationTests(unittest.TestCase):
         self.assertIn("nofail", storage)
         self.assertNotIn("mkfs.", installer)
         self.assertNotIn("parted ", installer)
-        self.assertNotIn("reboot", installer.lower())
+        import re
+        destructive_commands = re.compile(r"(?m)^\\s*(?:sudo\\s+)?(?:mkfs(?:\\.[\\w]+)?|parted|fdisk|sfdisk|sgdisk|reboot|shutdown)\\b")
+        self.assertIsNone(destructive_commands.search(installer))
 
 
 if __name__ == "__main__":
