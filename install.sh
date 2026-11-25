@@ -119,7 +119,8 @@ require_cmd flatpak
 # The visual layer is maintained independently, like established Hyprland dotfiles projects.
 DOTS_DIR="${FENRIR_DOTS_DIR:-$HOME/.local/share/fenrir/dots}"
 DOTS_REPO="${FENRIR_DOTS_REPO:-https://github.com/sunxsaturn/Fenrir-Dots.git}"
-DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-a12e3278e336fd709bd8a4fdd779a3ee4bcb9187}"
+DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-1fa6883e85829d268659dee6a248a842c1eae210}"
+CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-cd4dc6be4644042b121c515f540c563cef1b1114}"
 [[ "$DOTS_COMMIT" =~ ^[0-9a-f]{40}$ ]] || die "FENRIR_DOTS_COMMIT must be a full 40-character Git commit SHA."
 mkdir -p "$(dirname -- "$DOTS_DIR")"
 if [[ -d "$DOTS_DIR/.git" ]]; then
@@ -140,22 +141,23 @@ fi
 DOTS_HEAD="$(git -C "$DOTS_DIR" rev-parse HEAD)"
 [[ "$DOTS_HEAD" == "$DOTS_COMMIT" ]] || die "Fenrir-Dots checkout mismatch: expected $DOTS_COMMIT, found $DOTS_HEAD."
 DOTS_VERSION="$(cat "$DOTS_DIR/VERSION" 2>/dev/null || true)"
-[[ "$DOTS_VERSION" == "0.4.0" ]] || die "Fenrir-Dots 0.4.0 is required; found '${DOTS_VERSION:-missing}'. Update the companion source checkout."
+[[ "$DOTS_VERSION" == "0.5.0" ]] || die "Fenrir-Dots 0.5.0 is required; found '${DOTS_VERSION:-missing}'. Update the companion source checkout."
 DOTS_REQUIRED_FILES=(
   config/hypr/hyprland.lua
   apps/fenrir-settings/app.py
   apps/fenrir-welcome/app.py
   apps/fenrir-settings/monitor.py
-  apps/sun-ai/README.md
-  apps/sun-ai/server.py
-  apps/sun-ai/index.html
-  apps/sun-ai/assets/app.js
-  apps/sun-ai/assets/style.css
-  bin/sun-ai
-  systemd/user/sun-ai.service
-  applications/sun-ai.desktop
-  config/icons/Fenrir-Obsidian/scalable/apps/sun-ai.svg
-  tests/test_sun_ai.py
+  apps/fenrir-doctor/README.md
+  apps/fenrir-doctor/server.py
+  apps/fenrir-doctor/index.html
+  apps/fenrir-doctor/assets/app.js
+  apps/fenrir-doctor/assets/style.css
+  bin/fenrir-doctor
+  bin/fenrir-upgrade
+  systemd/user/fenrir-doctor.service
+  applications/fenrir-doctor.desktop
+  config/icons/Fenrir-Obsidian/scalable/apps/fenrir-doctor.svg
+  tests/test_fenrir_doctor.py
 )
 for source_file in "${DOTS_REQUIRED_FILES[@]}"; do
   [[ -f "$DOTS_DIR/$source_file" ]] || die "Fenrir-Dots source is incomplete: missing tracked project file $source_file"
@@ -166,8 +168,9 @@ source "$ROOT/scripts/deploy.sh"
 
 install_flatpak_apps
 "$ROOT/scripts/install-firefox-nightly.sh"
+FENRIR_CATALOG_COMMIT="$CATALOG_COMMIT" bash "$ROOT/scripts/install-catalog.sh"
 backup_and_deploy "$AI"
-install_sun_ai "$AI"
+install_fenrir_doctor "$AI"
 install_user_units
 configure_system_services "$AI" "$WOL"
 
