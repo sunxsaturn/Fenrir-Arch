@@ -93,23 +93,17 @@ class InstallerIntegrationTests(unittest.TestCase):
             with self.subTest(path=relative):
                 self.assertTrue((dots / relative).is_file(), f"Missing companion source: {relative}")
 
-    def test_ci_companion_checkout_matches_the_pinned_catalog_source_manifest(self):
-        checkout = os.environ.get("FENRIR_CATALOG_CHECKOUT")
-        if not checkout:
-            self.skipTest("CI supplies the pinned Fenrir Wallpaper Catalog checkout.")
-
-        import tomllib
-        catalog = Path(checkout)
+    def test_catalog_pin_and_runtime_source_manifest_contract(self):
+        installer = (ROOT / "install.sh").read_text(encoding="utf-8")
+        setup = (ROOT / "scripts" / "install-catalog.sh").read_text(encoding="utf-8")
         expected_commit = "cd4dc6be4644042b121c515f540c563cef1b1114"
-        actual_commit = subprocess.run(
-            ["git", "-C", str(catalog), "rev-parse", "HEAD"],
-            check=True, capture_output=True, text=True,
-        ).stdout.strip()
-        self.assertEqual(actual_commit, expected_commit)
-        with (catalog / "pyproject.toml").open("rb") as stream:
-            self.assertEqual(tomllib.load(stream)["project"]["version"], "0.19.0")
-
+        self.assertIn(expected_commit, installer)
+        self.assertIn(expected_commit, setup)
+        self.assertIn('git -C "$CATALOG_SOURCE" checkout --detach "$CATALOG_COMMIT"', setup)
+        self.assertIn('[[ "$actual" == "$CATALOG_COMMIT" ]]', setup)
+        self.assertIn('[[ "$version" == "0.19.0" ]]', setup)
         required = (
+            "pyproject.toml",
             "src/fenrir_catalog/cli.py",
             "src/fenrir_catalog/desktop_sync.py",
             "src/fenrir_catalog/consumer.py",
@@ -119,8 +113,10 @@ class InstallerIntegrationTests(unittest.TestCase):
         )
         for relative in required:
             with self.subTest(path=relative):
-                self.assertTrue((catalog / relative).is_file(), f"Missing catalog source: {relative}")
-
+                self.assertIn(relative, setup)
+        self.assertIn('fenrir-catalog init --database "$CATALOG_DB"', setup)
+        self.assertIn('chmod 0700 "$CATALOG_HOME" "$QUARANTINE_ROOT"', setup)
+        self.assertIn('exec "$HOME/.local/share/fenrir/catalog-venv/bin/fenrir-catalog" "$@"', setup)
     def test_deployer_installs_the_apps_used_by_the_launchers(self):
         deploy = (ROOT / "scripts" / "deploy.sh").read_text(encoding="utf-8")
         dots_guard = (ROOT / "install.sh").read_text(encoding="utf-8")
