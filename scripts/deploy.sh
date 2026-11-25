@@ -171,15 +171,20 @@ validate_install() {
   fi
   if (( ai )); then
     pacman -Q ollama-vulkan >/dev/null 2>&1 || die "Ollama Vulkan package is missing."
-    [[ -x "$HOME/.local/bin/sun-ai" ]] || die "Sun AI CLI launcher is missing."
-    [[ -f "$HOME/.local/share/sun-ai/server.py" ]] || die "Sun AI server source is missing."
-    [[ -f "$HOME/.local/share/sun-ai/index.html" ]] || die "Sun AI dashboard HTML is missing."
-    [[ -f "$HOME/.local/share/sun-ai/assets/app.js" ]] || die "Sun AI dashboard JavaScript is missing."
-    [[ -f "$HOME/.local/share/sun-ai/assets/style.css" ]] || die "Sun AI dashboard stylesheet is missing."
-    [[ -f "$HOME/.config/systemd/user/sun-ai.service" ]] || die "Sun AI user service is missing."
-    [[ -f "$HOME/.local/share/applications/sun-ai.desktop" ]] || die "Sun AI desktop launcher is missing."
-    [[ -f "$HOME/.local/share/icons/Fenrir-Obsidian/scalable/apps/sun-ai.svg" ]] || die "Sun AI icon is missing."
+    [[ -x "$HOME/.local/bin/fenrir-doctor" ]] || die "Fenrir Doctor CLI launcher is missing."
+    [[ -x "$HOME/.local/bin/fenrir-upgrade" ]] || die "Fenrir upgrade helper is missing."
+    [[ -f "$HOME/.local/share/fenrir-doctor/server.py" ]] || die "Fenrir Doctor server source is missing."
+    [[ -f "$HOME/.local/share/fenrir-doctor/index.html" ]] || die "Fenrir Doctor dashboard HTML is missing."
+    [[ -f "$HOME/.local/share/fenrir-doctor/assets/app.js" ]] || die "Fenrir Doctor dashboard JavaScript is missing."
+    [[ -f "$HOME/.local/share/fenrir-doctor/assets/style.css" ]] || die "Fenrir Doctor dashboard stylesheet is missing."
+    [[ -f "$HOME/.config/systemd/user/fenrir-doctor.service" ]] || die "Fenrir Doctor user service is missing."
+    [[ -f "$HOME/.local/share/applications/fenrir-doctor.desktop" ]] || die "Fenrir Doctor desktop launcher is missing."
+    [[ -f "$HOME/.local/share/icons/Fenrir-Obsidian/scalable/apps/fenrir-doctor.svg" ]] || die "Fenrir Doctor icon is missing."
   fi
+  [[ -x "$HOME/.local/bin/fenrir-catalog" ]] || die "Fenrir Wallpaper Catalog launcher is missing."
+  [[ -x "$HOME/.local/share/fenrir/catalog-venv/bin/fenrir-catalog" ]] || die "Fenrir Wallpaper Catalog virtual environment is missing."
+  [[ -f "$HOME/.local/share/fenrir/catalog/catalog.sqlite3" ]] || die "Fenrir Wallpaper Catalog database was not initialized."
+  [[ -d "$HOME/.local/share/fenrir/catalog/quarantine" ]] || die "Fenrir Wallpaper Catalog quarantine directory is missing."
   log "Software installation validation passed."
   if command -v fenrir-wallpaper >/dev/null 2>&1; then
     fenrir-wallpaper status || true
