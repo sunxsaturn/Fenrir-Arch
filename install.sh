@@ -178,15 +178,8 @@ if (( STORAGE )); then
   sudo bash "$ROOT/scripts/configure-storage.sh" --apply
 fi
 
-wallpaper_manifest="${FENRIR_WALLPAPER_MANIFEST_URL:-}"
-if [[ -z "$wallpaper_manifest" && -f "$ROOT/wallpapers/manifest.json" ]]; then
-  wallpaper_manifest="$ROOT/wallpapers/manifest.json"
-fi
-if [[ -n "$wallpaper_manifest" ]]; then
-  python3 "$ROOT/scripts/download_wallpaper_pack.py" --manifest "$wallpaper_manifest" --destination "$HOME/Pictures/Wallpapers" || die "Wallpaper pack failed validation/download. Other components may already be installed; correct the manifest and rerun Fenrir."
-else
-  log "No approved 5000+ wallpaper manifest is bundled or configured. No images were scraped or bulk-downloaded."
-fi
+log "Wallpaper intelligence is available in Fenrir Doctor. Review and accept catalog assets before local synchronization."
+log "No wallpapers are downloaded automatically; the desktop rotation service uses qualifying local images."
 
 validate_install "$AI" "$REAPACK"
 printf '\nFenrir workstation installation finished.\n'
