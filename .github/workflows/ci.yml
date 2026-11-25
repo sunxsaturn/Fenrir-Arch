@@ -13,12 +13,6 @@ jobs:
           repository: sunxsaturn/Fenrir-Dots
           ref: 0ceb5173047be6163b8b66b65979e4acda6b0ad5
           path: companion/Fenrir-Dots
-      - name: Checkout pinned Fenrir Wallpaper Catalog source
-        uses: actions/checkout@v4
-        with:
-          repository: sunxsaturn/Fenrir-Wallpaper-Catalog
-          ref: cd4dc6be4644042b121c515f540c563cef1b1114
-          path: companion/Fenrir-Wallpaper-Catalog
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
@@ -29,5 +23,4 @@ jobs:
       - name: Run tests
         env:
           FENRIR_DOTS_CHECKOUT: companion/Fenrir-Dots
-          FENRIR_CATALOG_CHECKOUT: companion/Fenrir-Wallpaper-Catalog
         run: python -m unittest discover -s tests -v
