@@ -37,7 +37,7 @@ class InstallerIntegrationTests(unittest.TestCase):
         )
         self.assertIn('DOTS_VERSION="$(cat "$DOTS_DIR/VERSION" 2>/dev/null || true)"', installer)
         self.assertIn('[[ "$DOTS_VERSION" == "0.5.0" ]]', installer)
-        self.assertIn('DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-4c9980b8f2ec01146fd417f3cdb59170db242499}"', installer)
+        self.assertIn('DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-17ae919d0737d7d8d5b6065c46b8a1846380c68f}"', installer)
         self.assertIn('CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-cd4dc6be4644042b121c515f540c563cef1b1114}"', installer)
         self.assertIn('git -C "$DOTS_DIR" checkout --detach "$DOTS_COMMIT"', installer)
         self.assertIn('[[ "$DOTS_HEAD" == "$DOTS_COMMIT" ]]', installer)
@@ -64,7 +64,7 @@ class InstallerIntegrationTests(unittest.TestCase):
             self.skipTest("CI supplies the pinned Fenrir-Dots checkout for integration validation.")
 
         dots = Path(checkout)
-        expected_commit = "4c9980b8f2ec01146fd417f3cdb59170db242499"
+        expected_commit = "17ae919d0737d7d8d5b6065c46b8a1846380c68f"
         actual_commit = subprocess.run(
             ["git", "-C", str(dots), "rev-parse", "HEAD"],
             check=True, capture_output=True, text=True,
