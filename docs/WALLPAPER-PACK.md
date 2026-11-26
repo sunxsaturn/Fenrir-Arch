@@ -65,6 +65,23 @@ Priority subjects remain Nordic/Viking mythology, dark and medieval fantasy, war
 
 A high-resolution image is not automatically authorized for acquisition or redistribution. Use the Catalog's documented source registry, provider terms, rights evidence, duplicate review, human acceptance and acquisition authorization. Unknown, conflicting, non-commercial, no-derivatives or undocumented rights remain excluded or held for human review. The project will not scrape providers or manufacture rights evidence to hit a numerical target.
 
+### Enabled discovery sources
+
+Fenrir Wallpaper Catalog supports metadata-only campaigns through Openverse,
+Wikimedia Commons, SFW Wallhaven and the Cleveland Museum of Art Open Access
+API. Cleveland records are retained only when that individual artwork is
+marked CC0, its source and image URLs pass the provider host allowlist, and
+the selected image is landscape and at least 2560×1440. Its scheduled slice
+is capped at four API requests, like every other provider.
+
+Discovery does not download image bytes or approve rights. Every candidate
+still follows the Catalog's independent provider-terms check, per-asset
+rights evidence and human decision, explicit acquisition authorization,
+verified quarantine intake, duplicate review and human acceptance. The
+Cleveland Museum's Open Access terms also warn that third-party rights may
+apply to particular objects; CC0 filtering is not a substitute for the
+Catalog's separate evidence and human-review process.
+
 ## Attribution and verification
 
 Every copied Catalog asset is named deterministically from its asset identifier and SHA-256. The local attribution sidecar retains:
