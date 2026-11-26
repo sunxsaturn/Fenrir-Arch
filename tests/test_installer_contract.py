@@ -40,11 +40,11 @@ class InstallerIntegrationTests(unittest.TestCase):
             "tests/test_fenrir_doctor.py",
         )
         self.assertIn('DOTS_VERSION="$(cat "$DOTS_DIR/VERSION" 2>/dev/null || true)"', installer)
-        self.assertIn('[[ "$DOTS_VERSION" == "0.12.2" ]]', installer)
+        self.assertIn('[[ "$DOTS_VERSION" == "0.12.3" ]]', installer)
         self.assertIn('apps/fenrir-doctor/assets/app.js', installer)
         self.assertIn('apps/fenrir-doctor/server.py', installer)
-        self.assertIn('DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-7136edc433f8a545247383d6ffb47d48638cfc86}"', installer)
-        self.assertIn('CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-ba54f3808ea64fad58a14b83c33bb58a34ec01c9}"', installer)
+        self.assertIn('DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-2b278f35df69ac1049563b05bdf7593f4929a289}"', installer)
+        self.assertIn('CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-b75a26c5bf53dd1ca4517b7b44166c74d6b3e2cc}"', installer)
         self.assertIn('git -C "$DOTS_DIR" checkout --detach "$DOTS_COMMIT"', installer)
         self.assertIn('[[ "$DOTS_HEAD" == "$DOTS_COMMIT" ]]', installer)
         self.assertIn("write_installed_versions", installer)
@@ -77,13 +77,13 @@ class InstallerIntegrationTests(unittest.TestCase):
             self.skipTest("CI supplies the pinned Fenrir-Dots checkout for integration validation.")
 
         dots = Path(checkout)
-        expected_commit = "7136edc433f8a545247383d6ffb47d48638cfc86"
+        expected_commit = "2b278f35df69ac1049563b05bdf7593f4929a289"
         actual_commit = subprocess.run(
             ["git", "-C", str(dots), "rev-parse", "HEAD"],
             check=True, capture_output=True, text=True,
         ).stdout.strip()
         self.assertEqual(actual_commit, expected_commit)
-        self.assertEqual((dots / "VERSION").read_text(encoding="utf-8").strip(), "0.12.2")
+        self.assertEqual((dots / "VERSION").read_text(encoding="utf-8").strip(), "0.12.3")
 
         required = (
             "config/hypr/hyprland.lua",
@@ -109,12 +109,12 @@ class InstallerIntegrationTests(unittest.TestCase):
     def test_catalog_pin_and_runtime_source_manifest_contract(self):
         installer = (ROOT / "install.sh").read_text(encoding="utf-8")
         setup = (ROOT / "scripts" / "install-catalog.sh").read_text(encoding="utf-8")
-        expected_commit = "ba54f3808ea64fad58a14b83c33bb58a34ec01c9"
+        expected_commit = "b75a26c5bf53dd1ca4517b7b44166c74d6b3e2cc"
         self.assertIn(expected_commit, installer)
         self.assertIn(expected_commit, setup)
         self.assertIn('git -C "$CATALOG_SOURCE" checkout --detach "$CATALOG_COMMIT"', setup)
         self.assertIn('[[ "$actual" == "$CATALOG_COMMIT" ]]', setup)
-        self.assertIn('[[ "$version" == "0.28.0" ]]', setup)
+        self.assertIn('[[ "$version" == "0.29.0" ]]', setup)
         required = (
             "pyproject.toml",
             "src/fenrir_catalog/__init__.py",
@@ -124,6 +124,8 @@ class InstallerIntegrationTests(unittest.TestCase):
             "src/fenrir_catalog/rights_review.py",
             "src/fenrir_catalog/rights_assignments.py",
             "src/fenrir_catalog/rights_review_board.py",
+            "src/fenrir_catalog/quarantine_review.py",
+            "tests/test_acceptance.py",
             "src/fenrir_catalog/rights_board_assets/index.html",
             "src/fenrir_catalog/rights_board_assets/app.js",
             "src/fenrir_catalog/rights_board_assets/style.css",
