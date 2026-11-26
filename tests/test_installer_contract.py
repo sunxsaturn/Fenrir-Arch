@@ -40,8 +40,10 @@ class InstallerIntegrationTests(unittest.TestCase):
             "tests/test_fenrir_doctor.py",
         )
         self.assertIn('DOTS_VERSION="$(cat "$DOTS_DIR/VERSION" 2>/dev/null || true)"', installer)
-        self.assertIn('[[ "$DOTS_VERSION" == "0.11.2" ]]', installer)
-        self.assertIn('DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-b3fa5d08c0b7e6566f68d99cb1f2fe4f33b7902b}"', installer)
+        self.assertIn('[[ "$DOTS_VERSION" == "0.12.0" ]]', installer)
+        self.assertIn('apps/fenrir-doctor/assets/app.js', installer)
+        self.assertIn('apps/fenrir-doctor/server.py', installer)
+        self.assertIn('DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-c9b2c2efb10f5a4df044647566e6b637a7224138}"', installer)
         self.assertIn('CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-c78e1b42dc9f81b9b9111ae50d09ff19f87ff50b}"', installer)
         self.assertIn('git -C "$DOTS_DIR" checkout --detach "$DOTS_COMMIT"', installer)
         self.assertIn('[[ "$DOTS_HEAD" == "$DOTS_COMMIT" ]]', installer)
@@ -75,13 +77,13 @@ class InstallerIntegrationTests(unittest.TestCase):
             self.skipTest("CI supplies the pinned Fenrir-Dots checkout for integration validation.")
 
         dots = Path(checkout)
-        expected_commit = "b3fa5d08c0b7e6566f68d99cb1f2fe4f33b7902b"
+        expected_commit = "c9b2c2efb10f5a4df044647566e6b637a7224138"
         actual_commit = subprocess.run(
             ["git", "-C", str(dots), "rev-parse", "HEAD"],
             check=True, capture_output=True, text=True,
         ).stdout.strip()
         self.assertEqual(actual_commit, expected_commit)
-        self.assertEqual((dots / "VERSION").read_text(encoding="utf-8").strip(), "0.11.2")
+        self.assertEqual((dots / "VERSION").read_text(encoding="utf-8").strip(), "0.12.0")
 
         required = (
             "config/hypr/hyprland.lua",
@@ -119,6 +121,15 @@ class InstallerIntegrationTests(unittest.TestCase):
             "src/fenrir_catalog/cli.py",
             "src/fenrir_catalog/desktop_sync.py",
             "src/fenrir_catalog/acquisition_queue.py",
+            "src/fenrir_catalog/rights_review.py",
+            "src/fenrir_catalog/rights_assignments.py",
+            "src/fenrir_catalog/rights_review_board.py",
+            "src/fenrir_catalog/rights_board_assets/index.html",
+            "src/fenrir_catalog/rights_board_assets/app.js",
+            "src/fenrir_catalog/rights_board_assets/style.css",
+            "tests/test_rights_review.py",
+            "tests/test_rights_assignments.py",
+            "tests/test_rights_review_board.py",
             "src/fenrir_catalog/consumer.py",
             "src/fenrir_catalog/library.py",
             "src/fenrir_catalog/picker.py",
