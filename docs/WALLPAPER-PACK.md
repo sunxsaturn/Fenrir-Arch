@@ -104,3 +104,7 @@ Set the desktop's existing `wallpaper.directory` setting to `~/Pictures/Fenrir-W
 
 Only images with a separate per-asset public-redistribution approval and provider terms permitting public mirroring belong in this repository. Catalog acceptance and local desktop synchronization do not, by themselves, grant redistribution rights. The Catalog database and private quarantine never belong in Git.
 
+## Multi-volume GitHub library
+
+The canonical list of wallpaper repositories is [manifest/volumes.json](https://github.com/sunxsaturn/Fenrir-Wallpapers/blob/main/manifest/volumes.json) in the Fenrir-Wallpapers hub. Volume 01 is the current repository; additional numbered repositories will be registered there. This keeps the installer independent of the number of image volumes. The multi-volume local synchronization utility is not yet complete, so the presence of a registry entry alone does not mean that every volume has been installed locally.
+
