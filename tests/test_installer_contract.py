@@ -118,6 +118,7 @@ class InstallerIntegrationTests(unittest.TestCase):
             "src/fenrir_catalog/__init__.py",
             "src/fenrir_catalog/cli.py",
             "src/fenrir_catalog/desktop_sync.py",
+            "src/fenrir_catalog/acquisition_queue.py",
             "src/fenrir_catalog/consumer.py",
             "src/fenrir_catalog/library.py",
             "src/fenrir_catalog/picker.py",
@@ -137,6 +138,7 @@ class InstallerIntegrationTests(unittest.TestCase):
             "src/fenrir_catalog/migrations/0014_discovery_campaigns.sql",
             "tests/test_workbench.py",
             "tests/test_campaign.py",
+            "tests/test_acquisition_queue.py",
             "tests/test_palette_policy.py",
             "tests/test_palette_index.py",
         )
