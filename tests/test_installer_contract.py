@@ -114,7 +114,7 @@ class InstallerIntegrationTests(unittest.TestCase):
         self.assertIn(expected_commit, setup)
         self.assertIn('git -C "$CATALOG_SOURCE" checkout --detach "$CATALOG_COMMIT"', setup)
         self.assertIn('[[ "$actual" == "$CATALOG_COMMIT" ]]', setup)
-        self.assertIn('[[ "$version" == "0.33.0" ]]', setup)
+        self.assertIn('[[ "$version" == "0.34.0" ]]', setup)
         required = (
             "pyproject.toml",
             "src/fenrir_catalog/__init__.py",
@@ -146,6 +146,9 @@ class InstallerIntegrationTests(unittest.TestCase):
             "src/fenrir_catalog/campaign.py",
             "src/fenrir_catalog/campaign_profiles.py",
             "src/fenrir_catalog/adapters/commons.py",
+            "src/fenrir_catalog/adapters/cleveland.py",
+            "src/fenrir_catalog/migrations/0015_cleveland_open_access.sql",
+            "tests/test_cleveland.py",
             "src/fenrir_catalog/palette_policy.py",
             "src/fenrir_catalog/palette_index.py",
             "src/fenrir_catalog/collection_portability.py",
