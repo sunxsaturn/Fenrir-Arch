@@ -77,7 +77,7 @@ class InstallerIntegrationTests(unittest.TestCase):
             self.skipTest("CI supplies the pinned Fenrir-Dots checkout for integration validation.")
 
         dots = Path(checkout)
-        expected_commit = "f6e723ea4387e9d887468ecfa65bb892dd3dd7e6"
+        expected_commit = "f1f8e6121dc09779f7290759443d1326d9c7d605"
         actual_commit = subprocess.run(
             ["git", "-C", str(dots), "rev-parse", "HEAD"],
             check=True, capture_output=True, text=True,
@@ -109,7 +109,7 @@ class InstallerIntegrationTests(unittest.TestCase):
     def test_catalog_pin_and_runtime_source_manifest_contract(self):
         installer = (ROOT / "install.sh").read_text(encoding="utf-8")
         setup = (ROOT / "scripts" / "install-catalog.sh").read_text(encoding="utf-8")
-        expected_commit = "a8d4e448fc940035e0fc27d0a7fdc7398c4c00be"
+        expected_commit = "d8742dde2c7540cc2d18eef8ed1cc58a2a12de04"
         self.assertIn(expected_commit, installer)
         self.assertIn(expected_commit, setup)
         self.assertIn('git -C "$CATALOG_SOURCE" checkout --detach "$CATALOG_COMMIT"', setup)
