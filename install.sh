@@ -211,5 +211,5 @@ write_installed_versions
 
 printf '\nFenrir workstation installation finished.\n'
 printf 'Log out and choose Hyprland in SDDM. Verify WoL firmware options.\n'
-printf 'Run fenrir-wallpaper status to inspect the 5000-image requirement.\n'
+printf 'Open Fenrir Doctor → Wallpaper Intelligence for the recommended 20,000-image collection target.\n'
 printf 'No reboot was performed.\n'
