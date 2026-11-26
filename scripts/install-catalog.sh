@@ -65,6 +65,15 @@ required_files=(
   src/fenrir_catalog/cli.py
   src/fenrir_catalog/desktop_sync.py
   src/fenrir_catalog/acquisition_queue.py
+  src/fenrir_catalog/rights_review.py
+  src/fenrir_catalog/rights_assignments.py
+  src/fenrir_catalog/rights_review_board.py
+  src/fenrir_catalog/rights_board_assets/index.html
+  src/fenrir_catalog/rights_board_assets/app.js
+  src/fenrir_catalog/rights_board_assets/style.css
+  tests/test_rights_review.py
+  tests/test_rights_assignments.py
+  tests/test_rights_review_board.py
   src/fenrir_catalog/consumer.py
   src/fenrir_catalog/library.py
   src/fenrir_catalog/picker.py
