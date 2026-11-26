@@ -91,3 +91,16 @@ Every copied Catalog asset is named deterministically from its asset identifier 
 - Catalog asset identifier and acceptance decision reference.
 
 The Catalog's local database and quarantine remain under `~/.local/share/fenrir/catalog`; they are not stored in GitHub. Image files and the attribution sidecar live under `~/Pictures/Wallpapers`. Neither the source repository nor a GitHub release contains user-owned image files, credentials or catalog databases.
+
+## Public GitHub wallpaper repository
+
+Fenrir also maintains a separate public image collection at [sunxsaturn/Fenrir-Wallpapers](https://github.com/sunxsaturn/Fenrir-Wallpapers). The actual files live under `Fenrir Wallpapers/`, organized into the eight Fenrir visual categories. Clone it with:
+
+```bash
+git clone --depth=1 https://github.com/sunxsaturn/Fenrir-Wallpapers.git ~/Pictures/Fenrir-Wallpapers
+```
+
+Set the desktop's existing `wallpaper.directory` setting to `~/Pictures/Fenrir-Wallpapers/Fenrir Wallpapers` to rotate that copy. The image repository is optional and separate from the installer and dotfiles source. Its publisher enforces a conservative 900 MiB Git object budget and 95 MiB per-image ceiling; the attainable image count depends on image sizes.
+
+Only images with a separate per-asset public-redistribution approval and provider terms permitting public mirroring belong in this repository. Catalog acceptance and local desktop synchronization do not, by themselves, grant redistribution rights. The Catalog database and private quarantine never belong in Git.
+
