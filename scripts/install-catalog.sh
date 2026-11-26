@@ -3,7 +3,7 @@ set -Eeuo pipefail
 source "$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)/lib.sh"
 
 CATALOG_REPO="${FENRIR_CATALOG_REPO:-https://github.com/sunxsaturn/Fenrir-Wallpaper-Catalog.git}"
-CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-fd1602cdb258f9d59fc7a2ba76909b43d7eadb6b}"
+CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-a8d4e448fc940035e0fc27d0a7fdc7398c4c00be}"
 CATALOG_SOURCE="${FENRIR_CATALOG_SOURCE_DIR:-$HOME/.local/share/fenrir/catalog-source}"
 CATALOG_HOME="${FENRIR_CATALOG_HOME:-$HOME/.local/share/fenrir/catalog}"
 CATALOG_DB="$CATALOG_HOME/catalog.sqlite3"
