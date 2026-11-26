@@ -6,11 +6,11 @@ Fenrir uses the rights-aware **Fenrir Wallpaper Catalog** as the source of truth
 
 The available targets are total qualifying local images, not a promise that the Catalog already contains that number:
 
-- 5,000 images — default target.
-- 10,000 images.
-- 20,000 images.
+- 20,000 images — recommended default for new installations.
+- 10,000 images — selectable smaller target.
+- 5,000 images — selectable smaller target.
 
-Existing qualifying files in `~/Pictures/Wallpapers` count toward the target. Rotation can use the qualifying local images already present; reaching 5,000 is a collection goal, not a requirement to enable rotation. The runtime validates landscape image files at least 2560×1440; 3840×2160 or higher is preferred.
+Existing qualifying files in `~/Pictures/Wallpapers` count toward the target. Rotation can use the qualifying local images already present; reaching 20,000 is a collection goal, not a requirement to enable rotation. The runtime validates landscape image files at least 2560×1440; 3840×2160 or higher is preferred.
 
 ## Rights and acquisition workflow
 
@@ -36,7 +36,7 @@ Open **Fenrir Doctor** from the application launcher or press `Super+A`. Select 
 - Selected total-image target and remaining count.
 - The latest synchronization status and log.
 
-Choose 5,000, 10,000 or 20,000 and select **Sync accepted wallpapers**. The operation runs locally and can be repeated. It uses deterministic content-addressed filenames, does not overwrite existing user files, and maintains `~/Pictures/Wallpapers/fenrir-catalog-attribution.json` with creator, source, license and acceptance references.
+The recommended default is 20,000; 5,000 and 10,000 remain selectable. First select **Preview sync plan**. Synchronization is enabled only after the bounded, read-only Catalog preflight confirms a complete, writable and conflict-free plan. Then select **Sync accepted wallpapers** and confirm the explicit local copy operation. The Catalog revalidates each quarantine file's bytes, SHA-256 and palette immediately before each copy. It uses deterministic content-addressed filenames, does not overwrite existing user files, and maintains `~/Pictures/Wallpapers/fenrir-catalog-attribution.json` with creator, source, license and acceptance references.
 
 ## Command-line use
 
