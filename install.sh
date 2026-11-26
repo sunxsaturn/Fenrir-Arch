@@ -119,8 +119,8 @@ require_cmd flatpak
 # The visual layer is maintained independently, like established Hyprland dotfiles projects.
 DOTS_DIR="${FENRIR_DOTS_DIR:-$HOME/.local/share/fenrir/dots}"
 DOTS_REPO="${FENRIR_DOTS_REPO:-https://github.com/sunxsaturn/Fenrir-Dots.git}"
-DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-d859714d809cde5796cba3dd612407b1782fdc48}"
-CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-05573d1ef9a97c42d560728a81a4c931249f92f0}"
+DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-7136edc433f8a545247383d6ffb47d48638cfc86}"
+CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-ba54f3808ea64fad58a14b83c33bb58a34ec01c9}"
 [[ "$DOTS_COMMIT" =~ ^[0-9a-f]{40}$ ]] || die "FENRIR_DOTS_COMMIT must be a full 40-character Git commit SHA."
 mkdir -p "$(dirname -- "$DOTS_DIR")"
 if [[ -d "$DOTS_DIR/.git" ]]; then
@@ -141,7 +141,7 @@ fi
 DOTS_HEAD="$(git -C "$DOTS_DIR" rev-parse HEAD)"
 [[ "$DOTS_HEAD" == "$DOTS_COMMIT" ]] || die "Fenrir-Dots checkout mismatch: expected $DOTS_COMMIT, found $DOTS_HEAD."
 DOTS_VERSION="$(cat "$DOTS_DIR/VERSION" 2>/dev/null || true)"
-[[ "$DOTS_VERSION" == "0.12.1" ]] || die "Fenrir-Dots 0.12.1 is required; found '${DOTS_VERSION:-missing}'. Update the companion source checkout."
+[[ "$DOTS_VERSION" == "0.12.2" ]] || die "Fenrir-Dots 0.12.2 is required; found '${DOTS_VERSION:-missing}'. Update the companion source checkout."
 DOTS_REQUIRED_FILES=(
   config/hypr/hyprland.lua
   apps/fenrir-settings/app.py
