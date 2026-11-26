@@ -1,6 +1,6 @@
 # Fenrir Wallpaper Catalog and Desktop Sync
 
-Fenrir uses the rights-aware **Fenrir Wallpaper Catalog** as the source of truth for discovered, acquired, reviewed and accepted assets. Fenrir Doctor provides a local desktop integration that can grow the wallpaper folder to 5,000, 10,000 or 20,000 images.
+Fenrir uses the rights-aware **Fenrir Wallpaper Catalog** as the source of truth for discovered, acquired, reviewed and accepted assets. Fenrir Doctor provides a local desktop integration that can grow the wallpaper folder to the recommended 20,000-image target. Its read-only portfolio dashboard reports provider/profile discovery yield and an acceptance-history-based forecast; scheduled discovery rotates providers fairly with a four-request cap per turn.
 
 ## Collection targets
 
