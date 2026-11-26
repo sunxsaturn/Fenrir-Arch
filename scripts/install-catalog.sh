@@ -57,7 +57,7 @@ fi
 actual="$(git -C "$CATALOG_SOURCE" rev-parse HEAD)"
 [[ "$actual" == "$CATALOG_COMMIT" ]] || die "Catalog checkout mismatch: expected $CATALOG_COMMIT, found $actual."
 version="$(python3 -c 'import sys,tomllib; print(tomllib.load(open(sys.argv[1], "rb"))["project"]["version"])' "$CATALOG_SOURCE/pyproject.toml")"
-[[ "$version" == "0.33.0" ]] || die "Fenrir Wallpaper Catalog 0.33.0 is required; found $version."
+[[ "$version" == "0.34.0" ]] || die "Fenrir Wallpaper Catalog 0.34.0 is required; found $version."
 
 required_files=(
   pyproject.toml
@@ -90,6 +90,8 @@ required_files=(
   src/fenrir_catalog/campaign.py
   src/fenrir_catalog/campaign_profiles.py
   src/fenrir_catalog/adapters/commons.py
+  src/fenrir_catalog/adapters/cleveland.py
+  src/fenrir_catalog/migrations/0015_cleveland_open_access.sql
   src/fenrir_catalog/palette_policy.py
   src/fenrir_catalog/palette_index.py
   src/fenrir_catalog/collection_portability.py
@@ -97,6 +99,7 @@ required_files=(
   src/fenrir_catalog/migrations/0014_discovery_campaigns.sql
   tests/test_workbench.py
   tests/test_campaign.py
+  tests/test_cleveland.py
   tests/test_acquisition_queue.py
   tests/test_palette_policy.py
   tests/test_palette_index.py
