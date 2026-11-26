@@ -40,9 +40,9 @@ class InstallerIntegrationTests(unittest.TestCase):
             "tests/test_fenrir_doctor.py",
         )
         self.assertIn('DOTS_VERSION="$(cat "$DOTS_DIR/VERSION" 2>/dev/null || true)"', installer)
-        self.assertIn('[[ "$DOTS_VERSION" == "0.9.0" ]]', installer)
-        self.assertIn('DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-525b7bb0de4a8aced6ab05d887d7b64adc11772e}"', installer)
-        self.assertIn('CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-60ef5db2025566b6648a9b3d283ab8d1e08988ac}"', installer)
+        self.assertIn('[[ "$DOTS_VERSION" == "0.10.0" ]]', installer)
+        self.assertIn('DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-acfaebfbb4d5f1fea8dca8a8364e61b397c0d118}"', installer)
+        self.assertIn('CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-ec1908638e55678fbeea4f9ca8ee2869d909e3f2}"', installer)
         self.assertIn('git -C "$DOTS_DIR" checkout --detach "$DOTS_COMMIT"', installer)
         self.assertIn('[[ "$DOTS_HEAD" == "$DOTS_COMMIT" ]]', installer)
         self.assertIn("write_installed_versions", installer)
@@ -75,13 +75,13 @@ class InstallerIntegrationTests(unittest.TestCase):
             self.skipTest("CI supplies the pinned Fenrir-Dots checkout for integration validation.")
 
         dots = Path(checkout)
-        expected_commit = "525b7bb0de4a8aced6ab05d887d7b64adc11772e"
+        expected_commit = "acfaebfbb4d5f1fea8dca8a8364e61b397c0d118"
         actual_commit = subprocess.run(
             ["git", "-C", str(dots), "rev-parse", "HEAD"],
             check=True, capture_output=True, text=True,
         ).stdout.strip()
         self.assertEqual(actual_commit, expected_commit)
-        self.assertEqual((dots / "VERSION").read_text(encoding="utf-8").strip(), "0.9.0")
+        self.assertEqual((dots / "VERSION").read_text(encoding="utf-8").strip(), "0.10.0")
 
         required = (
             "config/hypr/hyprland.lua",
@@ -107,12 +107,12 @@ class InstallerIntegrationTests(unittest.TestCase):
     def test_catalog_pin_and_runtime_source_manifest_contract(self):
         installer = (ROOT / "install.sh").read_text(encoding="utf-8")
         setup = (ROOT / "scripts" / "install-catalog.sh").read_text(encoding="utf-8")
-        expected_commit = "60ef5db2025566b6648a9b3d283ab8d1e08988ac"
+        expected_commit = "ec1908638e55678fbeea4f9ca8ee2869d909e3f2"
         self.assertIn(expected_commit, installer)
         self.assertIn(expected_commit, setup)
         self.assertIn('git -C "$CATALOG_SOURCE" checkout --detach "$CATALOG_COMMIT"', setup)
         self.assertIn('[[ "$actual" == "$CATALOG_COMMIT" ]]', setup)
-        self.assertIn('[[ "$version" == "0.24.0" ]]', setup)
+        self.assertIn('[[ "$version" == "0.25.0" ]]', setup)
         required = (
             "pyproject.toml",
             "src/fenrir_catalog/__init__.py",
