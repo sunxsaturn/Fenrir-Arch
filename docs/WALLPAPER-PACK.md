@@ -9,7 +9,7 @@ There is no fixed wallpaper-count target, no category quota and no requirement t
 
 ## Local rotation
 
-Fenrir Dots rotates only readable landscape wallpapers at least 2560×1440; 3840×2160 or higher is preferred. The `fenrir-wallpaper status` command reports the qualifying local inventory and quality exclusions. Rotation does not wait for a collection goal.
+Fenrir Dots rotates only readable landscape wallpapers at least 2560×1440; 3840×2160 or higher is preferred. The `fenrir-wallpaper status` command reports the qualifying local inventory and quality exclusions. Rotation uses all currently qualifying local images; no collection-size goal is defined.
 
 The `fenrir-wallpaper` runtime applies the current palette policy: dominant yellow, orange and brown are excluded; red, purple, blue, white and black are preferred; green and neutral grey are allowed.
 
