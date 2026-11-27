@@ -15,7 +15,7 @@ BASE_PACKAGES=(
   xorg-xwayland
   papirus-icon-theme adwaita-cursors adw-gtk-theme gtk-update-icon-cache
   ttf-jetbrains-mono-nerd inter-font noto-fonts noto-fonts-emoji
-  python python-pillow python-gobject gtk4 git curl rsync flatpak ethtool
+  python python-pillow python-gobject gtk4 git github-cli curl rsync flatpak ethtool
   firefox
 )
 GAMING_PACKAGES=(
