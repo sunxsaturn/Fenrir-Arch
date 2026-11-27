@@ -57,6 +57,11 @@ require_cmd python3
 require_cmd git
 
 if (( DRY_RUN )); then
+  if (( CATALOG_ONLY )); then
+    log "Catalog-only plan: install python-pip only when needed, clone the private Catalog, verify exclusions, seed 176 metadata campaigns and install the user timer."
+    log "No desktop packages, system services, boot settings or personal data volumes will be changed."
+    exit 0
+  fi
   log "Plan: Arch Linux x86_64; Fenrir-Arch 1.2.0; pinned Dots 0.17.3; private Catalog 0.39.1."
   log "Desktop: Hyprland >= 0.57, SDDM, Waybar, Fuzzel, Kitty, Mako, Thunar."
   log "Gaming: Steam, Proton support, GameMode, MangoHud, Gamescope, RPCS3, Heroic, Prism Launcher."
@@ -77,7 +82,7 @@ if (( CATALOG_ONLY )); then
   sudo pacman -S --needed python-pip
   log "Installing only the private rights-aware Catalog and its bounded metadata-discovery timer."
   bash "$ROOT/scripts/install-catalog.sh"
-  log "Catalog-only preparation complete. No system packages or desktop configuration were changed."
+  log "Catalog-only preparation complete. No desktop packages or desktop configuration were changed."
   exit 0
 fi
 
