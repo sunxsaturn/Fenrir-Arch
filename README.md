@@ -1,6 +1,6 @@
 # Fenrir-Arch
 
-**Version:** 1.2.1
+**Version:** 1.2.2
 
 Fenrir-Arch is the system installer and hardware integration layer for Fenrir Desktop. It targets minimal Arch Linux x86_64 with systemd. It is not an operating-system installer and must never format or partition a disk.
 
