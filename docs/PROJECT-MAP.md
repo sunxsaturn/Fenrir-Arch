@@ -71,6 +71,7 @@ Avoid putting application logic in the installer, duplicating Catalog rights rul
 - [Fenrir Dots](https://github.com/sunxsaturn/Fenrir-Dots)
 - [Fenrir Doctor source map](https://github.com/sunxsaturn/Fenrir-Dots/tree/main/apps/fenrir-doctor)
 - [Wallpaper library sync guide](https://github.com/sunxsaturn/Fenrir-Dots/blob/main/docs/WALLPAPER-LIBRARY.md)
+- [Versioning and release policy](VERSIONING.md)
 
 ### Wallpaper lifecycle and public library
 
@@ -82,17 +83,18 @@ Avoid putting application logic in the installer, duplicating Catalog rights rul
 
 ## Release and compatibility model
 
-Fenrir-Arch pins exact Fenrir-Dots and Catalog commit SHAs. The installer verifies each checkout, component version and required source-file set before deployment. Treat those pins as the compatibility contract; never replace them with a floating `main` checkout.
+Use [Versioning and releases](VERSIONING.md) for the numeric version policy and release procedure.
 
-When changing a pinned component:
+The installer currently pins these exact component builds:
 
-1. Complete and test the component change in its own repository.
-2. Release the component and record its exact merged commit SHA.
-3. Update the matching installer pin, expected version and required-file contract in Fenrir-Arch.
-4. Run the full installer CI against that exact companion checkout.
-5. Publish the installer release only after the integration check passes.
+| Component | Version | Commit |
+|---|---:|---|
+| Fenrir-Dots | 0.14.1 | `9b9e85c084e397141389c28778988bf009280fcf` |
+| Fenrir Wallpaper Catalog | 0.35.0 | `d8742dde2c7540cc2d18eef8ed1cc58a2a12de04` |
 
-The wallpaper volumes have independent image manifests. The hub registry determines which volumes are active; manifests remain the source of truth for per-volume files and counts.
+These are integration pins, not floating latest-release selectors. The installer validates both the version and required source-file set. Change a pin only after the component release is merged, tagged and tested; update the installer contract tests in the same change.
+
+Each repository has its own strictly increasing `MAJOR.MINOR.PATCH` sequence. Version numbers do not need to match across repositories. A documentation-only patch in Fenrir-Dots or the Catalog does not automatically require a new installer pin when the pinned implementation remains compatible.
 
 ## Repository entry points
 
