@@ -39,7 +39,7 @@ class FenrirInstaller(Gtk.Application):
         title = Gtk.Label(label="Included in the full profile")
         title.set_xalign(0); title.add_css_class("heading")
         feature_box.append(title)
-        feature_box.append(Gtk.Label(label="Hyprland · Waybar · Fenrir Dots · Firefox Nightly · Steam · GameMode · MangoHud · Gamescope · Heroic · RPCS3 · Prism Launcher · Discord · Spotify · Whatsie · PipeWire · EasyEffects · QPWgraph · Guitarix · Calf · REAPER · Sun AI", wrap=True, xalign=0))
+        feature_box.append(Gtk.Label(label="Hyprland · Waybar · Fenrir Dots · Firefox Nightly · Steam · GameMode · MangoHud · Gamescope · Heroic · RPCS3 · Prism Launcher · Discord · Spotify · Whatsie · PipeWire · EasyEffects · QPWgraph · Guitarix · Calf · REAPER · Fenrir Doctor", wrap=True, xalign=0))
         features.set_child(feature_box); root.append(features)
 
         storage_row, self.storage = self.option("Mount eligible fixed data disks at boot", "Uses filesystem UUIDs and nofail; excludes root, boot and removable devices. No formatting.", True)
