@@ -1,6 +1,6 @@
 # Fenrir Desktop — clean Arch installation
 
-Fenrir-Arch is a workstation installer, not an operating-system installer. Begin with minimal Arch Linux x86_64, systemd, networking, Git and a regular sudo-enabled user. Do not install a competing desktop distribution first.
+Fenrir-Arch is a workstation installer, not an operating-system installer. For the full desktop deployment, begin with minimal Arch Linux x86_64, systemd, networking, Git and a regular sudo-enabled user. Do not install a competing desktop distribution first.
 
 ## Private Catalog preparation
 
