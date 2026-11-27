@@ -25,7 +25,9 @@ class InstallerIntegrationTests(unittest.TestCase):
         required = (
             "apps/fenrir-doctor/README.md",
             "bin/fenrir-wallpaper",
+            "bin/fenrir_wallpaper_library.py",
             "tests/test_theme_wallpaper.py",
+            "tests/test_wallpaper_library_sync.py",
             "apps/fenrir-doctor/server.py",
             "apps/fenrir-doctor/index.html",
             "apps/fenrir-doctor/assets/app.js",
@@ -40,10 +42,10 @@ class InstallerIntegrationTests(unittest.TestCase):
             "tests/test_fenrir_doctor.py",
         )
         self.assertIn('DOTS_VERSION="$(cat "$DOTS_DIR/VERSION" 2>/dev/null || true)"', installer)
-        self.assertIn('[[ "$DOTS_VERSION" == "0.13.3" ]]', installer)
+        self.assertIn('[[ "$DOTS_VERSION" == "0.14.0" ]]', installer)
         self.assertIn('apps/fenrir-doctor/assets/app.js', installer)
         self.assertIn('apps/fenrir-doctor/server.py', installer)
-        self.assertIn('DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-f1f8e6121dc09779f7290759443d1326d9c7d605}"', installer)
+        self.assertIn('DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-2cd49b7177f6094c953d5615ffa17484d6cef86f}"', installer)
         self.assertIn('CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-d8742dde2c7540cc2d18eef8ed1cc58a2a12de04}"', installer)
         self.assertIn('git -C "$DOTS_DIR" checkout --detach "$DOTS_COMMIT"', installer)
         self.assertIn('[[ "$DOTS_HEAD" == "$DOTS_COMMIT" ]]', installer)
@@ -77,13 +79,13 @@ class InstallerIntegrationTests(unittest.TestCase):
             self.skipTest("CI supplies the pinned Fenrir-Dots checkout for integration validation.")
 
         dots = Path(checkout)
-        expected_commit = "f1f8e6121dc09779f7290759443d1326d9c7d605"
+        expected_commit = "2cd49b7177f6094c953d5615ffa17484d6cef86f"
         actual_commit = subprocess.run(
             ["git", "-C", str(dots), "rev-parse", "HEAD"],
             check=True, capture_output=True, text=True,
         ).stdout.strip()
         self.assertEqual(actual_commit, expected_commit)
-        self.assertEqual((dots / "VERSION").read_text(encoding="utf-8").strip(), "0.13.3")
+        self.assertEqual((dots / "VERSION").read_text(encoding="utf-8").strip(), "0.14.0")
 
         required = (
             "config/hypr/hyprland.lua",
