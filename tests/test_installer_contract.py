@@ -42,10 +42,10 @@ class InstallerIntegrationTests(unittest.TestCase):
             "tests/test_fenrir_doctor.py",
         )
         self.assertIn('DOTS_VERSION="$(cat "$DOTS_DIR/VERSION" 2>/dev/null || true)"', installer)
-        self.assertIn('[[ "$DOTS_VERSION" == "0.14.1" ]]', installer)
+        self.assertIn('[[ "$DOTS_VERSION" == "0.15.0" ]]', installer)
         self.assertIn('apps/fenrir-doctor/assets/app.js', installer)
         self.assertIn('apps/fenrir-doctor/server.py', installer)
-        self.assertIn('DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-9b9e85c084e397141389c28778988bf009280fcf}"', installer)
+        self.assertIn('DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-8df1f8e4fd4070b0289ad844da4ea74e866d72f1}"', installer)
         self.assertIn('CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-4e6ed27e6425956ea2fa444db5fc03193767025c}"', installer)
         self.assertIn('git -C "$DOTS_DIR" checkout --detach "$DOTS_COMMIT"', installer)
         self.assertIn('[[ "$DOTS_HEAD" == "$DOTS_COMMIT" ]]', installer)
