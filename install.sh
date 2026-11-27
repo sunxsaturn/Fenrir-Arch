@@ -62,12 +62,12 @@ if (( DRY_RUN )); then
     log "No desktop packages, system services, boot settings or personal data volumes will be changed."
     exit 0
   fi
-  log "Plan: Arch Linux x86_64; Fenrir-Arch 1.2.0; pinned Dots 0.17.3; private Catalog 0.39.1."
+  log "Plan: Arch Linux x86_64; Fenrir-Arch 1.2.1; pinned Dots 0.17.4; private Catalog 0.39.2."
   log "Desktop: Hyprland >= 0.57, SDDM, Waybar, Fuzzel, Kitty, Mako, Thunar."
   log "Gaming: Steam, Proton support, GameMode, MangoHud, Gamescope, RPCS3, Heroic, Prism Launcher."
   log "Audio: PipeWire, EasyEffects, QPWGraph, Guitarix, Calf, REAPER and ReaPack."
   log "Gallery: mandatory 5,000-image registry and manifest preflight, complete SHA-256-verified sync."
-  (( GLASS )) && log "Fimbulwinter Glass: 80% window opacity, compositor blur, user toggle enabled."
+  (( GLASS )) && log "Fimbulwinter Glass: 60% window opacity, compositor blur, user toggle enabled."
   (( OLLAMA )) && log "Ollama: Vulkan runtime, Qwen 3.5 9B / Gemma 3 12B / Gemma 3 4B download and benchmark."
   (( WOL )) && log "Wake-on-LAN: enable only adapters that advertise magic-packet capability."
   (( REAPACK )) || log "ReaPack skipped."
@@ -199,7 +199,7 @@ bash "$DOTS_DIR/scripts/install-dots.sh"
 export PATH="$HOME/.local/bin:$PATH"
 
 if (( GLASS )); then
-  fenrir-glass enable --opacity 0.80
+  fenrir-glass enable --opacity 0.60
 else
   fenrir-glass disable
 fi
