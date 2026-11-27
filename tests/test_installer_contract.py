@@ -18,7 +18,9 @@ class InstallerContractTests(unittest.TestCase):
     def test_installer_fails_closed_outside_arch(self):
         source = (ROOT / "install.sh").read_text()
         self.assertIn("require_arch", source)
-        self.assertIn("Arch Linux only", source)
+        helper = (ROOT / "scripts/lib.sh").read_text()
+        self.assertIn("/etc/arch-release", helper)
+        self.assertIn("Arch Linux only", helper)
         self.assertIn("check-wallpaper-ready.py", source)
 
     def test_installer_does_not_partition_format_or_reboot(self):
