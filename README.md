@@ -2,7 +2,7 @@
 
 Fenrir is an original **Arch Linux + Hyprland** desktop environment. The installer, desktop layer and wallpaper catalog are maintained as separate components with explicit compatibility pins.
 
-**Documentation:** [Project map](docs/PROJECT-MAP.md) · [Versioning and releases](docs/VERSIONING.md) · [Minimal Arch base](docs/ARCH-BASE.md) · [Post-install guide](docs/POST-INSTALL.md) · [Wallpaper workflow](docs/WALLPAPER-PACK.md)
+**Documentation:** [Project map](docs/PROJECT-MAP.md) · [Versioning and releases](docs/VERSIONING.md) · [Changelog](CHANGELOG.md) · [Minimal Arch base](docs/ARCH-BASE.md) · [Post-install guide](docs/POST-INSTALL.md) · [Wallpaper workflow](docs/WALLPAPER-PACK.md)
 
 ## Install
 
