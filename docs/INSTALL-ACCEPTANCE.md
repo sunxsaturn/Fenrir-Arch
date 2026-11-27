@@ -69,7 +69,7 @@ CI's installer-gate tests exercise the actual `scripts/sync-wallpaper-library.sh
 5. A malformed storage preflight report fails closed.
 6. The full installer gate never passes a transfer limit to the Dots command.
 
-Fenrir-Dots' wallpaper-library tests separately exercise actual manifest parsing, global SHA-256 deduplication across volumes, storage-space refusal before downloads, byte verification, existing-file conflict protection, attribution, interrupted partial downloads and HTTP Range resume. Run them from the pinned Dots checkout when investigating a failure.
+Fenrir-Dots' wallpaper-library tests separately exercise actual manifest parsing, global SHA-256 deduplication across volumes, storage-space refusal before downloads, byte verification, attribution, interrupted partial downloads and HTTP Range resume. The sync implementation also refuses to overwrite a conflicting existing target path. Run them from the pinned Dots checkout when investigating a failure.
 
 The real-VM run is for the positive clean-install path and end-to-end compatibility. Do not deliberately exhaust the VM filesystem or corrupt downloaded images on the only clean-install snapshot; destructive failure injection belongs in disposable snapshots or the deterministic test suite.
 
