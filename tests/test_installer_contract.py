@@ -43,11 +43,11 @@ class InstallerIntegrationTests(unittest.TestCase):
             "tests/test_fenrir_doctor.py",
         )
         self.assertIn('DOTS_VERSION="$(cat "$DOTS_DIR/VERSION" 2>/dev/null || true)"', installer)
-        self.assertIn('[[ "$DOTS_VERSION" == "0.15.0" ]]', installer)
+        self.assertIn('[[ "$DOTS_VERSION" == "0.16.0" ]]', installer)
         self.assertIn('apps/fenrir-doctor/assets/app.js', installer)
         self.assertIn('apps/fenrir-doctor/server.py', installer)
-        self.assertIn('DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-8df1f8e4fd4070b0289ad844da4ea74e866d72f1}"', installer)
-        self.assertIn('CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-63882e57114450926ccccc96d2e503a02ba168d7}"', installer)
+        self.assertIn('DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-9a4caf7401a8c409b1524ffd231d7796b5d440b5}"', installer)
+        self.assertIn('CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-2b246b56a7576af3b0eaf33b0f3c264c58a23c56}"', installer)
         self.assertIn('git -C "$DOTS_DIR" checkout --detach "$DOTS_COMMIT"', installer)
         self.assertIn('[[ "$DOTS_HEAD" == "$DOTS_COMMIT" ]]', installer)
         self.assertIn("write_installed_versions", installer)
@@ -124,7 +124,7 @@ class InstallerIntegrationTests(unittest.TestCase):
         self.assertIn(expected_commit, setup)
         self.assertIn('git -C "$CATALOG_SOURCE" checkout --detach "$CATALOG_COMMIT"', setup)
         self.assertIn('[[ "$actual" == "$CATALOG_COMMIT" ]]', setup)
-        self.assertIn('[[ "$version" == "0.37.0" ]]', setup)
+        self.assertIn('[[ "$version" == "0.38.0" ]]', setup)
         required = (
             "pyproject.toml",
             "src/fenrir_catalog/__init__.py",
