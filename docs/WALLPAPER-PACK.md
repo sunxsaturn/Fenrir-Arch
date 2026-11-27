@@ -2,6 +2,14 @@
 
 Fenrir uses the rights-aware **Fenrir Wallpaper Catalog** as the source of truth for discovered, acquired, reviewed and accepted assets. Fenrir Doctor provides a local desktop integration that can grow the wallpaper folder to the recommended 20,000-image target. Its read-only portfolio dashboard reports provider/profile discovery yield and an acceptance-history-based forecast; scheduled discovery rotates providers fairly with a four-request cap per turn.
 
+## Provider discovery and supervised scheduling
+
+The integrated Catalog release supports four active metadata-only providers: Wikimedia Commons, Openverse, SFW Wallhaven and Cleveland Museum of Art Open Access. It includes eight versioned search profiles spanning Nordic/fantasy, cinematic nature, cosmic science fiction, arctic blue/violet, monochrome architecture, red/violet dark fantasy, deep-ocean bioluminescence and obsidian abstract geometry.
+
+Fenrir Doctor can supervise a persisted round-robin queue across up to **32 source/profile combinations** (four providers × eight profiles). Each combination keeps its own resumable campaign and pagination cursor. The Catalog caps every provider slice at four API requests; the provider-specific query/page budgets and pacing rules are documented in the [Catalog source policy](https://github.com/sunxsaturn/Fenrir-Wallpaper-Catalog/blob/main/docs/SOURCES.md).
+
+Discovery remains metadata-only. It does not download images, grant rights, authorize acquisition, accept assets or publish the public library. Read the [Fenrir Doctor guide](https://github.com/sunxsaturn/Fenrir-Dots/blob/main/apps/fenrir-doctor/README.md) for the desktop scheduler and the [Catalog discovery guide](https://github.com/sunxsaturn/Fenrir-Wallpaper-Catalog/blob/main/docs/DISCOVERY.md) for campaign operation.
+
 ## Collection targets
 
 The available targets are total qualifying local images, not a promise that the Catalog already contains that number:

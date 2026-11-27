@@ -2,6 +2,16 @@
 
 This is the ecosystem navigation page for Fenrir Desktop. Start here when you need to find the correct repository, understand how the pieces fit together, or decide where a change belongs.
 
+## Current integrated release set
+
+| Component | Current release | Installed/pinned by |
+|---|---:|---|
+| Fenrir-Arch | 0.9.3 | System installer and deployment |
+| Fenrir-Dots | 0.14.1 | Fenrir-Arch 0.9.3, exact commit `9b9e85c084e397141389c28778988bf009280fcf` |
+| Fenrir Wallpaper Catalog | 0.35.0 | Fenrir-Arch 0.9.3, exact commit `d8742dde2c7540cc2d18eef8ed1cc58a2a12de04` |
+
+The release values above describe the latest integrated Arch release, not a floating checkout of each repository's `main` branch. See [Versioning and release policy](VERSIONING.md).
+
 ## Repositories at a glance
 
 | Repository | Visibility | Owns | Start here |
@@ -81,6 +91,8 @@ Avoid putting application logic in the installer, duplicating Catalog rights rul
 - [Live volume registry](https://github.com/sunxsaturn/Fenrir-Wallpapers/blob/main/manifest/volumes.json)
 
 ## Release and compatibility model
+
+Version numbers advance independently per repository. Feature milestones advance the minor component; maintenance releases advance the patch component. The installer pins full commit SHAs and expected versions. Never update a version label without updating its authoritative metadata and release tag.
 
 Fenrir-Arch pins exact Fenrir-Dots and Catalog commit SHAs. The installer verifies each checkout, component version and required source-file set before deployment. Treat those pins as the compatibility contract; never replace them with a floating `main` checkout.
 
