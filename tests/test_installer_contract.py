@@ -23,6 +23,7 @@ class InstallerIntegrationTests(unittest.TestCase):
         catalog = (ROOT / "scripts" / "install-catalog.sh").read_text(encoding="utf-8")
         wizard = (ROOT / "scripts" / "fenrir-installer.py").read_text(encoding="utf-8")
         required = (
+            "scripts/sync-wallpaper-library.sh",
             "apps/fenrir-doctor/README.md",
             "bin/fenrir-wallpaper",
             "bin/fenrir_wallpaper_library.py",
@@ -57,6 +58,13 @@ class InstallerIntegrationTests(unittest.TestCase):
         self.assertIn('"Fenrir-Dots": "%s"', installer)
         self.assertIn('"Fenrir-Wallpaper-Catalog": "%s"', installer)
         self.assertIn('install_fenrir_doctor "$AI"', installer)
+        self.assertIn('bash "$ROOT/scripts/sync-wallpaper-library.sh" "$ASSUME_YES"', installer)
+        wallpaper_sync = (ROOT / "scripts" / "sync-wallpaper-library.sh").read_text(encoding="utf-8")
+        self.assertIn("sync-library --dry-run --json", wallpaper_sync)
+        self.assertIn("sync-library --json", wallpaper_sync)
+        self.assertNotIn("--limit", wallpaper_sync)
+        self.assertIn("storage_preflight", wallpaper_sync)
+        self.assertIn("FINAL_PENDING", wallpaper_sync)
         self.assertIn('bash "$ROOT/scripts/install-catalog.sh"', installer)
         self.assertIn("AI=1", installer)
         self.assertNotIn("--no-ai", installer)
