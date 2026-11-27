@@ -1,8 +1,8 @@
 schema = 1
-arch_version = "1.2.2"
+arch_version = "1.2.3"
 dots_repository = "https://github.com/sunxsaturn/Fenrir-Dots.git"
-dots_version = "0.18.0"
-dots_commit = "b8e87efb7ac32cf9338a50c5e1afb01b3e485b60"
+dots_version = "0.19.0"
+dots_commit = "c557c780729ea7179749d45a29ca5dae79b7c3b2"
 catalog_repository = "https://github.com/sunxsaturn/Fenrir-Wallpaper-Catalog.git"
 catalog_version = "0.39.2"
 catalog_commit = "146d2487cafde202b873adb41d97326928abd981"
