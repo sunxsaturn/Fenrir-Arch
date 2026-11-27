@@ -6,9 +6,9 @@ This is the ecosystem navigation page for Fenrir Desktop. Start here when you ne
 
 | Component | Current release | Installed/pinned by |
 |---|---:|---|
-| Fenrir-Arch | 0.9.3 | System installer and deployment |
-| Fenrir-Dots | 0.14.1 | Fenrir-Arch 0.9.3, exact commit `9b9e85c084e397141389c28778988bf009280fcf` |
-| Fenrir Wallpaper Catalog | 0.35.0 | Fenrir-Arch 0.9.3, exact commit `d8742dde2c7540cc2d18eef8ed1cc58a2a12de04` |
+| Fenrir-Arch | 0.9.4 | System installer and deployment |
+| Fenrir-Dots | 0.14.1 | Fenrir-Arch 0.9.4, exact commit `9b9e85c084e397141389c28778988bf009280fcf` |
+| Fenrir Wallpaper Catalog | 0.36.0 | Fenrir-Arch 0.9.4, exact commit `4e6ed27e6425956ea2fa444db5fc03193767025c` |
 
 The release values above describe the latest integrated Arch release, not a floating checkout of each repository's `main` branch. See [Versioning and release policy](VERSIONING.md).
 
@@ -21,7 +21,7 @@ The release values above describe the latest integrated Arch release, not a floa
 | [Fenrir-Wallpaper-Catalog](https://github.com/sunxsaturn/Fenrir-Wallpaper-Catalog) | Private | Discovery metadata, provenance, licensing evidence, rights review, authorization, quarantine, deduplication, acceptance and curated collections | [README](https://github.com/sunxsaturn/Fenrir-Wallpaper-Catalog#readme) · [Architecture](https://github.com/sunxsaturn/Fenrir-Wallpaper-Catalog/blob/main/docs/ARCHITECTURE.md) · [Usage](https://github.com/sunxsaturn/Fenrir-Wallpaper-Catalog/blob/main/docs/USAGE.md) |
 | [Fenrir-Wallpapers](https://github.com/sunxsaturn/Fenrir-Wallpapers) | Public | Wallpaper library hub and Volume 01; canonical volume registry and publication tooling | [README](https://github.com/sunxsaturn/Fenrir-Wallpapers#readme) · [Volume registry](https://github.com/sunxsaturn/Fenrir-Wallpapers/blob/main/manifest/volumes.json) |
 | [Fenrir-Wallpapers-02](https://github.com/sunxsaturn/Fenrir-Wallpapers-02) | Public | Volume 02 image files and volume manifest | [README](https://github.com/sunxsaturn/Fenrir-Wallpapers-02#readme) · [Manifest](https://github.com/sunxsaturn/Fenrir-Wallpapers-02/blob/main/manifest/index.json) |
-| [Fenrir-Wallpapers-03](https://github.com/sunxsaturn/Fenrir-Wallpapers-03) | Public | Volume 03 image files and volume manifest; current overflow and equal-count population | [README](https://github.com/sunxsaturn/Fenrir-Wallpapers-03#readme) · [Manifest](https://github.com/sunxsaturn/Fenrir-Wallpapers-03/blob/main/manifest/index.json) |
+| [Fenrir-Wallpapers-03](https://github.com/sunxsaturn/Fenrir-Wallpapers-03) | Public | Volume 03 image files and volume manifest; balanced overflow using live manifests and shared capacity | [README](https://github.com/sunxsaturn/Fenrir-Wallpapers-03#readme) · [Manifest](https://github.com/sunxsaturn/Fenrir-Wallpapers-03/blob/main/manifest/index.json) |
 
 The hub registry is authoritative for active volume discovery. Desktop code must read it rather than hard-code the current number of volumes.
 
