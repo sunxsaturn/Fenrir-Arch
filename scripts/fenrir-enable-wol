@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+command -v ethtool >/dev/null 2>&1 || exit 0
+shopt -s nullglob
+changed=0
+for path in /sys/class/net/*; do
+  iface="${path##*/}"
+  [[ "$iface" != lo ]] || continue
+  [[ -e "$path/device" ]] || continue
+  if [[ -r "$path/type" ]] && [[ "$(cat "$path/type")" == 1 ]]; then
+    current="$(ethtool "$iface" 2>/dev/null | awk -F': ' '/Supports Wake-on:/ {print $2}')"
+    [[ "$current" == *g* ]] || continue
+    ethtool -s "$iface" wol g
+    printf '[Fenrir] Wake-on-LAN magic packet enabled on %s.\n' "$iface"
+    changed=1
+  fi
+done
+exit 0
