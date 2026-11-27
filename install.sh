@@ -116,8 +116,8 @@ require_cmd python3
 require_cmd git
 
 if (( DRY_RUN )); then
-  log "Plan: Arch Linux x86_64; Fenrir-Arch 1.2.2; pinned Dots 0.18.0; private Catalog 0.39.2."
-  log "Desktop: Hyprland >= 0.57, SDDM, Quickshell/QML, Waybar fallback, Fuzzel, Kitty, Mako, Thunar."
+  log "Plan: Arch Linux x86_64; Fenrir-Arch 1.2.3; pinned Dots 0.19.0; private Catalog 0.39.2."
+  log "Desktop: Hyprland >= 0.57, SDDM, Quickshell 0.3.2 native shell, Waybar fallback, Fuzzel, Kitty, Thunar."
   log "Gaming: Steam, Proton support, GameMode, MangoHud, Gamescope, RPCS3, Heroic, Prism Launcher."
   log "Audio: PipeWire, EasyEffects, QPWGraph, Guitarix, Calf, REAPER and ReaPack."
   log "Gallery: mandatory 5,000-image registry and manifest preflight, complete SHA-256-verified sync."
