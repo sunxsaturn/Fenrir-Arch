@@ -156,10 +156,7 @@ def main() -> int:
         state_dir = Path.home() / ".local" / "state" / "fenrir" / "wallpaper-sync"
         destination_free = existing_free(destination)
         state_free = existing_free(state_dir)
-        largest_image = max(
-            (item.get("file_size_bytes", 0) for _ in []), default=0
-        )
-        required_with_headroom = total_bytes + max(2 * 1024**3, largest_image * 2)
+        required_with_headroom = total_bytes + 2 * 1024**3
         if destination_free < required_with_headroom or state_free < required_with_headroom:
             raise ValueError(
                 "insufficient free space for the complete gallery: "
