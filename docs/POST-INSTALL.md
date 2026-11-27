@@ -2,7 +2,7 @@
 
 ## First login
 
-- The GTK4 Fenrir Setup window launches from `./install.sh` (using Cage on a text-only TTY, or your existing graphical session when available). Fenrir Doctor, Ollama Vulkan and the local Fenrir Wallpaper Catalog are always installed as required Fenrir components. The wizard lets you opt out only of UUID-based fixed data-disk mounts and Ethernet Wake-on-LAN; the core desktop, gaming and audio suite is always included. You can use `./install.sh --cli` for a terminal-only installation.
+- The GTK4 Fenrir Setup window launches from `./install.sh` (using Cage on a text-only TTY, or your existing graphical session when available). Fenrir Doctor and the local Fenrir Wallpaper Catalog are always installed as required Fenrir components. The Ollama runtime is included and starts on demand; model weights are opt-in and are never downloaded automatically. The wizard lets you opt out only of UUID-based fixed data-disk mounts and Ethernet Wake-on-LAN; the core desktop, gaming and audio suite is always included. You can use `./install.sh --cli` for a terminal-only installation.
 - Fenrir First Login Guide opens once after your first Hyprland login. It explains the desktop and keybindings. Reopen **Fenrir Control Center** from the app launcher whenever you need the guide or configuration options.
 - Fenrir Control Center provides GUI options for display mode, scaling, wallpaper folder/interval, surface opacity, blur, wallpaper-derived colors and keep-awake behavior. It creates backups of the settings it changes.
 - Log into the Hyprland session from SDDM.
