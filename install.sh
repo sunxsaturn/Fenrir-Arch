@@ -116,10 +116,11 @@ require_cmd python3
 require_cmd git
 
 if (( DRY_RUN )); then
-  log "Plan: Arch Linux x86_64; Fenrir-Arch 1.2.5; pinned Dots 0.20.0; private Catalog 0.39.2."
+  log "Plan: Arch Linux x86_64; Fenrir-Arch 1.2.6; pinned Dots 0.20.0; private Catalog 0.39.2."
   log "Desktop: Hyprland >= 0.57, SDDM, Quickshell 0.3.2 native shell, Waybar fallback, Fuzzel, Kitty, Thunar."
   log "Gaming: Steam, Proton support, GameMode, MangoHud, Gamescope, RPCS3, Heroic, Prism Launcher."
   log "Audio: PipeWire, EasyEffects, QPWGraph, Guitarix, Calf, REAPER and ReaPack."
+  log "Productivity/device/recovery: VSCodium, VLC, LibreOffice, scrcpy/ADB, SMART/NVMe, Btrfs/Snapper and Restic tools."
   log "Gallery: mandatory 5,000-image registry and manifest preflight, complete SHA-256-verified sync."
   (( GLASS )) && log "Fimbulwinter Glass: 60% window opacity, compositor blur, user toggle enabled."
   (( OLLAMA )) && log "Ollama: Vulkan runtime, Qwen 3.5 9B / Gemma 3 12B / Gemma 3 4B download and benchmark."
