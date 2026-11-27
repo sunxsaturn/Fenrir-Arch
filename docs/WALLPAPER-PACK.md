@@ -28,52 +28,42 @@ The sync copies every currently eligible human-accepted asset; there is no image
 
 A technical metadata preflight ceiling protects the planner from unbounded scans. It is not an image target. If the planner cannot inspect the full accepted index within that safety ceiling, it blocks synchronization instead of claiming completion.
 
-## Public multi-volume library
+## Public multi-volume library — included in the one-command installer
 
-Public population is **closed on 2026-11-27**. The three existing repositories remain active for desktop synchronization:
+Public population is **closed on 2026-11-27**. The three existing repositories contain 1,871 images and remain active for synchronization. No further acquisition, category balancing, image-count quota or fourth volume is planned.
 
-| Volume | Repository | Images | Population |
-|---|---|---:|---|
-| 01 | [Fenrir-Wallpapers](https://github.com/sunxsaturn/Fenrir-Wallpapers) | 134 | Closed |
-| 02 | [Fenrir-Wallpapers-02](https://github.com/sunxsaturn/Fenrir-Wallpapers-02) | 1,132 | Closed |
-| 03 | [Fenrir-Wallpapers-03](https://github.com/sunxsaturn/Fenrir-Wallpapers-03) | 605 | Closed |
-| **Total** | | **1,871** | **Existing assets only** |
+A fresh installation uses the documented single command:
 
-All nine category folders already exist. The 2026-11-27 manifest/tree snapshot is:
+```bash
+git clone --depth=1 https://github.com/sunxsaturn/Fenrir-Arch.git ~/Fenrir && cd ~/Fenrir && ./install.sh
+```
 
-| Category | Images |
-|---|---:|
-| Arctic Blue/Violet | 228 |
-| Cinematic Nature | 228 |
-| Cosmic Science Fiction | 228 |
-| Deep Ocean/Bioluminescence | 221 |
-| Monochrome Futuristic Architecture | 228 |
-| Nordic Mythology/Fantasy | 228 |
-| Obsidian Minimalism/Abstract Geometry | 171 |
-| Red/Violet Dark Fantasy | 228 |
-| Unsorted | 111 |
-| **Total** | **1,871** |
+After deploying the exact pinned Fenrir Dots source, the system installer invokes **the same `fenrir-wallpaper sync-library` implementation shipped by Fenrir Dots**. It synchronizes every unique image from all active volumes to the configured rotation directory. There is no separate downloader, no second manual command and no fixed transfer limit in the fresh-install path.
 
-This is the actual inventory, not a goal. The distribution is intentionally preserved. No more source acquisition, count-based balancing, category quota or fourth volume is scheduled. Existing image files and their content-addressed paths are immutable.
+Before any wallpaper bytes are downloaded, the installer:
 
-### Audit and synchronization
+1. Reads and validates the canonical volume registry and every active manifest.
+2. Deduplicates the inventory globally by SHA-256 and computes the complete missing-image byte total.
+3. Checks available space for both the destination and resumable cache. If both directories share one filesystem, it checks their combined temporary-storage requirement.
+4. Stops before image transfers if either filesystem lacks enough free space.
 
-The manifest-only public audit reads the canonical volume registry, all active manifests and GitHub repository metadata. It reports SHA-256 declarations/uniqueness, path/hash consistency, dimensions, source and attribution completeness, license classification, dominant-color metadata, category distribution and approximate repository storage headroom. It does not download image bytes or inspect the local wallpaper folder. The downloaded bytes are verified separately by the sync client.
+It then runs the Dots command without `--limit`. The existing downloader resumes interrupted transfers, verifies exact byte size and SHA-256, validates decoded image format, landscape dimensions and palette, and installs files atomically without replacing existing files. The installer checks the final inventory again and only reports success when every unique manifest-listed image is present and verified.
 
-Run the audit and preview from a current Fenrir Dots installation:
+The user can decline the image transfer when the installer runs interactively; in that case the installation stops with a clear instruction to rerun `./install.sh` to complete the full install. The GTK setup wizard has its own explicit Start action. Running `./install.sh --yes` accepts the installer confirmations, including complete public-library synchronization. A failed or interrupted transfer can be resumed by rerunning the same installer command.
+
+For an already-installed system, the same Dots sync command remains available for reconciliation and recovery:
 
 ```bash
 fenrir-wallpaper audit-library --json
 fenrir-wallpaper sync-library --dry-run
-```
-
-After reviewing the dry-run, explicitly run:
-
-```bash
 fenrir-wallpaper sync-library
 ```
 
-The sync reads all active registered volumes; it does not use hard-coded repository lists. It downloads only already-published manifest entries, verifies SHA-256 and decoded-image quality, deduplicates globally and preserves existing local files. The public library remains a separate rights boundary: local Catalog acceptance alone does not grant public redistribution rights.
+The dry-run is read-only. `--limit` is reserved for deliberate maintenance staging and is never used by the fresh installer.
+
+The private Catalog workflow remains distinct. Newly discovered provider metadata is not downloaded or accepted automatically. Only existing assets with current per-asset rights evidence, explicit acquisition authorization, verified quarantine bytes, duplicate review and human acceptance may be synchronized locally through Fenrir Doctor. This protects the private rights lifecycle and does not grant public redistribution permission.
+
+The dated public inventory snapshot remains 134 / 1,132 / 605 images across Volumes 01 / 02 / 03 (1,871 total). The actual nine-category distribution is documented in the [public population status](https://github.com/sunxsaturn/Fenrir-Wallpapers/blob/main/docs/POPULATION-STATUS.md).
 
 ## Rights, provenance and safety
 
