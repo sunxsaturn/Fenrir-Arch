@@ -6,7 +6,7 @@ Fenrir-Arch is the system installer and hardware integration layer for Fenrir De
 
 ## Rebuild contract
 
-For private Catalog preparation before the public image gallery is complete:
+For private Catalog preparation before the public image gallery is complete, run this isolated mode on Arch Linux, Debian 13+ or Ubuntu with Python 3.13+, Git, sudo and a systemd user session:
 
 ```bash
 git clone --depth=1 https://github.com/sunxsaturn/Fenrir-Arch.git ~/Fenrir

@@ -1,6 +1,6 @@
 # Fenrir Desktop — clean Arch installation
 
-Fenrir-Arch is a workstation installer, not an operating-system installer. Begin with minimal Arch Linux x86_64, systemd, networking, Git and a regular sudo-enabled user. Do not install a competing desktop distribution first.
+Fenrir-Arch is a workstation installer, not an operating-system installer. For the full desktop deployment, begin with minimal Arch Linux x86_64, systemd, networking, Git and a regular sudo-enabled user. Do not install a competing desktop distribution first.
 
 ## Private Catalog preparation
 
@@ -12,7 +12,7 @@ cd ~/Fenrir
 ./install.sh --catalog-only
 ```
 
-This mode installs only the `python-pip` prerequisite when needed, then installs the pinned private Catalog under the user's home directory, verifies the 1,871-image legacy exclusion set, seeds the 176 bounded metadata-only campaigns and installs the user timer. It does not install the desktop package profile, configure system services, edit boot settings or access personal data volumes. Configure GitHub access to the private Catalog with an SSH key or Git credential helper; no token is embedded in Fenrir or passed on the command line.
+Catalog-only preparation runs on Arch Linux, Debian 13+ or Ubuntu with Python 3.13+, Git, sudo and a systemd user session. On Arch it installs only `python-pip` when needed; on Debian/Ubuntu it installs `python3-venv` only when the current interpreter cannot create a virtual environment. It then installs the pinned private Catalog under the user's home directory, verifies the 1,871-image legacy exclusion set, seeds the 176 bounded metadata-only campaigns and enables the user timer. It does not install the desktop package profile, change boot settings, configure system services or access personal data volumes. The normal desktop installer remains Arch-only. Configure GitHub access to the private Catalog with an SSH key or Git credential helper; no token is embedded in Fenrir or passed on the command line.
 
 The discovery scheduler fetches metadata only. Exact asset license and provider terms are reviewed separately; an expiring authorization is required before image bytes can enter private quarantine. Technical validation, duplicate adjudication, human acceptance and separate public redistribution approval are independent gates. Only Public Domain and CC0 files may enter the new public generation.
 
