@@ -17,6 +17,8 @@ BASE_PACKAGES=(
   ttf-jetbrains-mono-nerd inter-font noto-fonts noto-fonts-emoji starship
   python python-pip python-pillow python-gobject gtk4 git github-cli curl rsync flatpak ethtool
   firefox
+  scrcpy android-tools vlc libreoffice-fresh v4l-utils
+  smartmontools nvme-cli btrfs-progs snapper restic nftables
 )
 GAMING_PACKAGES=(
   steam gamemode lib32-gamemode mangohud lib32-mangohud gamescope
@@ -30,5 +32,6 @@ FLATPAK_APPS=(
   com.discordapp.Discord
   com.rtosta.zapzap
   org.prismlauncher.PrismLauncher
+  com.vscodium.codium
 )
 
