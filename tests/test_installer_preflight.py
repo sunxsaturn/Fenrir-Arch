@@ -87,6 +87,12 @@ class InstallerPreflightTests(unittest.TestCase):
         self.assertLess(apt_install, catalog_install)
         self.assertNotIn("sudo apt-get upgrade", source)
 
+    def test_gallery_preflight_requires_registry_claim_of_5000_unique_hashes(self):
+        source = (INSTALLER.parent / "scripts" / "check-wallpaper-ready.py").read_text(encoding="utf-8")
+        self.assertIn('population.get("unique_sha256_count") != 5000', source)
+        self.assertIn('population.get("published_unique_images") != 5000', source)
+        self.assertIn('population.get("legacy_images_reused") != 0', source)
+
     def test_gallery_preflight_runs_exactly_once(self):
         source = INSTALLER.read_text(encoding="utf-8")
         self.assertEqual(source.count(PREFLIGHT), 1)

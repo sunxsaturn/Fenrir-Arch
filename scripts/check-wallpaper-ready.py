@@ -69,6 +69,7 @@ def main() -> int:
             population.get("state") != "published"
             or population.get("target_unique_images") != 5000
             or population.get("published_unique_images") != 5000
+            or population.get("unique_sha256_count") != 5000
             or population.get("legacy_images_reused") != 0
         ):
             raise ValueError(
