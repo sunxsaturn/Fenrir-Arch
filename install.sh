@@ -50,6 +50,65 @@ while (($#)); do
   shift
 done
 
+if (( DRY_RUN && CATALOG_ONLY )); then
+  log "Catalog-only plan: prepare the private Catalog on Arch or Debian/Ubuntu with Python 3.13+, verify exclusions, seed 176 metadata campaigns and enable the user timer."
+  log "No desktop packages, system services, boot settings or personal data volumes will be changed."
+  log "Dry run complete. No changes were made."
+  exit 0
+fi
+
+if (( CATALOG_ONLY )); then
+  [[ "$(uname -s)" == Linux ]] || die "Catalog-only preparation requires Linux."
+  [[ "$EUID" -ne 0 ]] || die "Run Catalog-only preparation as a normal user, not root."
+  [[ -n "${HOME:-}" && "$HOME" != "/" ]] || die "A valid user home directory is required."
+  require_cmd sudo
+  require_cmd git
+  require_cmd python3
+  [[ -r /etc/os-release ]] || die "Cannot identify the Linux distribution."
+  # shellcheck disable=SC1091
+  source /etc/os-release
+  CATALOG_PLATFORM="${ID:-unknown}"
+  case "$CATALOG_PLATFORM" in
+    arch|debian|ubuntu) ;;
+    *) die "Catalog-only preparation supports Arch, Debian and Ubuntu; detected: $CATALOG_PLATFORM" ;;
+  esac
+  python3 -c 'import sys; raise SystemExit(0 if sys.version_info >= (3, 13) else 1)' \
+    || die "The private Catalog requires Python 3.13 or newer."
+  CATALOG_REPO="$(sed -n 's/^catalog_repository = "\\(.*\\)"/\\1/p' "$ROOT/components.lock")"
+  [[ -n "$CATALOG_REPO" ]] || die "Private Catalog repository is missing from components.lock."
+  log "Checking private Catalog access before installing prerequisites."
+  if ! GIT_TERMINAL_PROMPT=0 git ls-remote "$CATALOG_REPO" HEAD >/dev/null 2>&1; then
+    die "Private Catalog access is unavailable. Configure GitHub SSH or a Git credential helper, then rerun."
+  fi
+  sudo -v
+  case "$CATALOG_PLATFORM" in
+    arch)
+      require_cmd pacman
+      log "Ensuring the Arch Python packaging prerequisite is installed."
+      sudo pacman -S --needed python-pip
+      ;;
+    debian|ubuntu)
+      require_cmd apt-get
+      log "Checking that the system Python can create isolated virtual environments."
+      probe_root="$(mktemp -d "${TMPDIR:-/tmp}/fenrir-catalog-venv-check.XXXXXX")"
+      if ! python3 -m venv "$probe_root/probe" >/dev/null 2>&1; then
+        rm -rf -- "$probe_root"
+        log "Installing only the Python venv prerequisite; no distribution upgrade will be run."
+        sudo apt-get update
+        sudo apt-get install -y python3-venv
+        probe_root="$(mktemp -d "${TMPDIR:-/tmp}/fenrir-catalog-venv-check.XXXXXX")"
+        python3 -m venv "$probe_root/probe" >/dev/null 2>&1 \
+          || { rm -rf -- "$probe_root"; die "Python venv support is still unavailable after installing python3-venv."; }
+      fi
+      rm -rf -- "$probe_root"
+      ;;
+  esac
+  log "Installing only the private rights-aware Catalog and its bounded metadata-discovery timer."
+  bash "$ROOT/scripts/install-catalog.sh"
+  log "Catalog-only preparation complete. No desktop packages or desktop configuration were changed."
+  exit 0
+fi
+
 require_arch
 require_user
 require_cmd pacman
@@ -57,11 +116,6 @@ require_cmd python3
 require_cmd git
 
 if (( DRY_RUN )); then
-  if (( CATALOG_ONLY )); then
-    log "Catalog-only plan: install python-pip only when needed, clone the private Catalog, verify exclusions, seed 176 metadata campaigns and install the user timer."
-    log "No desktop packages, system services, boot settings or personal data volumes will be changed."
-    exit 0
-  fi
   log "Plan: Arch Linux x86_64; Fenrir-Arch 1.2.2; pinned Dots 0.18.0; private Catalog 0.39.2."
   log "Desktop: Hyprland >= 0.57, SDDM, Quickshell/QML, Waybar fallback, Fuzzel, Kitty, Mako, Thunar."
   log "Gaming: Steam, Proton support, GameMode, MangoHud, Gamescope, RPCS3, Heroic, Prism Launcher."
@@ -76,21 +130,6 @@ if (( DRY_RUN )); then
   exit 0
 fi
 
-if (( CATALOG_ONLY )); then
-  CATALOG_REPO="$(sed -n 's/^catalog_repository = "\\(.*\\)"/\\1/p' "$ROOT/components.lock")"
-  [[ -n "$CATALOG_REPO" ]] || die "Private Catalog repository is missing from components.lock."
-  log "Checking private Catalog access before installing prerequisites."
-  if ! GIT_TERMINAL_PROMPT=0 git ls-remote "$CATALOG_REPO" HEAD >/dev/null 2>&1; then
-    die "Private Catalog access is unavailable. Configure GitHub SSH or a Git credential helper, then rerun."
-  fi
-  log "Installing the minimal Python packaging prerequisite for the private Catalog."
-  sudo -v
-  sudo pacman -S --needed python-pip
-  log "Installing only the private rights-aware Catalog and its bounded metadata-discovery timer."
-  bash "$ROOT/scripts/install-catalog.sh"
-  log "Catalog-only preparation complete. No desktop packages or desktop configuration were changed."
-  exit 0
-fi
 
 log "Preflighting the complete 5,000-image public gallery before any system changes."
 if ! python3 "$ROOT/scripts/check-wallpaper-ready.py"; then
