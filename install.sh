@@ -18,6 +18,7 @@ Usage:
 Options:
   --cli           Use terminal mode instead of the GTK4 guided installer
   --dry-run       Show the plan only; make no system changes
+  --catalog-only  Install and schedule the private Catalog without desktop packages
   --no-glass      Do not enable Fimbulwinter Glass
   --no-ollama     Skip Ollama model downloads and benchmarks
   --no-wol        Do not enable Wake-on-LAN
@@ -32,11 +33,12 @@ The complete 5,000-image gallery is a mandatory pre-installation gate.
 EOF
 }
 
-GUI_MODE=1 DRY_RUN=0 GLASS=1 OLLAMA=1 WOL=1 REAPACK=1 ASSUME_YES=0
+GUI_MODE=1 DRY_RUN=0 CATALOG_ONLY=0 GLASS=1 OLLAMA=1 WOL=1 REAPACK=1 ASSUME_YES=0
 while (($#)); do
   case "$1" in
     --cli) GUI_MODE=0 ;;
     --dry-run) DRY_RUN=1 ;;
+    --catalog-only) CATALOG_ONLY=1 GUI_MODE=0 ;;
     --no-glass) GLASS=0 ;;
     --no-ollama) OLLAMA=0 ;;
     --no-wol) WOL=0 ;;
@@ -55,7 +57,7 @@ require_cmd python3
 require_cmd git
 
 if (( DRY_RUN )); then
-  log "Plan: Arch Linux x86_64; Fenrir-Arch 1.1.0; pinned Dots 0.17.0; private Catalog 0.39.0."
+  log "Plan: Arch Linux x86_64; Fenrir-Arch 1.2.0; pinned Dots 0.17.3; private Catalog 0.39.1."
   log "Desktop: Hyprland >= 0.57, SDDM, Waybar, Fuzzel, Kitty, Mako, Thunar."
   log "Gaming: Steam, Proton support, GameMode, MangoHud, Gamescope, RPCS3, Heroic, Prism Launcher."
   log "Audio: PipeWire, EasyEffects, QPWGraph, Guitarix, Calf, REAPER and ReaPack."
@@ -66,6 +68,13 @@ if (( DRY_RUN )); then
   (( REAPACK )) || log "ReaPack skipped."
   log "No data-disk mounts will be configured; /mnt/storage is protected."
   log "Dry run complete. No changes were made."
+  exit 0
+fi
+
+if (( CATALOG_ONLY )); then
+  log "Installing only the private rights-aware Catalog and its bounded metadata-discovery timer."
+  bash "$ROOT/scripts/install-catalog.sh"
+  log "Catalog-only preparation complete. No system packages or desktop configuration were changed."
   exit 0
 fi
 
