@@ -1,8 +1,0 @@
-{
-  "schema": "org.fenrir.component-lock.v1",
-  "dots_version": "0.17.0",
-  "dots_commit": "PENDING",
-  "catalog_version": "0.39.0",
-  "catalog_commit": "PENDING",
-  "note": "Final immutable pins are written only after component source acceptance. Installation stays gated until this lock and the full clean-install acceptance suite pass."
-}
