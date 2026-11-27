@@ -62,8 +62,8 @@ if (( DRY_RUN )); then
     log "No desktop packages, system services, boot settings or personal data volumes will be changed."
     exit 0
   fi
-  log "Plan: Arch Linux x86_64; Fenrir-Arch 1.2.1; pinned Dots 0.17.4; private Catalog 0.39.2."
-  log "Desktop: Hyprland >= 0.57, SDDM, Waybar, Fuzzel, Kitty, Mako, Thunar."
+  log "Plan: Arch Linux x86_64; Fenrir-Arch 1.2.2; pinned Dots 0.18.0; private Catalog 0.39.2."
+  log "Desktop: Hyprland >= 0.57, SDDM, Quickshell/QML, Waybar fallback, Fuzzel, Kitty, Mako, Thunar."
   log "Gaming: Steam, Proton support, GameMode, MangoHud, Gamescope, RPCS3, Heroic, Prism Launcher."
   log "Audio: PipeWire, EasyEffects, QPWGraph, Guitarix, Calf, REAPER and ReaPack."
   log "Gallery: mandatory 5,000-image registry and manifest preflight, complete SHA-256-verified sync."
