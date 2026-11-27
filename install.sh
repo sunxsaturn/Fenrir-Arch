@@ -108,9 +108,6 @@ if ! GIT_TERMINAL_PROMPT=0 git ls-remote "$CATALOG_REPO" HEAD >/dev/null 2>&1; t
   die "Private Catalog access is unavailable. Configure GitHub SSH or a Git credential helper, then rerun."
 fi
 
-log "Checking all 5,000 public wallpaper manifests, quotas, rights metadata and disk capacity."
-python3 "$ROOT/scripts/check-wallpaper-ready.py"
-
 enable_multilib(){
   if awk '
     /^\[multilib\]$/ {section=1; sections++; next}
@@ -179,20 +176,25 @@ else
   fenrir-glass disable
 fi
 
-log "Installing the pinned private Wallpaper Catalog."
+log "Installing the pinned private Wallpaper Catalog and seeding metadata-only population campaigns."
 bash "$ROOT/scripts/install-catalog.sh"
+
+log "Enabling NetworkManager, Bluetooth and SDDM. No service is force-started and no reboot is performed."
+sudo systemctl enable NetworkManager bluetooth sddm
+sudo systemctl daemon-reload
+
+log "Preflighting the complete new 5,000-image public gallery before image transfer."
+if ! python3 "$ROOT/scripts/check-wallpaper-ready.py"; then
+  die "Desktop, private Catalog and discovery scheduler are installed, but the public gallery is not yet complete. Do not treat this as a completed Fenrir installation. Complete the Catalog's rights/acquisition/publication workflow, then rerun the same ./install.sh command. The wallpaper sync remains integrated; no separate downloader is required."
+fi
+
+log "Synchronizing all 5,000 verified public images as the final library-install stage."
+fenrir-wallpaper sync-public --destination "$HOME/Pictures/Wallpapers"
 
 if (( OLLAMA )); then
   log "Installing Ollama Vulkan models and running local GPU/CPU benchmarks."
   bash "$ROOT/scripts/install-ollama-models.sh"
 fi
-
-log "Synchronizing the entire public gallery inside this installation."
-fenrir-wallpaper sync-public --destination "$HOME/Pictures/Wallpapers"
-
-log "Enabling core system services (they start on the next boot)."
-sudo systemctl enable NetworkManager bluetooth sddm
-sudo systemctl daemon-reload
 
 HYPRLAND_VERSION="$(hyprland --version 2>/dev/null | head -n1 || true)"
 python3 - "$HYPRLAND_VERSION" <<'PY'
