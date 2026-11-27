@@ -46,6 +46,25 @@ class InstallerPreflightTests(unittest.TestCase):
         self.assertIn("timers.target.wants", source)
         self.assertIn("ln -sfn ../fenrir-catalog-discovery.timer", source)
 
+    def test_catalog_only_is_portable_but_full_installer_remains_arch_only(self):
+        source = INSTALLER.read_text(encoding="utf-8")
+        catalog_mode = source.index("if (( CATALOG_ONLY )); then")
+        arch_guard = source.index("require_arch")
+        self.assertLess(catalog_mode, arch_guard)
+        self.assertIn("arch|debian|ubuntu", source)
+        self.assertIn("sudo apt-get install -y python3-venv", source)
+        self.assertIn("require_arch", source)
+
+    def test_catalog_only_debian_prerequisite_is_scoped_and_access_checked_first(self):
+        source = INSTALLER.read_text(encoding="utf-8")
+        mode = source.index("if (( CATALOG_ONLY )); then")
+        access = source.index('git ls-remote "$CATALOG_REPO"', mode)
+        apt_install = source.index("sudo apt-get install -y python3-venv", mode)
+        catalog_install = source.index('bash "$ROOT/scripts/install-catalog.sh"', mode)
+        self.assertLess(access, apt_install)
+        self.assertLess(apt_install, catalog_install)
+        self.assertNotIn("sudo apt-get upgrade", source)
+
     def test_gallery_preflight_runs_exactly_once(self):
         source = INSTALLER.read_text(encoding="utf-8")
         self.assertEqual(source.count(PREFLIGHT), 1)
