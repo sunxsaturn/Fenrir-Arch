@@ -7,8 +7,8 @@ This is the ecosystem navigation page for Fenrir Desktop. Start here when you ne
 | Component | Current release | Installed/pinned by |
 |---|---:|---|
 | Fenrir-Arch | 0.9.4 | System installer and deployment |
-| Fenrir-Dots | 0.14.1 | Fenrir-Arch 0.9.4, exact commit `9b9e85c084e397141389c28778988bf009280fcf` |
-| Fenrir Wallpaper Catalog | 0.36.0 | Fenrir-Arch 0.9.4, exact commit `4e6ed27e6425956ea2fa444db5fc03193767025c` |
+| Fenrir-Dots | 0.15.0 | Fenrir-Arch 0.9.6, exact commit `PENDING_DOTS_RELEASE_SHA` |
+| Fenrir Wallpaper Catalog | 0.37.0 | Fenrir-Arch 0.9.6, exact commit `PENDING_CATALOG_RELEASE_SHA` |
 
 The release values above describe the latest integrated Arch release, not a floating checkout of each repository's `main` branch. See [Versioning and release policy](VERSIONING.md).
 
@@ -17,8 +17,8 @@ The release values above describe the latest integrated Arch release, not a floa
 | Repository | Visibility | Owns | Start here |
 |---|---|---|---|
 | [Fenrir-Arch](https://github.com/sunxsaturn/Fenrir-Arch) | Public | Arch Linux installation, package selection, system services, deployment safety and component pins | [README](../README.md) · [Install guide](ARCH-BASE.md) |
-| [Fenrir-Dots](https://github.com/sunxsaturn/Fenrir-Dots) | Public | Hyprland desktop, user configuration, Settings, Welcome, Doctor, wallpaper rotation and desktop commands | [README](https://github.com/sunxsaturn/Fenrir-Dots#readme) · [Docs index](https://github.com/sunxsaturn/Fenrir-Dots/tree/main/docs) |
-| [Fenrir-Wallpaper-Catalog](https://github.com/sunxsaturn/Fenrir-Wallpaper-Catalog) | Private | Discovery metadata, provenance, licensing evidence, rights review, authorization, quarantine, deduplication, acceptance and curated collections | [README](https://github.com/sunxsaturn/Fenrir-Wallpaper-Catalog#readme) · [Architecture](https://github.com/sunxsaturn/Fenrir-Wallpaper-Catalog/blob/main/docs/ARCHITECTURE.md) · [Usage](https://github.com/sunxsaturn/Fenrir-Wallpaper-Catalog/blob/main/docs/USAGE.md) |
+| [Fenrir-Dots](https://github.com/sunxsaturn/Fenrir-Dots) | Public | Hyprland desktop, user configuration, Settings, Welcome, Doctor, wallpaper rotation, public-library audit and desktop commands | [README](https://github.com/sunxsaturn/Fenrir-Dots#readme) · [Docs index](https://github.com/sunxsaturn/Fenrir-Dots/tree/main/docs) |
+| [Fenrir-Wallpaper-Catalog](https://github.com/sunxsaturn/Fenrir-Wallpaper-Catalog) | Private | Discovery metadata, provenance, licensing evidence, rights review, authorization, quarantine, deduplication, acceptance, target-free local sync and curated collections | [README](https://github.com/sunxsaturn/Fenrir-Wallpaper-Catalog#readme) · [Architecture](https://github.com/sunxsaturn/Fenrir-Wallpaper-Catalog/blob/main/docs/ARCHITECTURE.md) · [Usage](https://github.com/sunxsaturn/Fenrir-Wallpaper-Catalog/blob/main/docs/USAGE.md) |
 | [Fenrir-Wallpapers](https://github.com/sunxsaturn/Fenrir-Wallpapers) | Public | Wallpaper library hub and Volume 01; canonical volume registry and publication tooling | [README](https://github.com/sunxsaturn/Fenrir-Wallpapers#readme) · [Volume registry](https://github.com/sunxsaturn/Fenrir-Wallpapers/blob/main/manifest/volumes.json) |
 | [Fenrir-Wallpapers-02](https://github.com/sunxsaturn/Fenrir-Wallpapers-02) | Public | Volume 02 image files and volume manifest | [README](https://github.com/sunxsaturn/Fenrir-Wallpapers-02#readme) · [Manifest](https://github.com/sunxsaturn/Fenrir-Wallpapers-02/blob/main/manifest/index.json) |
 | [Fenrir-Wallpapers-03](https://github.com/sunxsaturn/Fenrir-Wallpapers-03) | Public | Volume 03 image files and volume manifest; balanced overflow using live manifests and shared capacity | [README](https://github.com/sunxsaturn/Fenrir-Wallpapers-03#readme) · [Manifest](https://github.com/sunxsaturn/Fenrir-Wallpapers-03/blob/main/manifest/index.json) |
@@ -118,7 +118,7 @@ The wallpaper volumes have independent image manifests. The hub registry determi
 ## Safety boundaries
 
 - The installer does not partition, format or modify user data-volume contents.
-- The Catalog database and quarantine are private local data and must never be committed to the public wallpaper repositories.
+- The Catalog database and quarantine are private local data and must never be committed to the public wallpaper repositories. Public wallpaper population is closed at the existing 1,871 published assets; all three registered volumes remain active for desktop synchronization.
 - Discovery is metadata-only; it does not imply rights clearance or acquisition authorization.
 - Local Catalog sync and public redistribution are separate operations and approvals.
 - Public-library sync is additive, verifies committed bytes and never overwrites existing local files.
