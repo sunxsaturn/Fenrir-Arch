@@ -32,6 +32,14 @@ The normal installer validates the complete 5,000-image registry and every activ
 
 Fimbulwinter Glass defaults to 60% opacity, with compositor blur where supported and opaque exceptions for games, fullscreen media, lock and authentication surfaces. The official package profile includes Hyprland 0.57+, SDDM, Quickshell/QML shell, Waybar fallback, Fuzzel, Kitty, Mako, Thunar, Starship, qt6ct, Steam/Proton, GameMode, MangoHud, Gamescope, PipeWire/JACK, EasyEffects, QPWGraph, QjackCtl, REAPER/ReaPack, Guitarix and Calf. Flathub supplies Spotify, Heroic, RPCS3, Discord, ZapZap and Prism Launcher. The audio profile uses PipeWire's JACK compatibility layer; QjackCtl is a controller/patchbay frontend, not a second JACK server to install beside Pipewire.
 
+### Additional applications, recovery and device tools
+
+The official package profile also installs VSCodium from Flathub; VLC; LibreOffice Fresh; `scrcpy` and `android-tools` (ADB); `v4l-utils` for camera diagnostics; SMART/NVMe utilities (`smartmontools`, `nvme-cli`); and Btrfs/Snapper/Restic tooling (`btrfs-progs`, `snapper`, `restic`). `nftables` is installed as the firewall backend.
+
+Installing the tools does not silently choose a backup destination, create a Snapper root configuration, schedule snapshots, or run a Restic backup. Those operations need a verified target filesystem and a user-selected backup destination; the installer deliberately leaves them unconfigured rather than writing to a personal data disk. The standard Firefox package is installed; Firefox Nightly is not included in this release.
+
+`v4l2loopback-dkms` is not installed automatically. It is an external DKMS/kernel-module choice with kernel-header compatibility requirements and is not part of the official repository-only package set. The included `scrcpy`/ADB and `v4l-utils` tools provide Android connectivity and camera diagnostics, not a virtual webcam device.
+
 ## Storage and boot safety
 
 - Fenrir never partitions or formats disks.
