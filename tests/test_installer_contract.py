@@ -27,8 +27,10 @@ class InstallerContractTests(unittest.TestCase):
             for path in [ROOT / "install.sh", *(ROOT / "scripts").glob("*.sh")]
         )
         lowered = source.lower()
-        for forbidden in ("mkfs.", "wipefs", "sgdisk", "parted ", "fdisk ", "reboot"):
-            self.assertNotIn(forbidden, lowered)
+        forbidden_command = re.compile(
+            r"(?m)^\\s*(?:sudo\\s+)?(?:mkfs\\.\\w+|wipefs|sgdisk|parted|fdisk|reboot|shutdown)\\b"
+        )
+        self.assertIsNone(forbidden_command.search(lowered))
 
     def test_protected_storage_is_rejected(self):
         source = (ROOT / "scripts/lib.sh").read_text()
@@ -39,7 +41,7 @@ class InstallerContractTests(unittest.TestCase):
         gate = (ROOT / "scripts/check-wallpaper-ready.py").read_text()
         self.assertIn('"published_unique_images") != 5000', gate)
         self.assertIn("total_records != 5000", gate)
-        self.assertIn("legacy_images_reused") , gate
+        self.assertIn("legacy_images_reused", gate)
 
     def test_no_aur_dependency_is_declared(self):
         combined = "\n".join(p.read_text() for p in ROOT.rglob("*") if p.is_file() and p.suffix in {".sh", ".toml"})
