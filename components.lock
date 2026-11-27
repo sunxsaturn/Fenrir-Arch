@@ -1,5 +1,5 @@
 schema = 1
-arch_version = "1.2.5"
+arch_version = "1.2.6"
 dots_repository = "https://github.com/sunxsaturn/Fenrir-Dots.git"
 dots_version = "0.20.0"
 dots_commit = "2f4878e678f76aa31656e9b8c297e8e74ac94b45"

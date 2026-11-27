@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class InstallerContractTests(unittest.TestCase):
     def test_component_versions_and_immutable_pins_are_valid(self):
         lock = tomllib.loads((ROOT / "components.lock").read_text())
-        self.assertEqual(lock["arch_version"], "1.2.5")
+        self.assertEqual(lock["arch_version"], "1.2.6")
         self.assertEqual(lock["dots_version"], "0.20.0")
         self.assertEqual(lock["catalog_version"], "0.39.2")
         for key in ("dots_commit", "catalog_commit"):
@@ -52,6 +52,31 @@ class InstallerContractTests(unittest.TestCase):
         self.assertIn("60% opacity with compositor blur", wizard)
         self.assertNotIn("0.80", source)
         self.assertNotIn("80% opacity", wizard)
+
+    def test_workstation_application_profile_covers_blueprint_tools(self):
+        source = (ROOT / "scripts/packages.sh").read_text()
+        for package in (
+            "scrcpy", "android-tools", "vlc", "libreoffice-fresh", "v4l-utils",
+            "smartmontools", "nvme-cli", "btrfs-progs", "snapper", "restic",
+            "nftables",
+        ):
+            with self.subTest(package=package):
+                self.assertIn(package, source)
+        self.assertIn("com.vscodium.codium", source)
+
+    def test_backup_and_snapshot_tools_are_installed_without_implicit_configuration(self):
+        source = (ROOT / "scripts/packages.sh").read_text()
+        self.assertIn("snapper", source)
+        self.assertIn("restic", source)
+        installer = (ROOT / "install.sh").read_text()
+        self.assertNotIn("snapper -c root create-config", installer)
+        self.assertNotIn("restic backup", installer)
+
+    def test_no_aur_kernel_module_is_silently_installed(self):
+        source = (ROOT / "scripts/packages.sh").read_text()
+        self.assertNotIn("v4l2loopback-dkms", source)
+        self.assertNotIn("yay ", source)
+        self.assertNotIn("paru ", source)
 
     def test_no_aur_dependency_is_declared(self):
         combined = "\n".join(p.read_text() for p in ROOT.rglob("*") if p.is_file() and p.suffix in {".sh", ".toml"})
