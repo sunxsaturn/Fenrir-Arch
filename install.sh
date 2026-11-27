@@ -69,6 +69,11 @@ if (( DRY_RUN )); then
   exit 0
 fi
 
+log "Preflighting the complete 5,000-image public gallery before any system changes."
+if ! python3 "$ROOT/scripts/check-wallpaper-ready.py"; then
+  die "The 5,000-image public gallery is incomplete or unavailable. No system packages, services or configuration were changed. Complete the Catalog rights/acquisition/publication workflow, then rerun this installer."
+fi
+
 if (( GUI_MODE )); then
   if [[ -z "${WAYLAND_DISPLAY:-}${DISPLAY:-}" ]] && [[ ! -t 0 || ! -t 1 ]]; then
     die "The GTK installer needs a local display/TTY. Rerun with --cli from a terminal."
@@ -182,11 +187,6 @@ bash "$ROOT/scripts/install-catalog.sh"
 log "Enabling NetworkManager, Bluetooth and SDDM. No service is force-started and no reboot is performed."
 sudo systemctl enable NetworkManager bluetooth sddm
 sudo systemctl daemon-reload
-
-log "Preflighting the complete new 5,000-image public gallery before image transfer."
-if ! python3 "$ROOT/scripts/check-wallpaper-ready.py"; then
-  die "Desktop, private Catalog and discovery scheduler are installed, but the public gallery is not yet complete. Do not treat this as a completed Fenrir installation. Complete the Catalog's rights/acquisition/publication workflow, then rerun the same ./install.sh command. The wallpaper sync remains integrated; no separate downloader is required."
-fi
 
 log "Synchronizing all 5,000 verified public images as the final library-install stage."
 fenrir-wallpaper sync-public --destination "$HOME/Pictures/Wallpapers"
