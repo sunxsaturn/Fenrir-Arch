@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 
 BASE_PACKAGES=(
-  hyprland hyprpaper hyprlock xdg-desktop-portal-hyprland xdg-desktop-portal-gtk
+  hyprland quickshell hyprpaper hyprlock xdg-desktop-portal-hyprland xdg-desktop-portal-gtk
   waybar fuzzel kitty mako grim slurp wl-clipboard cliphist
   networkmanager network-manager-applet bluez bluez-utils blueman
   pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack wireplumber

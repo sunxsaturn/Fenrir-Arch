@@ -16,7 +16,7 @@ class PackageProfileTests(unittest.TestCase):
     def test_requested_desktop_and_audio_stack_is_present(self):
         source = PACKAGES.read_text(encoding="utf-8")
         required = (
-            "hyprland", "waybar", "kitty", "sddm", "steam", "gamemode",
+            "hyprland", "quickshell", "waybar", "kitty", "sddm", "steam", "gamemode",
             "mangohud", "gamescope", "pipewire-jack", "easyeffects",
             "qpwgraph", "guitarix", "calf", "reaper", "reapack",
         )
