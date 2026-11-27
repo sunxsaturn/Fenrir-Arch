@@ -7,8 +7,8 @@ This is the ecosystem navigation page for Fenrir Desktop. Start here when you ne
 | Component | Current release | Installed/pinned by |
 |---|---:|---|
 | Fenrir-Arch | 0.9.4 | System installer and deployment |
-| Fenrir-Dots | 0.15.0 | Fenrir-Arch 0.9.6, exact commit `PENDING_DOTS_RELEASE_SHA` |
-| Fenrir Wallpaper Catalog | 0.37.0 | Fenrir-Arch 0.9.6, exact commit `PENDING_CATALOG_RELEASE_SHA` |
+| Fenrir-Dots | 0.15.0 | Fenrir-Arch 0.9.6, exact commit `8df1f8e4fd4070b0289ad844da4ea74e866d72f1` |
+| Fenrir Wallpaper Catalog | 0.37.0 | Fenrir-Arch 0.9.6, exact commit `63882e57114450926ccccc96d2e503a02ba168d7` |
 
 The release values above describe the latest integrated Arch release, not a floating checkout of each repository's `main` branch. See [Versioning and release policy](VERSIONING.md).
 
