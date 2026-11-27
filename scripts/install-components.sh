@@ -52,8 +52,8 @@ PY
 
 DOTS_VENV="$FENRIR_ROOT/dots-venv"
 CATALOG_VENV="$FENRIR_ROOT/catalog-venv"
-python3 -m venv "$DOTS_VENV"
-python3 -m venv "$CATALOG_VENV"
+python3 -m venv --system-site-packages "$DOTS_VENV"
+python3 -m venv --system-site-packages "$CATALOG_VENV"
 "$DOTS_VENV/bin/python" -m pip install --upgrade pip
 "$DOTS_VENV/bin/python" -m pip install --no-deps "$DOTS_DIR"
 "$CATALOG_VENV/bin/python" -m pip install --upgrade pip
