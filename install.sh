@@ -77,6 +77,12 @@ if (( DRY_RUN )); then
 fi
 
 if (( CATALOG_ONLY )); then
+  CATALOG_REPO="$(sed -n 's/^catalog_repository = "\\(.*\\)"/\\1/p' "$ROOT/components.lock")"
+  [[ -n "$CATALOG_REPO" ]] || die "Private Catalog repository is missing from components.lock."
+  log "Checking private Catalog access before installing prerequisites."
+  if ! GIT_TERMINAL_PROMPT=0 git ls-remote "$CATALOG_REPO" HEAD >/dev/null 2>&1; then
+    die "Private Catalog access is unavailable. Configure GitHub SSH or a Git credential helper, then rerun."
+  fi
   log "Installing the minimal Python packaging prerequisite for the private Catalog."
   sudo -v
   sudo pacman -S --needed python-pip
