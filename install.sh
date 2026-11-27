@@ -51,7 +51,7 @@ while (($#)); do
 done
 
 if (( DRY_RUN && CATALOG_ONLY )); then
-  log "Catalog-only plan: prepare the private Catalog on Arch or Debian/Ubuntu with Python 3.13+, verify exclusions, seed 176 metadata campaigns and enable the user timer."
+  log "Catalog-only plan: prepare the private Catalog on Arch or Debian/Ubuntu with Python 3.13+, verify exclusions, seed 440 metadata campaigns and enable the user timer."
   log "No desktop packages, system services, boot settings or personal data volumes will be changed."
   log "Dry run complete. No changes were made."
   exit 0
@@ -116,7 +116,7 @@ require_cmd python3
 require_cmd git
 
 if (( DRY_RUN )); then
-  log "Plan: Arch Linux x86_64; Fenrir-Arch 1.2.8; pinned Dots 0.20.0; private Catalog 0.39.7."
+  log "Plan: Arch Linux x86_64; Fenrir-Arch 1.3.0; pinned Dots 2.0.0; private Catalog 3.9.8."
   log "Desktop: Hyprland >= 0.57, SDDM, Quickshell 0.3.2 native shell, Waybar fallback, Fuzzel, Kitty, Thunar."
   log "Gaming: Steam, Proton support, GameMode, MangoHud, Gamescope, RPCS3, Heroic, Prism Launcher."
   log "Audio: PipeWire, EasyEffects, QPWGraph, Guitarix, Calf, REAPER and ReaPack."
