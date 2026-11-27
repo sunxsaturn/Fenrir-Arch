@@ -68,9 +68,9 @@ bash "$DOTS_DIR/scripts/install-dots.sh"
 
 # The complete public wallpaper sync is the final install gate. This is the
 # single integrated sync step, not a separate post-install downloader.
-[[ -x "$DOTS_DIR/bin/fenrir-wallpaper" ]] ||
-  die "Pinned Fenrir-Dots source is missing its wallpaper library client."
-"$DOTS_DIR/bin/fenrir-wallpaper" sync-library --json
+[[ -x "$DOTS_VENV/bin/fenrir-wallpaper" ]] ||
+  die "Pinned Fenrir-Dots wallpaper command was not installed in its virtual environment."
+"$DOTS_VENV/bin/fenrir-wallpaper" sync-library --json
 
 python3 - "$FENRIR_ROOT/installed-versions.json" "$ROOT/VERSION" "$DOTS_VERSION" "$CATALOG_VERSION" <<'PY'
 import json, re, sys
