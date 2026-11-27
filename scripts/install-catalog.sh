@@ -16,7 +16,7 @@ CATALOG_HOME="$HOME/.local/share/fenrir/catalog"
 for path in "$CATALOG_DIR" "$VENV" "$CATALOG_HOME"; do
   assert_not_protected_path "$path"
 done
-mkdir -p "$(dirname "$CATALOG_DIR")" "$CATALOG_HOME"
+mkdir -p "$(dirname "$CATALOG_DIR")" "$CATALOG_HOME" "$HOME/.local/bin"
 chmod 0700 "$CATALOG_HOME"
 
 if [[ -e "$CATALOG_DIR" ]]; then
