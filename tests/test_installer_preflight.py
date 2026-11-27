@@ -28,7 +28,7 @@ class InstallerPreflightTests(unittest.TestCase):
     def test_incomplete_gallery_error_promises_no_partial_install(self):
         source = INSTALLER.read_text(encoding="utf-8")
         preflight = source.index(PREFLIGHT)
-        following = source[preflight:source.index("fi", preflight) + 2]
+        following = source[preflight:source.index("\\nfi\\n", preflight)]
         self.assertIn("No system packages, services or configuration were changed", following)
 
 
