@@ -1,5 +1,7 @@
 # Fenrir Arch + Fenrir Dots
 
+**Project navigation:** [Fenrir ecosystem map](docs/PROJECT-MAP.md) · [Install guide](docs/ARCH-BASE.md) · [Post-install guide](docs/POST-INSTALL.md) · [Wallpaper integration](docs/WALLPAPER-PACK.md)
+
 Fenrir is an original Arch Linux + Hyprland desktop environment, shipped in two repositories using the installer/dotfiles model.
 
 ## One-command installation
