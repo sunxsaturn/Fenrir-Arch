@@ -1,131 +1,82 @@
-# Fenrir Wallpaper Catalog and Desktop Sync
+# Fenrir Wallpaper Library and Desktop Sync
 
-Fenrir uses the rights-aware **Fenrir Wallpaper Catalog** as the source of truth for discovered, acquired, reviewed and accepted assets. Fenrir Doctor provides a local desktop integration that can grow the wallpaper folder to the recommended 20,000-image target. Its read-only portfolio dashboard reports provider/profile discovery yield and an acceptance-history-based forecast; scheduled discovery rotates providers fairly with a four-request cap per turn.
+Fenrir keeps two distinct wallpaper libraries:
 
-## Provider discovery and supervised scheduling
+1. **Private Catalog library:** assets with current rights evidence, explicit acquisition authorization, verified quarantine bytes, duplicate review and human acceptance. These assets can be synchronized into the local desktop folder.
+2. **Public GitHub library:** separately approved, redistributable images already committed to the three public volumes. The public population is closed; existing images remain available for sync.
 
-The integrated Catalog release supports four active metadata-only providers: Wikimedia Commons, Openverse, SFW Wallhaven and Cleveland Museum of Art Open Access. It includes eight versioned search profiles spanning Nordic/fantasy, cinematic nature, cosmic science fiction, arctic blue/violet, monochrome architecture, red/violet dark fantasy, deep-ocean bioluminescence and obsidian abstract geometry.
+There is no fixed wallpaper-count target, no category quota and no requirement to expand the existing library. Rotation uses the qualifying images already available locally.
 
-Fenrir Doctor can supervise a persisted round-robin queue across up to **32 source/profile combinations** (four providers × eight profiles). Each combination keeps its own resumable campaign and pagination cursor. The Catalog caps every provider slice at four API requests; the provider-specific query/page budgets and pacing rules are documented in the [Catalog source policy](https://github.com/sunxsaturn/Fenrir-Wallpaper-Catalog/blob/main/docs/SOURCES.md).
+## Local rotation
 
-Discovery remains metadata-only. It does not download images, grant rights, authorize acquisition, accept assets or publish the public library. Read the [Fenrir Doctor guide](https://github.com/sunxsaturn/Fenrir-Dots/blob/main/apps/fenrir-doctor/README.md) for the desktop scheduler and the [Catalog discovery guide](https://github.com/sunxsaturn/Fenrir-Wallpaper-Catalog/blob/main/docs/DISCOVERY.md) for campaign operation.
+Fenrir Dots rotates only readable landscape wallpapers at least 2560×1440; 3840×2160 or higher is preferred. The `fenrir-wallpaper status` command reports the qualifying local inventory and quality exclusions. Rotation does not wait for a collection goal.
 
-## Collection targets
+The `fenrir-wallpaper` runtime applies the current palette policy: dominant yellow, orange and brown are excluded; red, purple, blue, white and black are preferred; green and neutral grey are allowed.
 
-The available targets are total qualifying local images, not a promise that the Catalog already contains that number:
+## Synchronize existing accepted Catalog assets
 
-- 20,000 images — recommended default for new installations.
-- 10,000 images — selectable smaller target.
-- 5,000 images — selectable smaller target.
+The private Catalog remains the source of truth for its accepted local library. Discovery metadata, license evidence, acquisition authorization, private quarantine, duplicate adjudication and human acceptance remain distinct lifecycle states. The desktop sync never creates or changes any of them.
 
-Existing qualifying files in `~/Pictures/Wallpapers` count toward the target. Rotation can use the qualifying local images already present; reaching 20,000 is a collection goal, not a requirement to enable rotation. The runtime validates landscape image files at least 2560×1440; 3840×2160 or higher is preferred.
+In Fenrir Doctor, open **Wallpapers → Sync accepted wallpapers**:
 
-## Rights and acquisition workflow
+1. Select **Preview all accepted assets**.
+2. Review the read-only preflight. It scans the accepted metadata index across all pages and reports eligible copies, already-present files and blockers.
+3. The synchronization action is enabled only when the metadata scan is complete, the destination is writable and there are no target conflicts.
+4. Explicitly confirm **Sync accepted wallpapers**.
 
-The Catalog separates each stage. Discovery stores metadata only. A source must be enabled under current provider terms; each asset needs its own explicit acquisition authorization before transfer into private quarantine. Validation and SHA-256 evidence, exact/perceptual duplicate review, a human rights decision and explicit human acceptance are separate records.
+The sync copies every currently eligible human-accepted asset; there is no image-count target. It repeats the current rights/license checks, verifies quarantine file identity, exact byte count, SHA-256, dimensions and palette, and uses deterministic filenames. Existing local wallpapers are never overwritten or deleted. The local attribution sidecar records creator, source, license and acceptance references.
 
-The desktop sync command is intentionally stricter than simple acceptance. It copies only catalog assets that:
+A technical metadata preflight ceiling protects the planner from unbounded scans. It is not an image target. If the planner cannot inspect the full accepted index within that safety ceiling, it blocks synchronization instead of claiming completion.
 
-1. Have an explicit accepted-library decision.
-2. Have `rights_status = human_approved`.
-3. Have `license_decision = approved` and a license identifier.
-4. Are locally stored in the private quarantine, not a provider URL.
-5. Are valid landscape JPEG, PNG or WebP files at least 2560×1440.
-6. Pass the Catalog consumer's no-follow path, SHA-256 and exact byte-count checks.
+## Public multi-volume library
 
-Human acceptance is not a grant of redistribution rights. The sync operation is local personal-library copying only: it does not upload or publish images, create public URLs, change rights or acceptance decisions, or authorize sharing. Follow each image's actual license and attribution requirements before redistributing it.
+Public population is **closed on 2026-11-27**. The three existing repositories remain active for desktop synchronization:
 
-## Using Fenrir Doctor
+| Volume | Repository | Images | Population |
+|---|---|---:|---|
+| 01 | [Fenrir-Wallpapers](https://github.com/sunxsaturn/Fenrir-Wallpapers) | 134 | Closed |
+| 02 | [Fenrir-Wallpapers-02](https://github.com/sunxsaturn/Fenrir-Wallpapers-02) | 1,132 | Closed |
+| 03 | [Fenrir-Wallpapers-03](https://github.com/sunxsaturn/Fenrir-Wallpapers-03) | 605 | Closed |
+| **Total** | | **1,871** | **Existing assets only** |
 
-Open **Fenrir Doctor** from the application launcher or press `Super+A`. Select **Wallpapers** to see:
+All nine category folders already exist. The 2026-11-27 manifest/tree snapshot is:
 
-- Accepted records in the Catalog.
-- Current local image count.
-- Selected total-image target and remaining count.
-- The latest synchronization status and log.
+| Category | Images |
+|---|---:|
+| Arctic Blue/Violet | 228 |
+| Cinematic Nature | 228 |
+| Cosmic Science Fiction | 228 |
+| Deep Ocean/Bioluminescence | 221 |
+| Monochrome Futuristic Architecture | 228 |
+| Nordic Mythology/Fantasy | 228 |
+| Obsidian Minimalism/Abstract Geometry | 171 |
+| Red/Violet Dark Fantasy | 228 |
+| Unsorted | 111 |
+| **Total** | **1,871** |
 
-The recommended default is 20,000; 5,000 and 10,000 remain selectable. First select **Preview sync plan**. Synchronization is enabled only after the bounded, read-only Catalog preflight confirms a complete, writable and conflict-free plan. Then select **Sync accepted wallpapers** and confirm the explicit local copy operation. The Catalog revalidates each quarantine file's bytes, SHA-256 and palette immediately before each copy. It uses deterministic content-addressed filenames, does not overwrite existing user files, and maintains `~/Pictures/Wallpapers/fenrir-catalog-attribution.json` with creator, source, license and acceptance references.
+This is the actual inventory, not a goal. The distribution is intentionally preserved. No more source acquisition, count-based balancing, category quota or fourth volume is scheduled. Existing image files and their content-addressed paths are immutable.
 
-## Command-line use
+### Audit and synchronization
 
-The Catalog is installed in an isolated virtual environment. Use the wrapper installed by Fenrir:
+The manifest-only public audit reads the canonical volume registry, all active manifests and GitHub repository metadata. It reports SHA-256 declarations/uniqueness, path/hash consistency, dimensions, source and attribution completeness, license classification, dominant-color metadata, category distribution and approximate repository storage headroom. It does not download image bytes or inspect the local wallpaper folder. The downloaded bytes are verified separately by the sync client.
 
-```bash
-fenrir-catalog catalog library facets \
-  --database "$HOME/.local/share/fenrir/catalog/catalog.sqlite3"
-```
-
-To synchronize directly:
-
-```bash
-fenrir-catalog catalog library sync \
-  --database "$HOME/.local/share/fenrir/catalog/catalog.sqlite3" \
-  --quarantine-root "$HOME/.local/share/fenrir/catalog/quarantine" \
-  --destination "$HOME/Pictures/Wallpapers" \
-  --target-count 20000
-```
-
-Allowed targets are exactly 5000, 10000 and 20000. The command rejects `/mnt/storage` destinations and symlink wallpaper folders. It retains attribution metadata locally and does not delete existing images.
-
-## Sources and image quality
-
-Priority subjects remain Nordic/Viking mythology, dark and medieval fantasy, warriors/battles/armor/fortresses, dragons and mythological creatures, cinematic game environments/concept art, and dramatic mountains/forests/oceans/landscapes. The enforced `fenrir-wallpaper-palette-v1` policy excludes dominant yellow, orange and brown. Red, purple, blue, white and black are preferred; green and neutral grey are allowed. The Catalog checks decoded image pixels at acceptance, local counting and desktop synchronization.
-
-A high-resolution image is not automatically authorized for acquisition or redistribution. Use the Catalog's documented source registry, provider terms, rights evidence, duplicate review, human acceptance and acquisition authorization. Unknown, conflicting, non-commercial, no-derivatives or undocumented rights remain excluded or held for human review. The project will not scrape providers or manufacture rights evidence to hit a numerical target.
-
-### Enabled discovery sources
-
-Fenrir Wallpaper Catalog supports metadata-only campaigns through Openverse,
-Wikimedia Commons, SFW Wallhaven and the Cleveland Museum of Art Open Access
-API. Cleveland records are retained only when that individual artwork is
-marked CC0, its source and image URLs pass the provider host allowlist, and
-the selected image is landscape and at least 2560×1440. Its scheduled slice
-is capped at four API requests, like every other provider.
-
-Discovery does not download image bytes or approve rights. Every candidate
-still follows the Catalog's independent provider-terms check, per-asset
-rights evidence and human decision, explicit acquisition authorization,
-verified quarantine intake, duplicate review and human acceptance. The
-Cleveland Museum's Open Access terms also warn that third-party rights may
-apply to particular objects; CC0 filtering is not a substitute for the
-Catalog's separate evidence and human-review process.
-
-## Automated population of already-authorized assets
-
-Catalog 0.36.0 adds a read-only bulk population plan and a bounded runner over
-assets that already have a current explicit per-asset acquisition authorization.
-The plan is inspectable before transfer. Execution groups work by provider,
-uses batches of up to 20 assets, requires exact HTTPS hostname allowlists and
-stops at the first failed batch. It does not create rights decisions or
-authorizations, automatically retry, accept images or publish them. Quarantined
-assets still require duplicate review and separate human acceptance.
-
-See the Catalog's [rights and acquisition guide](https://github.com/sunxsaturn/Fenrir-Wallpaper-Catalog/blob/main/docs/ACQUISITION.md)
-and [CLI reference](https://github.com/sunxsaturn/Fenrir-Wallpaper-Catalog/blob/main/docs/USAGE.md#29-one-command-bulk-population).
-
-## Attribution and verification
-
-Every copied Catalog asset is named deterministically from its asset identifier and SHA-256. The local attribution sidecar retains:
-
-- Creator, source URL and license identifier/URL.
-- Actual dimensions and SHA-256.
-- Catalog asset identifier and acceptance decision reference.
-
-The Catalog's local database and quarantine remain under `~/.local/share/fenrir/catalog`; they are not stored in GitHub. Image files and the attribution sidecar live under `~/Pictures/Wallpapers`. Neither the source repository nor a GitHub release contains user-owned image files, credentials or catalog databases.
-
-## Public GitHub wallpaper repository
-
-Fenrir also maintains a separate public image collection at [sunxsaturn/Fenrir-Wallpapers](https://github.com/sunxsaturn/Fenrir-Wallpapers). The actual files live under `Fenrir Wallpapers/`, organized into the eight Fenrir visual categories. Clone it with:
+Run the audit and preview from a current Fenrir Dots installation:
 
 ```bash
-git clone --depth=1 https://github.com/sunxsaturn/Fenrir-Wallpapers.git ~/Pictures/Fenrir-Wallpapers
+fenrir-wallpaper audit-library --json
+fenrir-wallpaper sync-library --dry-run
 ```
 
-Set the desktop's existing `wallpaper.directory` setting to `~/Pictures/Fenrir-Wallpapers/Fenrir Wallpapers` to rotate that copy. The image repository is optional and separate from the installer and dotfiles source. Its publisher enforces a conservative 900 MiB Git object budget and 95 MiB per-image ceiling; the attainable image count depends on image sizes.
+After reviewing the dry-run, explicitly run:
 
-Only images with a separate per-asset public-redistribution approval and provider terms permitting public mirroring belong in this repository. Catalog acceptance and local desktop synchronization do not, by themselves, grant redistribution rights. The Catalog database and private quarantine never belong in Git.
+```bash
+fenrir-wallpaper sync-library
+```
 
-## Multi-volume GitHub library
+The sync reads all active registered volumes; it does not use hard-coded repository lists. It downloads only already-published manifest entries, verifies SHA-256 and decoded-image quality, deduplicates globally and preserves existing local files. The public library remains a separate rights boundary: local Catalog acceptance alone does not grant public redistribution rights.
 
-The canonical list of wallpaper repositories is [manifest/volumes.json](https://github.com/sunxsaturn/Fenrir-Wallpapers/blob/main/manifest/volumes.json) in the Fenrir-Wallpapers hub. Volume 01 is the current repository; additional numbered repositories will be registered there. This keeps the installer independent of the number of image volumes. Fenrir-Dots now provides registry-driven public-library synchronization. Preview first with `fenrir-wallpaper sync-library --dry-run`, then run `fenrir-wallpaper sync-library` to synchronize all active registered volumes into the configured wallpaper directory. The client validates every active manifest, deduplicates by SHA-256, resumes interrupted transfers, checks decoded-image quality and palette, preserves per-image public attribution in a separate sidecar, and never overwrites or deletes local files. See the [desktop sync guide](https://github.com/sunxsaturn/Fenrir-Dots/blob/main/docs/WALLPAPER-LIBRARY.md).
+## Rights, provenance and safety
 
+Public images retain source, creator/credit, attribution and license metadata. Each license and provider term still applies; publication does not grant new reuse rights. Do not delete, overwrite, recompress, rename or move committed files to make category counts equal. The public hub's `manifest/volumes.json` and each volume's `manifest/index.json` are authoritative.
+
+The private Catalog database and quarantine remain local and must never be copied into the public wallpaper repositories. Neither public wallpaper sync nor private Catalog sync creates new rights decisions or acquisition authorizations.
