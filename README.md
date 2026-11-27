@@ -1,6 +1,6 @@
 # Fenrir-Arch
 
-**Version:** 1.2.8
+**Version:** 1.2.9
 
 Fenrir-Arch is the system installer and hardware integration layer for Fenrir Desktop. It targets minimal Arch Linux x86_64 with systemd. It is not an operating-system installer and must never format or partition a disk.
 
@@ -22,7 +22,7 @@ The full one-command workstation installation is:
 ./install.sh
 ```
 
-The full installer runs a complete registry and volume-manifest preflight before making system changes. It refuses to proceed until all 5,000 globally unique, rights-approved images are published. It then deploys Fenrir-Dots 0.20.0 with 60% Fimbulwinter Glass and Catalog 0.39.7, VSCodium, VLC, LibreOffice, Android tethering/camera tools, storage health tools, gaming/audio packages and the complete public wallpaper library after it is published. No separate wallpaper downloader is required.
+The full installer runs a complete registry and volume-manifest preflight before making system changes. It refuses to proceed until all 5,000 globally unique, rights-approved images are published. It then deploys Fenrir-Dots 2.0.0 with 60% Fimbulwinter Glass and Catalog 3.9.7, VSCodium, VLC, LibreOffice, Android tethering/camera tools, storage health tools, gaming/audio packages and the complete public wallpaper library after it is published. No separate wallpaper downloader is required.
 
 ## Safety invariants
 
@@ -48,4 +48,4 @@ The reference workstation uses a Ryzen 5 7600X, 32 GiB RAM and Radeon RX 6750 XT
 5. Hyprland/SDDM, audio, gaming, GPU and Wake-on-LAN validation.
 6. Successful disposable Arch VM acceptance before declaring the installer production-ready.
 
-Historical release tags remain immutable.
+Project versions use three single-digit decimal components. At ten, carry into the component to the left and reset the overflowing component to zero (for example, 0.9 → 1.0 and 0.0.9 → 0.1.0). Historical release tags remain immutable; active pins and future releases use normalized versions.
