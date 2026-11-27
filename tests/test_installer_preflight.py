@@ -15,11 +15,21 @@ class InstallerPreflightTests(unittest.TestCase):
             "sudo cp -a /etc/pacman.conf",
             "sudo flatpak remote-add",
             'bash "$DOTS_DIR/scripts/install-dots.sh"',
-            'bash "$ROOT/scripts/install-catalog.sh"',
         )
         for marker in mutation_markers:
             with self.subTest(marker=marker):
                 self.assertGreater(source.index(marker), preflight)
+
+    def test_catalog_only_mode_prepares_discovery_without_full_install(self):
+        source = INSTALLER.read_text(encoding="utf-8")
+        mode = source.index("if (( CATALOG_ONLY )); then")
+        catalog = source.index('bash "$ROOT/scripts/install-catalog.sh"', mode)
+        gate = source.index(PREFLIGHT)
+        packages = source.index("sudo pacman -Syu")
+        self.assertLess(mode, catalog)
+        self.assertLess(catalog, gate)
+        self.assertLess(gate, packages)
+        self.assertIn("No system packages or desktop configuration were changed", source)
 
     def test_gallery_preflight_runs_exactly_once(self):
         source = INSTALLER.read_text(encoding="utf-8")
