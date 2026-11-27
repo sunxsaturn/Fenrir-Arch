@@ -120,7 +120,7 @@ require_cmd flatpak
 DOTS_DIR="${FENRIR_DOTS_DIR:-$HOME/.local/share/fenrir/dots}"
 DOTS_REPO="${FENRIR_DOTS_REPO:-https://github.com/sunxsaturn/Fenrir-Dots.git}"
 DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-9b9e85c084e397141389c28778988bf009280fcf}"
-CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-d8742dde2c7540cc2d18eef8ed1cc58a2a12de04}"
+CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-4e6ed27e6425956ea2fa444db5fc03193767025c}"
 [[ "$DOTS_COMMIT" =~ ^[0-9a-f]{40}$ ]] || die "FENRIR_DOTS_COMMIT must be a full 40-character Git commit SHA."
 mkdir -p "$(dirname -- "$DOTS_DIR")"
 if [[ -d "$DOTS_DIR/.git" ]]; then
