@@ -74,7 +74,7 @@ if (( CATALOG_ONLY )); then
   esac
   python3 -c 'import sys; raise SystemExit(0 if sys.version_info >= (3, 13) else 1)' \
     || die "The private Catalog requires Python 3.13 or newer."
-  CATALOG_REPO="$(sed -n 's/^catalog_repository = "\\(.*\\)"/\\1/p' "$ROOT/components.lock")"
+  CATALOG_REPO="$(sed -n 's/^catalog_repository = "\(.*\)"/\1/p' "$ROOT/components.lock")"
   [[ -n "$CATALOG_REPO" ]] || die "Private Catalog repository is missing from components.lock."
   log "Checking private Catalog access before installing prerequisites."
   if ! GIT_TERMINAL_PROMPT=0 git ls-remote "$CATALOG_REPO" HEAD >/dev/null 2>&1; then

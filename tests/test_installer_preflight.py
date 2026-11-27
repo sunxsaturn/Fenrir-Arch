@@ -1,3 +1,6 @@
+import shlex
+import subprocess
+import tomllib
 import unittest
 from pathlib import Path
 
@@ -7,6 +10,25 @@ PREFLIGHT = 'if ! python3 "$ROOT/scripts/check-wallpaper-ready.py"; then'
 
 
 class InstallerPreflightTests(unittest.TestCase):
+
+    def test_catalog_only_repository_pin_command_extracts_the_locked_url(self):
+        source = INSTALLER.read_text(encoding="utf-8")
+        assignment = next(
+            line.strip() for line in source.splitlines()
+            if line.strip().startswith("CATALOG_REPO=")
+            and "catalog_repository" in line
+            and "components.lock" in line
+        )
+        command = (
+            f"ROOT={shlex.quote(str(INSTALLER.parent))}; "
+            f"{assignment}; printf '%s' \"$CATALOG_REPO\""
+        )
+        result = subprocess.run(
+            ["bash", "-c", command], check=True, capture_output=True, text=True
+        )
+        lock = tomllib.loads((INSTALLER.parent / "components.lock").read_text())
+        self.assertEqual(result.stdout, lock["catalog_repository"])
+
     def test_gallery_preflight_precedes_every_install_mutation(self):
         source = INSTALLER.read_text(encoding="utf-8")
         preflight = source.index(PREFLIGHT)
