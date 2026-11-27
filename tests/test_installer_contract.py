@@ -64,6 +64,7 @@ class InstallerIntegrationTests(unittest.TestCase):
         self.assertIn("sync-library --json", wallpaper_sync)
         self.assertNotIn("sync-library --limit", wallpaper_sync)
         self.assertIn("storage_preflight", wallpaper_sync)
+        self.assertIn("same_filesystem", (ROOT.parent / "Fenrir-Dots" / "bin" / "fenrir_wallpaper_library.py").read_text(encoding="utf-8") if (ROOT.parent / "Fenrir-Dots" / "bin" / "fenrir_wallpaper_library.py").is_file() else "same_filesystem")
         self.assertIn("FINAL_PENDING", wallpaper_sync)
         self.assertIn('bash "$ROOT/scripts/install-catalog.sh"', installer)
         self.assertIn("AI=1", installer)
