@@ -63,6 +63,8 @@ fi
 
 log "Public wallpaper inventory: $MANIFEST_RECORDS manifest records / $UNIQUE_IMAGES unique images."
 log "Missing images: $PENDING_DOWNLOADS; estimated transfer: $((PLANNED_BYTES / 1073741824)) GiB."
+log "Destination: $DESTINATION_FREE free / $DESTINATION_REQUIRED required bytes."
+log "Resumable cache: $STATE_FREE free / $STATE_REQUIRED required bytes."
 log "Destination and resumable-cache storage checks passed."
 
 if (( PENDING_DOWNLOADS > 0 && ASSUME_YES == 0 )); then
