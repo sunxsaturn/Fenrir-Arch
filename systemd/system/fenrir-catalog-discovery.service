@@ -1,0 +1,10 @@
+[Unit]
+Description=Run one bounded Fenrir Catalog metadata discovery slice
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/fenrir-catalog campaign-run-next
+Nice=10
+IOSchedulingClass=idle
