@@ -12,7 +12,7 @@ cd ~/Fenrir
 ./install.sh --catalog-only
 ```
 
-This mode installs the pinned private Catalog under the user's home directory, verifies the 1,871-image legacy exclusion set, seeds the 176 bounded metadata-only campaigns and installs the user timer. It does not install desktop packages, configure system services, edit boot settings or access personal data volumes. Configure GitHub access to the private Catalog with an SSH key or Git credential helper; no token is embedded in Fenrir or passed on the command line.
+This mode installs only the `python-pip` prerequisite when needed, then installs the pinned private Catalog under the user's home directory, verifies the 1,871-image legacy exclusion set, seeds the 176 bounded metadata-only campaigns and installs the user timer. It does not install the desktop package profile, configure system services, edit boot settings or access personal data volumes. Configure GitHub access to the private Catalog with an SSH key or Git credential helper; no token is embedded in Fenrir or passed on the command line.
 
 The discovery scheduler fetches metadata only. Exact asset license and provider terms are reviewed separately; an expiring authorization is required before image bytes can enter private quarantine. Technical validation, duplicate adjudication, human acceptance and separate public redistribution approval are independent gates. Only Public Domain and CC0 files may enter the new public generation.
 
