@@ -18,7 +18,7 @@ Usage:
 Options:
   --cli           Use terminal mode instead of the GTK4 guided installer
   --dry-run       Show the plan only; make no system changes
-  --catalog-only  Install and schedule the private Catalog without desktop packages
+  --catalog-only  Install and schedule the private Catalog (Arch/Debian/Ubuntu)
   --no-glass      Do not enable Fimbulwinter Glass
   --no-ollama     Skip Ollama model downloads and benchmarks
   --no-wol        Do not enable Wake-on-LAN
