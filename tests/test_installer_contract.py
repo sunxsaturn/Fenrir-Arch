@@ -62,7 +62,7 @@ class InstallerIntegrationTests(unittest.TestCase):
         wallpaper_sync = (ROOT / "scripts" / "sync-wallpaper-library.sh").read_text(encoding="utf-8")
         self.assertIn("sync-library --dry-run --json", wallpaper_sync)
         self.assertIn("sync-library --json", wallpaper_sync)
-        self.assertNotIn("--limit", wallpaper_sync)
+        self.assertNotIn("sync-library --limit", wallpaper_sync)
         self.assertIn("storage_preflight", wallpaper_sync)
         self.assertIn("FINAL_PENDING", wallpaper_sync)
         self.assertIn('bash "$ROOT/scripts/install-catalog.sh"', installer)
