@@ -1,0 +1,13 @@
+[Unit]
+Description=Enable Wake-on-LAN on supported Fenrir Ethernet adapters
+Documentation=https://www.kernel.org/doc/Documentation/networking/ethtool-netlink.rst
+After=systemd-udev-settle.service
+Before=NetworkManager.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/lib/fenrir/fenrir-wol
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
