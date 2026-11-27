@@ -6,9 +6,9 @@ This is the ecosystem navigation page for Fenrir Desktop. Start here when you ne
 
 | Component | Current release | Installed/pinned by |
 |---|---:|---|
-| Fenrir-Arch | 0.9.4 | System installer and deployment |
-| Fenrir-Dots | 0.15.0 | Fenrir-Arch 0.9.6, exact commit `8df1f8e4fd4070b0289ad844da4ea74e866d72f1` |
-| Fenrir Wallpaper Catalog | 0.37.0 | Fenrir-Arch 0.9.6, exact commit `63882e57114450926ccccc96d2e503a02ba168d7` |
+| Fenrir-Arch | 1.0.0 | System installer and deployment |
+| Fenrir-Dots | 0.16.0 | Fenrir-Arch 1.0.0, exact commit `9a4caf7401a8c409b1524ffd231d7796b5d440b5` |
+| Fenrir Wallpaper Catalog | 0.38.0 | Fenrir-Arch 1.0.0, exact commit `2b246b56a7576af3b0eaf33b0f3c264c58a23c56` |
 
 The release values above describe the latest integrated Arch release, not a floating checkout of each repository's `main` branch. See [Versioning and release policy](VERSIONING.md).
 
@@ -92,7 +92,7 @@ Avoid putting application logic in the installer, duplicating Catalog rights rul
 
 ## Release and compatibility model
 
-Version numbers advance independently per repository. Feature milestones advance the minor component; maintenance releases advance the patch component. The installer pins full commit SHAs and expected versions. Never update a version label without updating its authoritative metadata and release tag.
+Versions advance independently per component using the hierarchical rollover policy in [VERSIONING.md](VERSIONING.md): `0.0.9 → 0.1.0` and the stable `0.9 → 1.0` (canonical `1.0.0`). The installer pins full commit SHAs and expected versions.
 
 Fenrir-Arch pins exact Fenrir-Dots and Catalog commit SHAs. The installer verifies each checkout, component version and required source-file set before deployment. Treat those pins as the compatibility contract; never replace them with a floating `main` checkout.
 

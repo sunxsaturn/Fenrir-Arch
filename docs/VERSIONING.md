@@ -2,15 +2,18 @@
 
 Fenrir components are versioned independently. Each repository has one authoritative version source and a monotonic release sequence; component version numbers do not need to match.
 
-## Number format
+## Number format and incremental rollover
 
-Use `MAJOR.MINOR.PATCH` and prefix Git tags with `v` (for example, package `0.36.0`, tag `v0.36.0`). This is a Linux-kernel-inspired steadily advancing sequence:
+Use a monotonic numeric sequence with Git tags prefixed by `v`. Canonical release files use three components: `MAJOR.MINOR.PATCH`. The top-level Fenrir-Arch stable milestone is commonly abbreviated in prose as `1.0`; its canonical version is `1.0.0`.
 
-- **MINOR** advances for a feature milestone or backward-compatible capability expansion. Reset PATCH to zero.
-- **PATCH** advances for fixes, maintenance, packaging corrections and documentation-only releases that are intentionally published.
-- **MAJOR** advances only for a deliberate compatibility break to a public contract, configuration, installer interface or data format, with migration guidance.
+The sequence advances by hierarchical rollover, not by treating the version as a decimal:
 
-Never reset, reuse or move a released version backwards. Do not derive versions from dates, commit counts or another repository's release number.
+- A feature milestone advances **MINOR** and resets **PATCH**. For example, after `0.0.9`, the next minor line is `0.1.0`.
+- The stable milestone after the `0.9` development line is **1.0** (canonical `1.0.0`), not `0.10`.
+- Maintenance fixes advance **PATCH** within the current line. Published documentation-only fixes also advance PATCH.
+- **MAJOR** advances for a stable compatibility milestone or a deliberate compatibility break with migration guidance.
+
+Existing historical versions such as `0.15.0` and `0.37.0` remain unchanged; they are never renumbered to fit the new policy. Each component advances monotonically from its own published version. Never reset, reuse or move a released version backwards. Do not derive versions from dates or commit counts.
 
 ## Authoritative version sources
 

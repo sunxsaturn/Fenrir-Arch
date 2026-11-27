@@ -16,8 +16,8 @@ Usage: ./install.sh [options]
   --yes           Skip Fenrir's confirmation prompt (package prompts remain)
   --help          Show this help
 
-The installer fetches Fenrir-Dots automatically and installs the complete
-Hyprland desktop, gaming suite, audio tools, Firefox Nightly and applications.
+The installer fetches pinned desktop components, installs the full workstation,
+and downloads every image in the existing public Fenrir wallpaper library.
 USAGE
 }
 
@@ -119,8 +119,8 @@ require_cmd flatpak
 # The visual layer is maintained independently, like established Hyprland dotfiles projects.
 DOTS_DIR="${FENRIR_DOTS_DIR:-$HOME/.local/share/fenrir/dots}"
 DOTS_REPO="${FENRIR_DOTS_REPO:-https://github.com/sunxsaturn/Fenrir-Dots.git}"
-DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-8df1f8e4fd4070b0289ad844da4ea74e866d72f1}"
-CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-63882e57114450926ccccc96d2e503a02ba168d7}"
+DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-9a4caf7401a8c409b1524ffd231d7796b5d440b5}"
+CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-2b246b56a7576af3b0eaf33b0f3c264c58a23c56}"
 [[ "$DOTS_COMMIT" =~ ^[0-9a-f]{40}$ ]] || die "FENRIR_DOTS_COMMIT must be a full 40-character Git commit SHA."
 mkdir -p "$(dirname -- "$DOTS_DIR")"
 if [[ -d "$DOTS_DIR/.git" ]]; then
@@ -141,7 +141,7 @@ fi
 DOTS_HEAD="$(git -C "$DOTS_DIR" rev-parse HEAD)"
 [[ "$DOTS_HEAD" == "$DOTS_COMMIT" ]] || die "Fenrir-Dots checkout mismatch: expected $DOTS_COMMIT, found $DOTS_HEAD."
 DOTS_VERSION="$(cat "$DOTS_DIR/VERSION" 2>/dev/null || true)"
-[[ "$DOTS_VERSION" == "0.15.0" ]] || die "Fenrir-Dots 0.15.0 is required; found '${DOTS_VERSION:-missing}'. Update the companion source checkout."
+[[ "$DOTS_VERSION" == "0.16.0" ]] || die "Fenrir-Dots 0.16.0 is required; found '${DOTS_VERSION:-missing}'. Update the companion source checkout."
 DOTS_REQUIRED_FILES=(
   config/hypr/hyprland.lua
   apps/fenrir-settings/app.py
@@ -182,8 +182,8 @@ if (( STORAGE )); then
   sudo bash "$ROOT/scripts/configure-storage.sh" --apply
 fi
 
-log "Wallpaper intelligence is available in Fenrir Doctor. Review and accept catalog assets before local synchronization."
-log "No wallpapers are downloaded automatically; the desktop rotation service uses qualifying local images."
+bash "$ROOT/scripts/sync-wallpaper-library.sh" "$ASSUME_YES"
+log "Fenrir Doctor is available for auditing the public library and managing separately accepted private Catalog assets."
 
 validate_install "$AI" "$REAPACK"
 
@@ -213,5 +213,5 @@ write_installed_versions
 
 printf '\nFenrir workstation installation finished.\n'
 printf 'Log out and choose Hyprland in SDDM. Verify WoL firmware options.\n'
-printf 'Open Fenrir Doctor → Wallpapers to audit the existing inventory and sync already accepted images.\n'
+printf 'Open Fenrir Doctor → Wallpapers to audit the downloaded public library or sync separately accepted private Catalog images.\n'
 printf 'No reboot was performed.\n'

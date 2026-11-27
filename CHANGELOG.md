@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.0 — 2026-11-27
+
+- First stable Fenrir release; the `0.9` development line advances to canonical `1.0.0`.
+- The documented single-command installer now deploys the pinned desktop and downloads the complete existing public wallpaper library into its rotation directory.
+- Added complete manifest preflight, destination/cache free-space checks, resumable transfers and final zero-missing verification; no fixed wallpaper-count goal is used.
+- Align installer documentation and component pins to Fenrir Dots 0.16.0 and Wallpaper Catalog 0.38.0.
+- Keep public-library population closed; all existing published images remain available for synchronization.
+
+
 ## 0.9.6 — 2026-11-27
 
 - Pin Fenrir-Dots 0.15.0 and Wallpaper Catalog 0.37.0 to exact immutable commits.

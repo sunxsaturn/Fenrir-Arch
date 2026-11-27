@@ -29,7 +29,7 @@ class FenrirInstaller(Gtk.Application):
         heading = Gtk.Label(label="Set up your Fenrir desktop")
         heading.set_xalign(0); heading.add_css_class("title-1")
         root.append(heading)
-        intro = Gtk.Label(label="This guided installer configures Arch Linux with Hyprland, the Fenrir visual environment, gaming and audio production tools. Review the options, then start the installation.")
+        intro = Gtk.Label(label="This guided installer configures Arch Linux with Hyprland, gaming and audio production tools, then downloads and verifies the complete existing public Fenrir wallpaper library into your rotation folder. Review the options, then start the installation.")
         intro.set_wrap(True); intro.set_xalign(0); intro.add_css_class("dim-label")
         root.append(intro)
 
@@ -39,7 +39,7 @@ class FenrirInstaller(Gtk.Application):
         title = Gtk.Label(label="Included in the full profile")
         title.set_xalign(0); title.add_css_class("heading")
         feature_box.append(title)
-        feature_box.append(Gtk.Label(label="Hyprland · Waybar · Fenrir Dots · Firefox Nightly · Steam · GameMode · MangoHud · Gamescope · Heroic · RPCS3 · Prism Launcher · Discord · Spotify · Whatsie · PipeWire · EasyEffects · QPWgraph · Guitarix · Calf · REAPER · Fenrir Doctor", wrap=True, xalign=0))
+        feature_box.append(Gtk.Label(label="Hyprland · Waybar · Fenrir Dots · Firefox Nightly · Steam · GameMode · MangoHud · Gamescope · Heroic · RPCS3 · Prism Launcher · Discord · Spotify · Whatsie · PipeWire · EasyEffects · QPWgraph · Guitarix · Calf · REAPER · Fenrir Doctor · all published wallpapers", wrap=True, xalign=0))
         features.set_child(feature_box); root.append(features)
 
         storage_row, self.storage = self.option("Mount eligible fixed data disks at boot", "Uses filesystem UUIDs and nofail; excludes root, boot and removable devices. No formatting.", True)

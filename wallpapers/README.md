@@ -1,35 +1,20 @@
-# Fenrir wallpaper pack
+# Fenrir wallpaper delivery
 
-This directory intentionally does not contain fabricated image URLs or scraped artwork.
-The installer consumes `manifest.json` here, or a remote HTTPS manifest supplied with
-`FENRIR_WALLPAPER_MANIFEST_URL`. The manifest must contain at least 5,000 unique items
-and pass `manifest.schema.json` plus the stricter runtime checks in
-`scripts/download_wallpaper_pack.py`.
+This repository does not maintain a separate wallpaper pack manifest or downloader.
 
-## Visual target
+**The only supported public wallpaper download path is the registry-driven synchronization command shipped by Fenrir Dots.** Fenrir-Arch invokes it automatically as the final wallpaper stage of the single-command system installation:
 
-- Landscape only; minimum decoded resolution: **2560×1440**.
-- Preferred resolution: **3840×2160 or higher**.
-- Contemporary digital art and premium desktop backgrounds.
-- Priority: Nordic mythology/Viking fantasy; dark and medieval fantasy; warriors,
-  battles, armor, fortresses, dragons and mythological creatures; cinematic game
-  environments/concept art; mountains, forests, oceans and dramatic landscapes.
-- Preferred palette: obsidian/deep black, arctic blue, violet/purple, emerald/deep
-  green, with restrained dramatic red accents.
-- Allowed license policy: CC0-1.0, CC BY 3.0/4.0, and CC BY-SA 3.0/4.0, each with
-  actual source, license, creator and provider-terms evidence.
+```bash
+git clone --depth=1 https://github.com/sunxsaturn/Fenrir-Arch.git ~/Fenrir && cd ~/Fenrir && ./install.sh
+```
 
-## Required per-image evidence
+That command reads the canonical [public volume registry](https://github.com/sunxsaturn/Fenrir-Wallpapers/blob/main/manifest/volumes.json), synchronizes every active published volume, verifies image bytes and checks that no manifest-listed image remains missing. There is no separate wallpaper-pack manifest, second downloader or image-count target.
 
-Every entry needs a unique ID and SHA-256, exact HTTPS download/source/license/terms
-URLs, creator attribution, measured width/height, non-empty curation tags, an explicit
-human-approved rights decision, explicit provider permission for automated download,
-per-asset acquisition authorization, human acceptance, duplicate clearance, and
-personal-use permission. The downloader verifies the image bytes, checksum, format,
-orientation and actual dimensions before publishing it into the local wallpaper folder.
+For maintenance on an existing Fenrir installation, use the same Dots-owned command:
 
-The Fenrir Wallpaper Catalog deliberately separates discovery, rights review,
-authorization, acquisition, acceptance and redistribution. It does not authorize a
-5,000-image mass download merely because an API exposes image URLs. A ready manifest
-must be produced from the individually reviewed catalog evidence. The pack is for
-local personal use; it must not be redistributed unless every item separately permits it.
+```bash
+fenrir-wallpaper sync-library --dry-run
+fenrir-wallpaper sync-library
+```
+
+Private Catalog acquisitions remain a different rights-controlled workflow: per-asset evidence, authorization, quarantine, duplicate review and human acceptance are required before local Catalog sync.
