@@ -31,6 +31,21 @@ class InstallerPreflightTests(unittest.TestCase):
         self.assertLess(gate, packages)
         self.assertIn("No desktop packages or desktop configuration were changed", source)
 
+    def test_catalog_only_checks_private_access_before_python_pip_install(self):
+        source = INSTALLER.read_text(encoding="utf-8")
+        mode = source.index("if (( CATALOG_ONLY )); then")
+        access = source.index('git ls-remote "$CATALOG_REPO"', mode)
+        pip_install = source.index("sudo pacman -S --needed python-pip", mode)
+        catalog_install = source.index('bash "$ROOT/scripts/install-catalog.sh"', mode)
+        self.assertLess(access, pip_install)
+        self.assertLess(pip_install, catalog_install)
+
+    def test_catalog_user_timer_is_enabled_for_next_login(self):
+        catalog_script = INSTALLER.parent / "scripts" / "install-catalog.sh"
+        source = catalog_script.read_text(encoding="utf-8")
+        self.assertIn("timers.target.wants", source)
+        self.assertIn("ln -sfn ../fenrir-catalog-discovery.timer", source)
+
     def test_gallery_preflight_runs_exactly_once(self):
         source = INSTALLER.read_text(encoding="utf-8")
         self.assertEqual(source.count(PREFLIGHT), 1)
