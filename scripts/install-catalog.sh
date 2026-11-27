@@ -33,8 +33,19 @@ git -C "$CATALOG_DIR" checkout --detach "$CATALOG_COMMIT"
 
 python3 -m venv "$VENV"
 "$VENV/bin/python" -m pip install --disable-pip-version-check "$CATALOG_DIR"
-"$VENV/bin/fenrir-catalog" verify-exclusions --expected 1871
 ln -sfn "$VENV/bin/fenrir-catalog" "$HOME/.local/bin/fenrir-catalog"
+"$VENV/bin/fenrir-catalog" init
+"$VENV/bin/fenrir-catalog" verify-exclusions --expected 1871
+"$VENV/bin/fenrir-catalog" campaign-seed
 printf '%s\n' '{"schema":"org.fenrir.catalog.local-state.v1","private":true}' > "$CATALOG_HOME/install-state.json"
 chmod 0600 "$CATALOG_HOME/install-state.json"
-log "Installed private Catalog $CATALOG_VERSION at $CATALOG_COMMIT."
+
+install -Dm644 "$ROOT/systemd/system/fenrir-catalog-discovery.service" \
+  "$HOME/.config/systemd/user/fenrir-catalog-discovery.service"
+install -Dm644 "$ROOT/systemd/system/fenrir-catalog-discovery.timer" \
+  "$HOME/.config/systemd/user/fenrir-catalog-discovery.timer"
+if [[ -S "${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/bus" ]]; then
+  systemctl --user daemon-reload
+  systemctl --user enable --now fenrir-catalog-discovery.timer
+fi
+log "Installed private Catalog $CATALOG_VERSION at $CATALOG_COMMIT and seeded bounded discovery campaigns."
