@@ -1,7 +1,7 @@
 schema = 1
 arch_version = "1.1.0"
 dots_repository = "https://github.com/sunxsaturn/Fenrir-Dots.git"
-dots_version = "0.17.0"
+dots_version = "0.17.1"
 dots_commit = "d04f3564a2b223eac7ae72a0d78d92f8ad924240"
 catalog_repository = "https://github.com/sunxsaturn/Fenrir-Wallpaper-Catalog.git"
 catalog_version = "0.39.0"
