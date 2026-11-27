@@ -1,42 +1,92 @@
-# Fenrir Arch + Fenrir Dots
+# Fenrir Desktop
 
-**Project navigation:** [Fenrir ecosystem map](docs/PROJECT-MAP.md) · [Install guide](docs/ARCH-BASE.md) · [Post-install guide](docs/POST-INSTALL.md) · [Wallpaper integration](docs/WALLPAPER-PACK.md)
+Fenrir is an original **Arch Linux + Hyprland** desktop environment. The installer, desktop layer and wallpaper catalog are maintained as separate components with explicit compatibility pins.
 
-Fenrir is an original Arch Linux + Hyprland desktop environment, shipped in two repositories using the installer/dotfiles model.
+**Documentation:** [Project map](docs/PROJECT-MAP.md) · [Versioning and releases](docs/VERSIONING.md) · [Minimal Arch base](docs/ARCH-BASE.md) · [Post-install guide](docs/POST-INSTALL.md) · [Wallpaper workflow](docs/WALLPAPER-PACK.md)
 
-## One-command installation
+## Install
 
-Start from a minimal Arch Linux x86_64 installation with systemd, network access, Git and a regular sudo-enabled account. Do not preinstall KDE, GNOME or a competing Hyprland dotfiles distribution.
+Start from a minimal Arch Linux x86_64 installation with systemd, working network access, Git and a regular sudo-enabled user. Do not preinstall KDE, GNOME or another Hyprland configuration.
 
 ```bash
-git clone --depth=1 https://github.com/sunxsaturn/Fenrir-Arch.git ~/Fenrir && cd ~/Fenrir && ./install.sh
+git clone --depth=1 https://github.com/sunxsaturn/Fenrir-Arch.git ~/Fenrir
+cd ~/Fenrir
+./install.sh
 ```
 
-The default command opens the GTK4 guided installer; on a clean text-only TTY it bootstraps Cage and presents the same wizard full-screen. In an existing Wayland/X11 session it opens normally; use `./install.sh --cli` for a terminal-only install. The first login guide and Fenrir Control Center provide tutorials, keybindings and display/appearance/wallpaper/power customization. The installer fetches the pinned Fenrir-Dots source commit `9b9e85c084e397141389c28778988bf009280fcf` automatically, pins Fenrir-Dots 0.14.1 and validates its version and complete required file set, then installs packages and configures the complete desktop. Fenrir Doctor, Ollama Vulkan and the pinned Fenrir Wallpaper Catalog are mandatory parts of the full profile; only model-weight downloads remain manual. The Catalog runs in an isolated Python environment with a private local database and quarantine. Catalog 0.35.0 adds Cleveland Museum CC0 metadata discovery plus provider-balanced scheduled discovery across four providers with up to 24 source/profile combinations and budgets capped at four API requests per turn, a read-only provider/profile portfolio and a human-acceptance-based collection forecast, alongside curated metadata-only discovery profiles, verified portable collections and the rights-aware acquisition workflow. The Catalog source repository is private, so a fresh installation must already have GitHub access configured for this account (SSH key or Git credential helper); Fenrir never embeds or stores an access token. It performs one synchronized `pacman -Syu`, enables official multilib for Steam, installs the gaming and audio suites, obtains Mozilla Firefox Nightly with SHA-512 verification, deploys the dotfiles, sets US International with dead keys, enables Ethernet Wake-on-LAN where supported, and adds eligible fixed data filesystems to `/etc/fstab` by UUID.
+The default installer opens the GTK4 guided setup. On a text-only TTY it bootstraps Cage and presents the same wizard; use `./install.sh --cli` for a terminal-only flow.
 
-Review the initial prompt and every package transaction. REAPER has its own EULA. ReaPack is installed from the official Arch Extra repository as an optional package; it is not fetched from AUR or installed as an unverified third-party binary. It does not partition/format drives, edit data-volume contents, install a bootloader, modify firmware, or reboot.
+Review the plan and every package transaction. Fenrir runs one synchronized `pacman -Syu`, enables official multilib for Steam, installs the selected desktop, gaming and audio stack, deploys the pinned desktop source, obtains Firefox Nightly with SHA-512 verification, configures US International with dead keys, and can enable Ethernet Wake-on-LAN and mount eligible fixed data filesystems by UUID.
 
-Options: `--dry-run`, `--cli`, `--no-reapack`, `--no-storage`, `--no-wol`, `--yes`, `--help`. Fenrir Doctor and the Wallpaper Catalog cannot be disabled because they are required Fenrir components. See `docs/POST-INSTALL.md`.
+### Installer options
 
-## Repositories
+| Option | Purpose |
+|---|---|
+| `--dry-run` | Print the plan without changing the system |
+| `--cli` | Use the terminal installer |
+| `--no-reapack` | Skip optional ReaPack integration |
+| `--no-storage` | Do not add eligible fixed data filesystems to `/etc/fstab` |
+| `--no-wol` | Do not enable Wake-on-LAN |
+| `--yes` | Skip Fenrir's confirmation prompt; package prompts remain |
+| `--help` | Show all options |
 
-- **Fenrir-Arch**: installer, packages, system services, disk/keyboard/WoL integration and pinned Catalog deployment.
-- **Fenrir-Dots 0.14.1**: Hyprland Lua config, Waybar, Fuzzel, Kitty, Mako, GTK, icons, Fimbulwinter Glass, wallpaper rotation/theme services, GTK4 Fenrir Control Center and Fenrir Doctor, now integrated with the Catalog’s guarded human Rights Review Studio.
-  - Fenrir Doctor is first-party, versioned source in [`Fenrir-Dots/apps/fenrir-doctor/`](https://github.com/sunxsaturn/Fenrir-Dots/tree/main/apps/fenrir-doctor), including diagnostics, release tracking, recovery, wallpaper intelligence, opt-in automatic metadata discovery, a sanitized rights-review queue and launcher for the Catalog’s session-protected Rights & Acquisition Studio, including human decisions, separately confirmed per-asset authorizations, a read-only provider-specific batch preflight and a SHA-256/size/device/inode-verified quarantine intake preview, explicit append-only exact/perceptual duplicate adjudication with session-protected writes, local assistant, CLI, user unit, desktop launcher, icon, docs and tests. Fenrir-Arch validates this complete source bundle before deploying it.
-- **Fenrir-Wallpaper-Catalog 0.34.0**: pinned rights-aware discovery, acquisition, human review and visual collection workbench. The Rights & Acquisition Studio adds a read-only quarantine intake desk with transient, exact-inode-verified previews and existing duplicate-review history; same-image and deferred decisions remain blockers, and human acceptance/rejection/deferral are separate explicit, confirmation-gated decisions. Acceptance repeats current rights, authorization, duplicate and quality checks and never moves files or starts sync. The Wallpaper Studio supports batch curation of up to 100 accepted wallpapers, side-by-side duplicate comparison, license/evidence inspection, non-destructive 16:9–32:9 display-fit previews, and automatic collection-to-rotation sync.
+The installer does not partition or format disks, change data-volume contents, install a bootloader, modify firmware or reboot. Keep REAPER's EULA and all package prompts under review. ReaPack comes from the official Arch Extra repository; an AUR helper is not required.
 
-## Requested applications
+## Components and compatibility pins
 
-Firefox Nightly; Spotify; Discord; Whatsie; QPWgraph; Guitarix; REAPER + ReaPack; Steam; RPCS3; Heroic Games Launcher; Prism Launcher; Fenrir Doctor + Ollama Vulkan; EasyEffects; Calf LV2 plugins. AUR is not required by the current profile.
+| Component | Responsibility | Pinned installer version |
+|---|---|---:|
+| [Fenrir-Arch](https://github.com/sunxsaturn/Fenrir-Arch) | System installer, packages, system services, deployment and hardware integration | Read `VERSION` |
+| [Fenrir-Dots](https://github.com/sunxsaturn/Fenrir-Dots) | Hyprland configuration, Settings, Welcome, Doctor, wallpaper rotation and user services | **0.14.1** |
+| [Fenrir Wallpaper Catalog](https://github.com/sunxsaturn/Fenrir-Wallpaper-Catalog) | Private metadata, rights, acquisition, quarantine, review and curated collections | **0.35.0** |
 
-Spotify/RPCS3 Flatpak builds and Whatsie are third-party packages; verify their trust and permissions. Ollama does not download a model automatically. Fenrir also disables automatic screen blanking and idle locking by default; the screen lock remains available manually with Super+L.
+The installer pins Fenrir-Dots commit `9b9e85c084e397141389c28778988bf009280fcf` and Catalog commit `d8742dde2c7540cc2d18eef8ed1cc58a2a12de04`. It verifies the component version and required source files before deployment; it never follows a floating `main` branch. The Catalog repository is private, so GitHub access must already be configured for the installing user (SSH key or Git credential helper). Fenrir never embeds or stores an access token.
 
-## Wallpapers
+Version numbers are monotonic **within each component**, not synchronized across repositories. See [Versioning and releases](docs/VERSIONING.md) before changing a version or compatibility pin.
 
-Fenrir-Dots rotates wallpapers every 15 minutes and derives the system accent palette from the current wallpaper. The recommended collection target is 20,000 valid landscape files at minimum 2560×1440 (3840×2160 preferred); rotation works with the qualifying images already present, even below the target, with the selected source themes and colors documented in `Fenrir-Arch/docs/WALLPAPER-PACK.md`.
+## Desktop experience
 
-No 20,000-image corpus is falsely claimed to be bundled. The integrated Fenrir Wallpaper Catalog requires per-asset rights evidence, explicit acquisition authorization, duplicate review, human rights approval and human acceptance. Fenrir Doctor defaults new installations to a 20,000-image collection goal (5,000 and 10,000 remain selectable). A bounded, read-only sync preflight checks accepted metadata and destination conflicts before every copy operation; the Catalog repeats quarantine SHA-256, byte-size and palette verification. It does not scrape, publish or mass-download unlicensed artwork.
+Fenrir-Dots provides:
+
+- Hyprland 0.57+ with Lua configuration, monitor detection and generated workspace/keybinding modules.
+- Fenrir Settings, a GTK4 control center with validated settings, atomic writes and backups.
+- Fenrir Welcome & Tutorial for first login, shortcuts and common tasks.
+- Fimbulwinter Glass: an obsidian base, restrained blur, frosted surfaces and wallpaper-derived accents.
+- Waybar, Fuzzel, Kitty, Mako, GTK styling and the Fenrir-Obsidian icon theme.
+- Wallpaper rotation every 15 minutes, with dynamic palette synchronization.
+- Fenrir Doctor for diagnostics, release tracking, configuration recovery and wallpaper intelligence. Its local Ollama assistant starts on demand; model weights remain opt-in.
+- Public multi-volume wallpaper sync and a separate, rights-checked sync path for curated Catalog collections.
+- Keep-awake behavior without automatic screen blanking or idle locking; manual lock remains available with `Super+L`.
+
+## Wallpaper lifecycle
+
+The recommended collection target is **20,000 qualifying local images**. It is a goal, not a claim that images are bundled or a requirement for rotation. Rotation can use the qualifying files already present; images must be landscape and at least 2560×1440 (3840×2160 preferred).
+
+Fenrir Doctor can supervise metadata-only discovery across four sources — Openverse, Wikimedia Commons, SFW Wallhaven and Cleveland Museum of Art Open Access — using eight visual profiles and a queue of up to **32 source/profile combinations**. Each provider-balanced scheduler turn is capped at **four API requests**. Discovery downloads no image bytes and makes no rights or acceptance decisions.
+
+The private Catalog keeps these steps separate:
+
+1. Discover metadata and retain source provenance.
+2. Review the individual asset's license, rights and provider terms.
+3. Record a separate human acquisition authorization.
+4. Acquire into private quarantine and verify the bytes.
+5. Review exact/perceptual duplicate candidates.
+6. Record a human rights decision and a separate acceptance decision.
+7. Curate collections and run a bounded, read-only desktop sync preflight.
+8. Copy only eligible, accepted assets into the desktop rotation directory.
+
+Local acceptance does **not** authorize public redistribution. The public wallpaper mirror has its own publication approval and provider-terms requirements. See [Wallpaper workflow](docs/WALLPAPER-PACK.md).
+
+## Applications
+
+The current profile includes Firefox Nightly, Spotify, Discord, Whatsie, QPWgraph, Guitarix, REAPER + optional ReaPack, Steam, RPCS3, Heroic Games Launcher, Prism Launcher, Fenrir Doctor, Ollama Vulkan, EasyEffects and Calf LV2 plugins.
+
+Third-party application packages retain their own trust, license and permission considerations. Ollama does not download a model automatically.
+
+## After installation
+
+Start with the [post-install guide](docs/POST-INSTALL.md) for first login, keybindings, display and audio checks, gaming, data volumes, Wake-on-LAN and recovery.
 
 ## License
 
-No software license has been selected yet. Publication does not imply permission to redistribute or relicense third-party content.
+No software license has been selected yet. Publishing Fenrir source does not grant redistribution rights to third-party applications, artwork or assets.
