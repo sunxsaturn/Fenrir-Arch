@@ -28,7 +28,7 @@ FLATPAK_APPS=(
   com.heroicgameslauncher.hgl
   net.rpcs3.RPCS3
   com.discordapp.Discord
-  com.ktechpit.whatsie
+  com.rtosta.zapzap
   org.prismlauncher.PrismLauncher
 )
 
