@@ -44,8 +44,14 @@ install -Dm644 "$ROOT/systemd/system/fenrir-catalog-discovery.service" \
   "$HOME/.config/systemd/user/fenrir-catalog-discovery.service"
 install -Dm644 "$ROOT/systemd/system/fenrir-catalog-discovery.timer" \
   "$HOME/.config/systemd/user/fenrir-catalog-discovery.timer"
+USER_UNIT_DIR="$HOME/.config/systemd/user"
+install -d -m 0755 "$USER_UNIT_DIR/timers.target.wants"
+ln -sfn ../fenrir-catalog-discovery.timer \
+  "$USER_UNIT_DIR/timers.target.wants/fenrir-catalog-discovery.timer"
 if [[ -S "${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/bus" ]]; then
   systemctl --user daemon-reload
   systemctl --user enable --now fenrir-catalog-discovery.timer
+else
+  log "Discovery timer is enabled for the next user-manager login."
 fi
 log "Installed private Catalog $CATALOG_VERSION at $CATALOG_COMMIT and seeded bounded discovery campaigns."

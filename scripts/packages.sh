@@ -6,16 +6,16 @@ BASE_PACKAGES=(
   waybar fuzzel kitty mako grim slurp wl-clipboard cliphist
   networkmanager network-manager-applet bluez bluez-utils blueman
   pipewire pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack wireplumber
-  pavucontrol easyeffects qpwgraph guitarix calf
+  pavucontrol easyeffects qpwgraph qjackctl guitarix calf
   reaper reapack realtime-privileges
-  polkit hyprpolkitagent sddm qt6-wayland qt5-wayland qt6-svg
+  polkit hyprpolkitagent sddm qt6-wayland qt5-wayland qt6-svg qt6ct
   xdg-utils xdg-user-dirs gvfs udisks2 thunar tumbler file-roller
   brightnessctl playerctl libnotify
   mesa vulkan-radeon libva-mesa-driver mesa-utils vulkan-tools vulkan-icd-loader
   xorg-xwayland
   papirus-icon-theme adwaita-cursors adw-gtk-theme gtk-update-icon-cache
-  ttf-jetbrains-mono-nerd inter-font noto-fonts noto-fonts-emoji
-  python python-pillow python-gobject gtk4 git github-cli curl rsync flatpak ethtool
+  ttf-jetbrains-mono-nerd inter-font noto-fonts noto-fonts-emoji starship
+  python python-pip python-pillow python-gobject gtk4 git github-cli curl rsync flatpak ethtool
   firefox
 )
 GAMING_PACKAGES=(
