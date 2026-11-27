@@ -2,6 +2,14 @@
 
 Fenrir uses the rights-aware **Fenrir Wallpaper Catalog** as the source of truth for discovered, acquired, reviewed and accepted assets. Fenrir Doctor provides a local desktop integration that can grow the wallpaper folder to the recommended 20,000-image target. Its read-only portfolio dashboard reports provider/profile discovery yield and an acceptance-history-based forecast; scheduled discovery rotates providers fairly with a four-request cap per turn.
 
+## Provider discovery and supervised scheduling
+
+The integrated Catalog release supports four active metadata-only providers: Wikimedia Commons, Openverse, SFW Wallhaven and Cleveland Museum of Art Open Access. It includes eight versioned search profiles spanning Nordic/fantasy, cinematic nature, cosmic science fiction, arctic blue/violet, monochrome architecture, red/violet dark fantasy, deep-ocean bioluminescence and obsidian abstract geometry.
+
+Fenrir Doctor can supervise a persisted round-robin queue across up to **32 source/profile combinations** (four providers × eight profiles). Each combination keeps its own resumable campaign and pagination cursor. The Catalog caps every provider slice at four API requests; the provider-specific query/page budgets and pacing rules are documented in the [Catalog source policy](https://github.com/sunxsaturn/Fenrir-Wallpaper-Catalog/blob/main/docs/SOURCES.md).
+
+Discovery remains metadata-only. It does not download images, grant rights, authorize acquisition, accept assets or publish the public library. Read the [Fenrir Doctor guide](https://github.com/sunxsaturn/Fenrir-Dots/blob/main/apps/fenrir-doctor/README.md) for the desktop scheduler and the [Catalog discovery guide](https://github.com/sunxsaturn/Fenrir-Wallpaper-Catalog/blob/main/docs/DISCOVERY.md) for campaign operation.
+
 ## Collection targets
 
 The available targets are total qualifying local images, not a promise that the Catalog already contains that number:
@@ -81,6 +89,19 @@ verified quarantine intake, duplicate review and human acceptance. The
 Cleveland Museum's Open Access terms also warn that third-party rights may
 apply to particular objects; CC0 filtering is not a substitute for the
 Catalog's separate evidence and human-review process.
+
+## Automated population of already-authorized assets
+
+Catalog 0.36.0 adds a read-only bulk population plan and a bounded runner over
+assets that already have a current explicit per-asset acquisition authorization.
+The plan is inspectable before transfer. Execution groups work by provider,
+uses batches of up to 20 assets, requires exact HTTPS hostname allowlists and
+stops at the first failed batch. It does not create rights decisions or
+authorizations, automatically retry, accept images or publish them. Quarantined
+assets still require duplicate review and separate human acceptance.
+
+See the Catalog's [rights and acquisition guide](https://github.com/sunxsaturn/Fenrir-Wallpaper-Catalog/blob/main/docs/ACQUISITION.md)
+and [CLI reference](https://github.com/sunxsaturn/Fenrir-Wallpaper-Catalog/blob/main/docs/USAGE.md#29-one-command-bulk-population).
 
 ## Attribution and verification
 

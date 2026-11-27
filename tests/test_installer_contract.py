@@ -46,7 +46,7 @@ class InstallerIntegrationTests(unittest.TestCase):
         self.assertIn('apps/fenrir-doctor/assets/app.js', installer)
         self.assertIn('apps/fenrir-doctor/server.py', installer)
         self.assertIn('DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-9b9e85c084e397141389c28778988bf009280fcf}"', installer)
-        self.assertIn('CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-d8742dde2c7540cc2d18eef8ed1cc58a2a12de04}"', installer)
+        self.assertIn('CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-4e6ed27e6425956ea2fa444db5fc03193767025c}"', installer)
         self.assertIn('git -C "$DOTS_DIR" checkout --detach "$DOTS_COMMIT"', installer)
         self.assertIn('[[ "$DOTS_HEAD" == "$DOTS_COMMIT" ]]', installer)
         self.assertIn("write_installed_versions", installer)
@@ -111,12 +111,12 @@ class InstallerIntegrationTests(unittest.TestCase):
     def test_catalog_pin_and_runtime_source_manifest_contract(self):
         installer = (ROOT / "install.sh").read_text(encoding="utf-8")
         setup = (ROOT / "scripts" / "install-catalog.sh").read_text(encoding="utf-8")
-        expected_commit = "d8742dde2c7540cc2d18eef8ed1cc58a2a12de04"
+        expected_commit = "4e6ed27e6425956ea2fa444db5fc03193767025c"
         self.assertIn(expected_commit, installer)
         self.assertIn(expected_commit, setup)
         self.assertIn('git -C "$CATALOG_SOURCE" checkout --detach "$CATALOG_COMMIT"', setup)
         self.assertIn('[[ "$actual" == "$CATALOG_COMMIT" ]]', setup)
-        self.assertIn('[[ "$version" == "0.35.0" ]]', setup)
+        self.assertIn('[[ "$version" == "0.36.0" ]]', setup)
         required = (
             "pyproject.toml",
             "src/fenrir_catalog/__init__.py",
@@ -146,6 +146,7 @@ class InstallerIntegrationTests(unittest.TestCase):
             "src/fenrir_catalog/schemas/wallpaper-library-manifest-v1.schema.json",
             "tests/test_desktop_sync.py",
             "src/fenrir_catalog/campaign.py",
+            "src/fenrir_catalog/population.py",
             "src/fenrir_catalog/campaign_profiles.py",
             "src/fenrir_catalog/adapters/commons.py",
             "src/fenrir_catalog/adapters/cleveland.py",
@@ -158,6 +159,7 @@ class InstallerIntegrationTests(unittest.TestCase):
             "src/fenrir_catalog/migrations/0014_discovery_campaigns.sql",
             "tests/test_workbench.py",
             "tests/test_campaign.py",
+            "tests/test_population.py",
             "tests/test_acquisition_queue.py",
             "tests/test_palette_policy.py",
             "tests/test_palette_index.py",
