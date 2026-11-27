@@ -87,13 +87,13 @@ class InstallerIntegrationTests(unittest.TestCase):
             self.skipTest("CI supplies the pinned Fenrir-Dots checkout for integration validation.")
 
         dots = Path(checkout)
-        expected_commit = "8df1f8e4fd4070b0289ad844da4ea74e866d72f1"
+        expected_commit = "9a4caf7401a8c409b1524ffd231d7796b5d440b5"
         actual_commit = subprocess.run(
             ["git", "-C", str(dots), "rev-parse", "HEAD"],
             check=True, capture_output=True, text=True,
         ).stdout.strip()
         self.assertEqual(actual_commit, expected_commit)
-        self.assertEqual((dots / "VERSION").read_text(encoding="utf-8").strip(), "0.15.0")
+        self.assertEqual((dots / "VERSION").read_text(encoding="utf-8").strip(), "0.16.0")
 
         required = (
             "config/hypr/hyprland.lua",
@@ -119,7 +119,7 @@ class InstallerIntegrationTests(unittest.TestCase):
     def test_catalog_pin_and_runtime_source_manifest_contract(self):
         installer = (ROOT / "install.sh").read_text(encoding="utf-8")
         setup = (ROOT / "scripts" / "install-catalog.sh").read_text(encoding="utf-8")
-        expected_commit = "63882e57114450926ccccc96d2e503a02ba168d7"
+        expected_commit = "2b246b56a7576af3b0eaf33b0f3c264c58a23c56"
         self.assertIn(expected_commit, installer)
         self.assertIn(expected_commit, setup)
         self.assertIn('git -C "$CATALOG_SOURCE" checkout --detach "$CATALOG_COMMIT"', setup)
