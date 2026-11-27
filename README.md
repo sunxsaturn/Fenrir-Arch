@@ -1,6 +1,6 @@
 # Fenrir-Arch
 
-**Version:** 1.2.2
+**Version:** 1.2.3
 
 Fenrir-Arch is the system installer and hardware integration layer for Fenrir Desktop. It targets minimal Arch Linux x86_64 with systemd. It is not an operating-system installer and must never format or partition a disk.
 
@@ -22,7 +22,7 @@ The full one-command workstation installation is:
 ./install.sh
 ```
 
-The full installer runs a complete registry and volume-manifest preflight before making system changes. It refuses to proceed until all 5,000 globally unique, rights-approved images are published. It then deploys Fenrir-Dots 0.17.4 with 60% Fimbulwinter Glass and Catalog 0.39.2, applications, gaming/audio packages, hardware services and the complete public wallpaper library. No separate wallpaper downloader is required.
+The full installer runs a complete registry and volume-manifest preflight before making system changes. It refuses to proceed until all 5,000 globally unique, rights-approved images are published. It then deploys Fenrir-Dots 0.19.0 with 60% Fimbulwinter Glass and Catalog 0.39.2, applications, gaming/audio packages, hardware services and the complete public wallpaper library. No separate wallpaper downloader is required.
 
 ## Safety invariants
 
