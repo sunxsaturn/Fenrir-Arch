@@ -1,0 +1,11 @@
+[Unit]
+Description=Round-robin Fenrir Catalog metadata discovery
+
+[Timer]
+OnBootSec=3min
+OnUnitActiveSec=5min
+Persistent=true
+Unit=fenrir-catalog-discovery.service
+
+[Install]
+WantedBy=timers.target
