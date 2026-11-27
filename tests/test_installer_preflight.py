@@ -29,7 +29,7 @@ class InstallerPreflightTests(unittest.TestCase):
         self.assertLess(mode, catalog)
         self.assertLess(catalog, gate)
         self.assertLess(gate, packages)
-        self.assertIn("No system packages or desktop configuration were changed", source)
+        self.assertIn("No desktop packages or desktop configuration were changed", source)
 
     def test_gallery_preflight_runs_exactly_once(self):
         source = INSTALLER.read_text(encoding="utf-8")
