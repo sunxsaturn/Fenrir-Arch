@@ -30,7 +30,7 @@ The normal installer validates the complete 5,000-image registry and every activ
 
 ## Package and application profile
 
-Fimbulwinter Glass defaults to 60% opacity, with compositor blur where supported and opaque exceptions for games, fullscreen media, lock and authentication surfaces. The official package profile includes Hyprland 0.57+, SDDM, Waybar, Fuzzel, Kitty, Mako, Thunar, Starship, qt6ct, Steam/Proton, GameMode, MangoHud, Gamescope, PipeWire/JACK, EasyEffects, QPWGraph, QjackCtl, REAPER/ReaPack, Guitarix and Calf. Flathub supplies Spotify, Heroic, RPCS3, Discord, ZapZap and Prism Launcher. The audio profile uses PipeWire's JACK compatibility layer; QjackCtl is a controller/patchbay frontend, not a second JACK server to install beside Pipewire.
+Fimbulwinter Glass defaults to 60% opacity, with compositor blur where supported and opaque exceptions for games, fullscreen media, lock and authentication surfaces. The official package profile includes Hyprland 0.57+, SDDM, Quickshell/QML shell, Waybar fallback, Fuzzel, Kitty, Mako, Thunar, Starship, qt6ct, Steam/Proton, GameMode, MangoHud, Gamescope, PipeWire/JACK, EasyEffects, QPWGraph, QjackCtl, REAPER/ReaPack, Guitarix and Calf. Flathub supplies Spotify, Heroic, RPCS3, Discord, ZapZap and Prism Launcher. The audio profile uses PipeWire's JACK compatibility layer; QjackCtl is a controller/patchbay frontend, not a second JACK server to install beside Pipewire.
 
 ## Storage and boot safety
 
