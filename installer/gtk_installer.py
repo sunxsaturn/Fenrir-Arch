@@ -57,7 +57,7 @@ class FenrirWizard(Gtk.Application):
         outer.append(heading)
 
         options = [
-            ("glass", "Fimbulwinter Glass", "80% opacity with compositor blur; toggleable later.", True),
+            ("glass", "Fimbulwinter Glass", "60% opacity with compositor blur; toggleable later.", True),
             ("ollama", "Ollama Vulkan + model benchmark", "Download Qwen 3.5 9B and Gemma 3 candidates, then benchmark.", True),
             ("wol", "Wake-on-LAN", "Enable magic-packet wake only on supported Ethernet adapters.", True),
         ]
