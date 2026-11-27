@@ -90,6 +90,19 @@ Cleveland Museum's Open Access terms also warn that third-party rights may
 apply to particular objects; CC0 filtering is not a substitute for the
 Catalog's separate evidence and human-review process.
 
+## Automated population of already-authorized assets
+
+Catalog 0.36.0 adds a read-only bulk population plan and a bounded runner over
+assets that already have a current explicit per-asset acquisition authorization.
+The plan is inspectable before transfer. Execution groups work by provider,
+uses batches of up to 20 assets, requires exact HTTPS hostname allowlists and
+stops at the first failed batch. It does not create rights decisions or
+authorizations, automatically retry, accept images or publish them. Quarantined
+assets still require duplicate review and separate human acceptance.
+
+See the Catalog's [rights and acquisition guide](https://github.com/sunxsaturn/Fenrir-Wallpaper-Catalog/blob/main/docs/ACQUISITION.md)
+and [CLI reference](https://github.com/sunxsaturn/Fenrir-Wallpaper-Catalog/blob/main/docs/USAGE.md#29-one-command-bulk-population).
+
 ## Attribution and verification
 
 Every copied Catalog asset is named deterministically from its asset identifier and SHA-256. The local attribution sidecar retains:
