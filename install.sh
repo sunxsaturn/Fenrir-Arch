@@ -164,13 +164,13 @@ if (( WOL )); then sudo systemctl enable fenrir-wol.service; fi
 
 log "Deploying pinned Fenrir-Dots."
 DOTS_DIR="$HOME/.local/share/fenrir/dots-source"
+mkdir -p "$(dirname "$DOTS_DIR")"
 export FENRIR_DOTS_COMMIT="$DOTS_COMMIT" FENRIR_DOTS_DIR="$DOTS_DIR"
-bash "$DOTS_DIR/scripts/install-dots.sh" 2>/dev/null || {
-  if [[ ! -d "$DOTS_DIR/.git" ]]; then
-    git clone --filter=blob:none https://github.com/sunxsaturn/Fenrir-Dots.git "$DOTS_DIR"
-  fi
-  bash "$DOTS_DIR/scripts/install-dots.sh"
-}
+if [[ ! -d "$DOTS_DIR/.git" ]]; then
+  [[ ! -e "$DOTS_DIR" ]] || die "$DOTS_DIR exists but is not a Git checkout."
+  git clone --filter=blob:none https://github.com/sunxsaturn/Fenrir-Dots.git "$DOTS_DIR"
+fi
+bash "$DOTS_DIR/scripts/install-dots.sh"
 export PATH="$HOME/.local/bin:$PATH"
 
 if (( GLASS )); then
