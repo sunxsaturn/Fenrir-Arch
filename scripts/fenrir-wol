@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+[[ $EUID -eq 0 ]] || { echo "Run this helper as root." >&2; exit 2; }
+command -v ethtool >/dev/null || { echo "ethtool is required." >&2; exit 2; }
+
+changed=0
+for interface in /sys/class/net/*; do
+  name="${interface##*/}"
+  [[ "$name" != lo && -e "$interface/device" ]] || continue
+  details="$(ethtool "$name" 2>/dev/null || true)"
+  supports="$(sed -n 's/^[[:space:]]*Supports Wake-on: //p' <<<"$details" | head -n1)"
+  [[ "$supports" == *g* ]] || continue
+  if ethtool -s "$name" wol g 2>/dev/null; then
+    echo "[Fenrir] Wake-on-LAN enabled: $name"
+    changed=$((changed + 1))
+  fi
+done
+
+if (( changed == 0 )); then
+  echo "[Fenrir] No eligible Ethernet adapter advertises magic-packet Wake-on-LAN."
+fi
