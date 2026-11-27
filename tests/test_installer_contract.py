@@ -46,7 +46,7 @@ class InstallerIntegrationTests(unittest.TestCase):
         self.assertIn('apps/fenrir-doctor/assets/app.js', installer)
         self.assertIn('apps/fenrir-doctor/server.py', installer)
         self.assertIn('DOTS_COMMIT="${FENRIR_DOTS_COMMIT:-8df1f8e4fd4070b0289ad844da4ea74e866d72f1}"', installer)
-        self.assertIn('CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-4e6ed27e6425956ea2fa444db5fc03193767025c}"', installer)
+        self.assertIn('CATALOG_COMMIT="${FENRIR_CATALOG_COMMIT:-63882e57114450926ccccc96d2e503a02ba168d7}"', installer)
         self.assertIn('git -C "$DOTS_DIR" checkout --detach "$DOTS_COMMIT"', installer)
         self.assertIn('[[ "$DOTS_HEAD" == "$DOTS_COMMIT" ]]', installer)
         self.assertIn("write_installed_versions", installer)
@@ -116,7 +116,7 @@ class InstallerIntegrationTests(unittest.TestCase):
         self.assertIn(expected_commit, setup)
         self.assertIn('git -C "$CATALOG_SOURCE" checkout --detach "$CATALOG_COMMIT"', setup)
         self.assertIn('[[ "$actual" == "$CATALOG_COMMIT" ]]', setup)
-        self.assertIn('[[ "$version" == "0.36.0" ]]', setup)
+        self.assertIn('[[ "$version" == "0.37.0" ]]', setup)
         required = (
             "pyproject.toml",
             "src/fenrir_catalog/__init__.py",
