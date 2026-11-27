@@ -16,8 +16,8 @@ Usage: ./install.sh [options]
   --yes           Skip Fenrir's confirmation prompt (package prompts remain)
   --help          Show this help
 
-The installer fetches Fenrir-Dots automatically and installs the complete
-Hyprland desktop, gaming suite, audio tools, Firefox Nightly and applications.
+The installer fetches pinned desktop components, installs the full workstation,
+and downloads every image in the existing public Fenrir wallpaper library.
 USAGE
 }
 
@@ -213,5 +213,5 @@ write_installed_versions
 
 printf '\nFenrir workstation installation finished.\n'
 printf 'Log out and choose Hyprland in SDDM. Verify WoL firmware options.\n'
-printf 'Open Fenrir Doctor → Wallpapers to audit the existing inventory and sync already accepted images.\n'
+printf 'Open Fenrir Doctor → Wallpapers to audit the downloaded public library or sync separately accepted private Catalog images.\n'
 printf 'No reboot was performed.\n'
