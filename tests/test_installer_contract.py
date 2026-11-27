@@ -15,7 +15,7 @@ class InstallerContractTests(unittest.TestCase):
         self.assertEqual(lock["dots_commit"], "ea7d0eb085fd3531854eb24c9e2269d041c3afa3")
         self.assertEqual(lock["catalog_commit"], "ba3d0b0c4edda48589e3f180d7399a95b07dab76")
         for version_key in ("arch_version", "dots_version", "catalog_version"):
-            self.assertRegex(lock[version_key], re.compile(r"^[0-9]\\.[0-9]\\.[0-9]$"))
+            self.assertRegex(lock[version_key], re.compile(r"^[0-9]\.[0-9]\.[0-9]$"))
         for key in ("dots_commit", "catalog_commit"):
             self.assertRegex(lock[key], re.compile(r"^[0-9a-f]{40}$"))
 
@@ -28,13 +28,13 @@ class InstallerContractTests(unittest.TestCase):
         self.assertIn("check-wallpaper-ready.py", source)
 
     def test_installer_does_not_partition_format_or_reboot(self):
-        source = "\\n".join(
+        source = "\n".join(
             path.read_text(errors="replace")
             for path in [ROOT / "install.sh", *(ROOT / "scripts").glob("*.sh")]
         )
         lowered = source.lower()
         forbidden_command = re.compile(
-            r"(?m)^\\s*(?:sudo\\s+)?(?:mkfs\\.\\w+|wipefs|sgdisk|parted|fdisk|reboot|shutdown)\\b"
+            r"(?m)^\s*(?:sudo\s+)?(?:mkfs\.\w+|wipefs|sgdisk|parted|fdisk|reboot|shutdown)\b"
         )
         self.assertIsNone(forbidden_command.search(lowered))
 
@@ -83,7 +83,7 @@ class InstallerContractTests(unittest.TestCase):
         self.assertNotIn("paru ", source)
 
     def test_no_aur_dependency_is_declared(self):
-        combined = "\\n".join(p.read_text() for p in ROOT.rglob("*") if p.is_file() and p.suffix in {".sh", ".toml"})
+        combined = "\n".join(p.read_text() for p in ROOT.rglob("*") if p.is_file() and p.suffix in {".sh", ".toml"})
         self.assertNotIn("paru ", combined)
         self.assertNotIn("yay ", combined)
 
