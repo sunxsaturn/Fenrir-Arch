@@ -72,6 +72,9 @@ if (( DRY_RUN )); then
 fi
 
 if (( CATALOG_ONLY )); then
+  log "Installing the minimal Python packaging prerequisite for the private Catalog."
+  sudo -v
+  sudo pacman -S --needed python-pip
   log "Installing only the private rights-aware Catalog and its bounded metadata-discovery timer."
   bash "$ROOT/scripts/install-catalog.sh"
   log "Catalog-only preparation complete. No system packages or desktop configuration were changed."
