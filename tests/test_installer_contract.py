@@ -10,7 +10,7 @@ class InstallerContractTests(unittest.TestCase):
     def test_component_versions_and_immutable_pins_are_valid(self):
         lock = tomllib.loads((ROOT / "components.lock").read_text())
         self.assertEqual(lock["arch_version"], "1.1.0")
-        self.assertEqual(lock["dots_version"], "0.17.0")
+        self.assertEqual(lock["dots_version"], "0.17.1")
         self.assertEqual(lock["catalog_version"], "0.39.0")
         for key in ("dots_commit", "catalog_commit"):
             self.assertRegex(lock[key], re.compile(r"^[0-9a-f]{40}$"))
