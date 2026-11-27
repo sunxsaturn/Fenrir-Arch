@@ -154,7 +154,7 @@ print(json.dumps(payload))
         result = self.run_gate()
 
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("rerun ./install.sh to resume verified partial transfers", result.stderr)
+        self.assertIn("Re-run ./install.sh to resume verified partial transfers", result.stderr)
         self.assertEqual(self.recorded_calls(), [
             ["sync-library", "--dry-run", "--json"],
             ["sync-library", "--json"],
