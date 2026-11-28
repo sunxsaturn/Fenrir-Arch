@@ -6,7 +6,6 @@ on:
     paths:
       - ".github/workflows/release.yml"
       - "VERSION"
-      - "README.md"
 
 permissions:
   contents: write
@@ -39,10 +38,18 @@ jobs:
               value = lock[key]
               assert len(value) == 40 and all(c in "0123456789abcdef" for c in value)
           PY
+          tag="v$version"
+          if git ls-remote --exit-code --tags origin "refs/tags/${tag}" >/dev/null 2>&1; then
+            release_needed=false
+          else
+            release_needed=true
+          fi
           echo "version=$version" >> "$GITHUB_OUTPUT"
-          echo "tag=v$version" >> "$GITHUB_OUTPUT"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "release_needed=$release_needed" >> "$GITHUB_OUTPUT"
 
       - name: Build source archive and checksums
+        if: steps.metadata.outputs.release_needed == 'true'
         env:
           VERSION: ${{ steps.metadata.outputs.version }}
         shell: bash
@@ -57,12 +64,14 @@ jobs:
           )
 
       - name: Attest release artifacts
+        if: steps.metadata.outputs.release_needed == 'true'
         uses: actions/attest-build-provenance@v2
         with:
           subject-path: |
             dist/fenrir-arch-${{ steps.metadata.outputs.version }}.tar.gz
 
       - name: Publish immutable GitHub release
+        if: steps.metadata.outputs.release_needed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.metadata.outputs.tag }}
