@@ -1,10 +1,10 @@
 schema = 1
-arch_version = "1.3.3"
+arch_version = "1.3.4"
 dots_repository = "https://github.com/sunxsaturn/Fenrir-Dots.git"
 dots_version = "2.0.1"
 dots_commit = "5840bc509b37674e26d0220279b2510d975db472"
 catalog_repository = "https://github.com/sunxsaturn/Fenrir-Wallpaper-Catalog.git"
-catalog_version = "4.3.1"
-catalog_commit = "49ac675acbf417e54ed1fb31a1fa982d088a5cc3"
+catalog_version = "4.3.2"
+catalog_commit = "1086d12264eaab8d6fc26fd14b9194ff9cf84836"
 wallpaper_registry = "https://raw.githubusercontent.com/sunxsaturn/Fenrir-Wallpapers/main/manifest/volumes.json"
 wallpaper_generation = "fresh-2026-11-27"
