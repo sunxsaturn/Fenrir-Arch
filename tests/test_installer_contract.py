@@ -89,5 +89,19 @@ class InstallerContractTests(unittest.TestCase):
         self.assertNotIn("yay ", combined)
 
 
+    def test_release_workflow_builds_checksummed_attested_archive(self):
+        workflow = (ROOT / ".github" / "workflows" / "release.yml").read_text()
+        self.assertIn("VERSION", workflow)
+        self.assertIn("components.lock", workflow)
+        self.assertIn("sha256sum ", workflow)
+        self.assertIn("actions/attest-build-provenance@v2", workflow)
+        self.assertIn("gh release create", workflow)
+        self.assertIn('--target "${GITHUB_SHA}"', workflow)
+        self.assertIn("Refusing to replace existing immutable tag", workflow)
+        self.assertNotIn("publish-public", workflow)
+        self.assertNotIn("/mnt/storage", workflow)
+
+
+
 if __name__ == "__main__":
     unittest.main()
