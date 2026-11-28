@@ -9,12 +9,12 @@ ROOT = Path(__file__).resolve().parents[1]
 class InstallerContractTests(unittest.TestCase):
     def test_component_versions_and_immutable_pins_are_valid(self):
         lock = tomllib.loads((ROOT / "components.lock").read_text())
-        self.assertEqual(lock["arch_version"], "1.3.2")
-        self.assertEqual(lock["dots_version"], "2.0.0")
-        self.assertEqual(lock["catalog_version"], "4.2.0")
-        self.assertEqual(lock["dots_commit"], "ea7d0eb085fd3531854eb24c9e2269d041c3afa3")
-        self.assertEqual(lock["catalog_commit"], "3766d9c5d3346eb655e1fbddcf769e17c56283a3")
-        self.assertEqual(lock["catalog_version"], "4.2.0")
+        self.assertEqual(lock["arch_version"], "1.3.3")
+        self.assertEqual(lock["dots_version"], "2.0.1")
+        self.assertEqual(lock["catalog_version"], "4.3.1")
+        self.assertEqual(lock["dots_commit"], "5840bc509b37674e26d0220279b2510d975db472")
+        self.assertEqual(lock["catalog_commit"], "49ac675acbf417e54ed1fb31a1fa982d088a5cc3")
+        self.assertEqual(lock["catalog_version"], "4.3.1")
         for version_key in ("arch_version", "dots_version", "catalog_version"):
             self.assertRegex(lock[version_key], re.compile(r"^[0-9]\.[0-9]\.[0-9]$"))
         for key in ("dots_commit", "catalog_commit"):
@@ -97,6 +97,9 @@ class InstallerContractTests(unittest.TestCase):
         self.assertIn("actions/attest-build-provenance@v2", workflow)
         self.assertIn("gh release create", workflow)
         self.assertIn('--target "${GITHUB_SHA}"', workflow)
+        self.assertIn("release_needed=false", workflow)
+        self.assertIn("release_needed=true", workflow)
+        self.assertIn("if: steps.metadata.outputs.release_needed == 'true'", workflow)
         self.assertIn("Refusing to replace existing immutable tag", workflow)
         self.assertNotIn("publish-public", workflow)
         self.assertNotIn("/mnt/storage", workflow)
