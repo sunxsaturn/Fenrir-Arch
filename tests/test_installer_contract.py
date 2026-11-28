@@ -13,7 +13,7 @@ class InstallerContractTests(unittest.TestCase):
         self.assertEqual(lock["dots_version"], "2.0.0")
         self.assertEqual(lock["catalog_version"], "4.0.0")
         self.assertEqual(lock["dots_commit"], "ea7d0eb085fd3531854eb24c9e2269d041c3afa3")
-        self.assertEqual(lock["catalog_commit"], "5f76032152e2cf7a27a804ee9e0bed53a15a2a13")
+        self.assertEqual(lock["catalog_commit"], "fe8d8e2f1ea5a9fce444b2c49c2cd648861a3d3d")
         for version_key in ("arch_version", "dots_version", "catalog_version"):
             self.assertRegex(lock[version_key], re.compile(r"^[0-9]\.[0-9]\.[0-9]$"))
         for key in ("dots_commit", "catalog_commit"):
